@@ -1,0 +1,8 @@
+﻿<h3>RenderableContentControl</h3>
+
+
+@foreach (var prop in PropertyBaseDataList)
+{
+    <TextBoxTemplate ContextData="@prop" OnChange="ChangeHandler">
+        </TextBoxTemplate>
+}

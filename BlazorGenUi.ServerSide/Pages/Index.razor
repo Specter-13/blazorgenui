@@ -1,14 +1,11 @@
 ﻿@page "/"
 @using ObjectsClassLibrary
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+@using BlazorGenUI.Components.Renderable
 
 <RenderableContentControl Context="TestObject"></RenderableContentControl>
 <EditForm Model="this">
     <InputCheckbox @bind-Value="IsChecked" />
- 
+
 </EditForm>
 
 @code
@@ -16,7 +13,7 @@ Welcome to your new app.
     public TestDto TestObject { get; set; }
 
     private bool _isChecked;
-    public bool IsChecked 
+    public bool IsChecked
     {
         get => _isChecked;
         set
@@ -33,7 +30,8 @@ Welcome to your new app.
         {
             TestString = "ahoj",
             TestInteger = 15,
-            ListOfIntegers = new List<int>(){1,2,3,4}
+            ListOfIntegers = new List<int>() { 1, 2, 3, 4 },
+            Entity = new TestEntity(){Name = "janko", Surname = "Spavor", Age = 14}
         };
     }
 }

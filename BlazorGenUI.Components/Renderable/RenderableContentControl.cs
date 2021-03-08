@@ -16,9 +16,8 @@ namespace BlazorGenUI.Components.Renderable
 
         protected override void OnInitialized()
         {
-            var testObject = Context;
             var reflectionLibrary = new ReflectionLogic();
-            var x =Context.GetType().GetRuntimeProperties();
+           // var x =Context.GetType().GetRuntimeProperties();
             PropertyBaseDataList = reflectionLibrary.GetAllProperties(Context);
             //PropertyBaseDataList = Context.GetType().GetRuntimeProperties();
 

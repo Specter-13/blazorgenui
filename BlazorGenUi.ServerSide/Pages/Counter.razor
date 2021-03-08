@@ -1,0 +1,69 @@
+﻿@page "/counter"
+@using ObjectsClassLibrary
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+@*<InputDate></InputDate>
+<InputRadio></InputRadio>*@
+
+<div style="padding: 20px">
+    <label>Button: </label>
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</div>
+<EditForm Model="this">
+    <div style="padding: 20px">
+        <label>Checkbox: </label>
+        <InputCheckbox @bind-Value="Test.TestBool">Checkbox</InputCheckbox>
+    </div>
+    <div style="padding: 20px">
+        <label>Selectbox: </label>
+        <InputSelect @bind-Value="Test.ListOfIntegers">
+            <option value="">Select item ...</option>
+            <option value="1">Exploration</option>
+            <option value="2">Diplomacy</option>
+            <option value="3">Defense</option>
+        </InputSelect>
+    </div>
+    <div style="padding: 20px">
+        <label>RadioButton: </label>
+        <input type="radio"/>
+    </div>
+    <div style="padding: 20px">
+        <label>DatePicker: </label>
+        <InputDate @bind-Value="Test.TestDate"></InputDate>
+    </div>
+    <div style="padding: 20px">
+        <label>Textbox: </label>
+        <InputText @bind-Value="Test.TestString"></InputText>
+    </div>
+    <div style="padding: 20px">
+        <label>TextArea: </label>
+        <InputTextArea @bind-Value="Test.TestString"></InputTextArea>
+    </div>
+</EditForm>
+
+
+
+
+    @code {
+        public TestDto Test { get; set; } = new TestDto();
+        private int currentCount = 0;
+
+        private void IncrementCount()
+        {
+            currentCount++;
+        }
+
+        protected override void OnInitialized()
+        {
+            Test = new TestDto()
+            {
+                ListOgStrings = new List<string>() { "Test1", "Test2", "Test3"},
+                TestBool = false,
+                TestInteger = 42
+            };
+        }
+
+    }

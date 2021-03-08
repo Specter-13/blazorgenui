@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorGenUI.Components\BlazorGenUI.Components.csproj" />
+    <ProjectReference Include="..\BlazorGenUI.Reflection\BlazorGenUI.Reflection.csproj" />
+    <ProjectReference Include="..\FestivalProject.Common\FestivalProject.Common.csproj" />
+    <ProjectReference Include="..\ObjectsClassLibrary\ObjectsClassLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

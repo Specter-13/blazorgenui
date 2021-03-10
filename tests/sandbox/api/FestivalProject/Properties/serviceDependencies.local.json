@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/festivalprojectdbserver/databases/FestivalProject_db",
+      "type": "mssql.azure",
+      "connectionId": "database/connection",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+﻿@using BlazorGenUI.Reflection.Interfaces
+@using BlazorGenUI.Reflection.Enums
+<h3>RenderableContentControl</h3>
+
+@RenderComponent(ContextBase);
+
+@*@foreach (var prop in PropertyBaseDataList)
+{
+    <ComponentBaseTypeControlView ContextData="@prop" >
+        </ComponentBaseTypeControlView>
+}*@
+
+
+@code
+{
+    public RenderFragment RenderComponent(EntryBase composeObject) => __builder =>
+    {
+
+        var component = ViewLocatorBuilder(composeObject.GetType().Name, Presentation);
+        if (component != null)
+        {
+            @*@CreateComplexComponent(composeObject, component);*@
+        }
+        else
+        {
+            @RenderKids(composeObject)
+        }
+    };
+
+
+    RenderFragment RenderKids(EntryBase composeObject) => __builder =>
+    {
+        var kids = composeObject.GetKids();
+        foreach (var kid in kids)
+        {
+            var component = ViewLocatorBuilder(kid.GetType().Name, Presentation);
+            @GeneratePrimitive(kid)
+       
+        }
+
+    };
+
+    private RenderFragment GeneratePrimitive(IPropertyBaseData kid) => __builder =>
+    {
+        
+        var primitiveKidType = kid.GetType();
+        
+
+        var primitiveComponent = ViewLocatorBuilder(primitiveKidType.BaseType.Name, Presentation);
+    //if component not found, use BaseGenericComponent
+        if (primitiveComponent == null)
+        {
+            var baseName = kid.Name;
+            var genericTypeArg = kid.PropertyType;
+           
+            bool isEnum = false;
+
+            primitiveComponent = ViewGenericLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
+        }
+  
+        @CreatePrimitiveComponent(kid, primitiveComponent)
+    
+    };
+
+    private RenderFragment CreatePrimitiveComponent(IPropertyBaseData baseData, IRenderableComponent primitiveComponent) => __builder =>
+    {
+
+        __builder.OpenComponent(1, primitiveComponent.GetType());
+
+        __builder.AddAttribute(2, "BaseData", baseData);
+
+        __builder.AddAttribute(3, "Context", ContextBase);
+
+        __builder.CloseComponent();
+    };
+}

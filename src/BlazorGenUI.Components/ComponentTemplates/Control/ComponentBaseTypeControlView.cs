@@ -12,7 +12,7 @@ namespace BlazorGenUI.Components.ComponentTemplates.Control
     public partial class ComponentBaseTypeControlView<T>
     {
         [Parameter]
-        public PropertyBaseDataT<T> BaseData { get; set; }
+        public ValueElementT<T> BaseData { get; set; }
 
         //[Parameter]
         //public EntryBase Context { get; set; }

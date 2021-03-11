@@ -1,0 +1,20 @@
+﻿@using BlazorGenUI.Reflection.Interfaces
+@using BlazorGenUI.Reflection.Enums
+<h3>DetailTemplate</h3>
+@inherits RenderableComponentBase
+
+@if(@ComplexObject != null)
+{
+    <p>@ComplexObject.GetName()</p>
+
+    <RenderableContentControl ContextBase="ComplexObject" 
+                              Presentation="PresentationType.Control" 
+                              OnlyRecursive="true"></RenderableContentControl>
+
+}
+@code {
+
+
+	[Parameter]
+	public IComplexElement ComplexObject { get; set; }
+}

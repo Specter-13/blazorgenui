@@ -8,12 +8,10 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection
 {
-    public class PropertyBaseDataT<T> : IPropertyBaseData , INotifyPropertyChanged
+    public class ValueElementT<T> : IValueElement , INotifyPropertyChanged
     {
-        public IEntryBase Instance { get; set; }
-
         private T _data;
-        public string Name { get; set; }
+        public string ElementName { get; set; }
         public Type PropertyType { get; set; }
 
         public T Data

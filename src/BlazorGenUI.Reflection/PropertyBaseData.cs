@@ -6,12 +6,13 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection
 {
-    public class PropertyBaseData : IPropertyBaseData
+    public class PropertyBaseData : IValueElement
     {
-        public IEntryBase Instance { get; set; }
+        public IComplexElement Instance { get; set; }
 
-        public string Name { get; set; }
+        public string ElementName { get; set; }
         public Type PropertyType { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public object Data { get; set; }

@@ -1,5 +1,6 @@
 ﻿@using BlazorGenUI.Reflection.Interfaces
 @using BlazorGenUI.Reflection.Enums
+@using BlazorGenUI.Reflection.Attributes
 <h3>RenderableContentControl</h3>
 
 @RenderComponent(ContextBase);
@@ -9,64 +10,108 @@
 
 @code
 {
-    public RenderFragment RenderComponent(EntryBase composeObject) => __builder =>
+    public RenderFragment RenderComponent(IComplexElement complexElement) => __builder =>
     {
 
-        var component = ViewLocatorBuilder(composeObject.GetType().Name, Presentation);
-        if (component != null)
+        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement);
+
+        var component = ViewComplexLocatorBuilder(typeAttribute);
+
+        if (component != null && !OnlyRecursive)
         {
-            @*@CreateComplexComponent(composeObject, component);*@
+            @CreateComplexComponent(complexElement, component);
         }
         else
         {
-            @RenderKids(composeObject)
+            @RenderKids(complexElement)
         }
     };
 
 
-    RenderFragment RenderKids(EntryBase composeObject) => __builder =>
+    RenderFragment RenderKids(IComplexElement complexElement) => __builder =>
     {
-        var kids = composeObject.GetKids();
+        var kids = complexElement.GetKids();
         foreach (var kid in kids)
         {
-            var component = ViewLocatorBuilder(kid.GetType().Name, Presentation);
-            @GeneratePrimitive(kid)
-       
+            @Generator(kid)
         }
 
     };
 
-    private RenderFragment GeneratePrimitive(IPropertyBaseData kid) => __builder =>
+
+    RenderFragment Generator(IBaseElement kid) => __builder =>
+    {
+
+        if (kid is IValueElement primitiveKid)
+        {
+            @GeneratePrimitive(primitiveKid)
+        }
+        else
+        {
+            IComplexElement complexKid = (IComplexElement)kid;
+            @GenerateComplex(complexKid)
+        }
+
+
+    };
+
+    private RenderFragment GeneratePrimitive(IValueElement kid) => __builder =>
     {
         
         var primitiveKidType = kid.GetType();
         
 
-        var primitiveComponent = ViewLocatorBuilder(primitiveKidType.BaseType.Name, Presentation);
+        var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.BaseType.Name, Presentation);
     //if component not found, use BaseGenericComponent
         if (primitiveComponent == null)
         {
-            var baseName = kid.Name;
+            var baseName = kid.ElementName;
             var genericTypeArg = kid.PropertyType;
            
             bool isEnum = false;
 
-            primitiveComponent = ViewGenericLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
+            primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
         }
-  
-        @CreatePrimitiveComponent(kid, primitiveComponent)
-    
+
+        @CreatePrimitiveComponent(kid, primitiveComponent);
+
+
+
+
     };
 
-    private RenderFragment CreatePrimitiveComponent(IPropertyBaseData baseData, IRenderableComponent primitiveComponent) => __builder =>
+    private RenderFragment GenerateComplex(IComplexElement complexElement) => __builder =>
+    {
+        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement);
+
+        var component = ViewComplexLocatorBuilder(typeAttribute);
+
+        if (component != null && !OnlyRecursive)
+        {
+            @CreateComplexComponent(complexElement, component);
+        }
+        else
+        {
+            @RenderKids(complexElement)
+        }
+    };
+
+    private RenderFragment CreatePrimitiveComponent(IValueElement value, IRenderableComponent primitiveComponent) => __builder =>
     {
 
         __builder.OpenComponent(1, primitiveComponent.GetType());
 
-        __builder.AddAttribute(2, "BaseData", baseData);
+        __builder.AddAttribute(2, "BaseData", value);
 
         //__builder.AddAttribute(3, "Context", ContextBase);
 
+        __builder.CloseComponent();
+    };
+
+    private RenderFragment CreateComplexComponent(IComplexElement complex, IRenderableComponent component) => __builder =>
+    {
+        __builder.OpenComponent(0, component.GetType());
+        __builder.AddAttribute(1, "ComplexObject", complex);
         __builder.CloseComponent();
     };
 }

@@ -8,7 +8,7 @@ namespace BlazorGenUI.Reflection
 {
     public class ReflectionLogic
     {
-        public IList<PropertyBaseData> GetAllProperties(EntryBase context)
+        public IList<PropertyBaseData> GetAllProperties(ComplexElement context)
         {
             var listOfProperties = context.GetType().GetProperties();
             var propertyBaseDataList = new List<PropertyBaseData>();
@@ -20,7 +20,7 @@ namespace BlazorGenUI.Reflection
                 var baseProperty = new PropertyBaseData()
                 {
                     //consider including property info
-                    Name = property.Name,
+                    ElementName = property.Name,
                     PropertyType = property.PropertyType,
                     Data = property.GetValue(context, null)
                 };

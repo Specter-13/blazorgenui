@@ -29,7 +29,11 @@ namespace ServerSideTestApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddHttpClient<IFestivalService, FestivalService>(client =>
+            services.AddHttpClient<IFestivalService , FestivalService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44354/");
+            });
+            services.AddHttpClient<IStageService, StageService>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44354/");
             });

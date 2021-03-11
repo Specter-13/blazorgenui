@@ -1,23 +1,21 @@
 ﻿@page "/"
 @using BlazorGenUI.Reflection.Enums
 @using FestivalProject.BL.Models.FestivalDto
+@using FestivalProject.BL.Models.StageDto
 @using ObjectsClassLibrary
 @using ServerSideTestApp.Services
 
 
 
-
-
-
 @if (Festivals != null)
 {
-    <RenderableContentControl ContextBase="@Pohoda" Presentation="PresentationType.Control">
+    <RenderableContentControl ContextBase="@Stage" Presentation="PresentationType.Control">
 
 </RenderableContentControl>
     <p>@Pohoda.City</p>
 }
 
-<button @onclick="UpdateHeading">Save</button>
+<button @onclick="Update">Save</button>
 
 @*<input type="checkbox" @bind="IsChecked"/>*@
 
@@ -28,45 +26,34 @@
 
 @code
 {
-
     [Inject]
     public IFestivalService FestivalService {get; set; }
+    [Inject]
+    public IStageService StageService {get; set; }
 
-    private async Task UpdateHeading(MouseEventArgs e)
-    {
-        var test = Pohoda;
-    }
+    
 
     public IEnumerable<FestivalListDto> Festivals { get; set; }
+    public StageDetailDto Stage { get; set; }
     public FestivalListDto Pohoda { get; set; }
     public TestDto TestObject { get; set; } = new TestDto();
 
-    private bool _isChecked;
-    public bool IsChecked { get; set; }
-   @* public bool IsChecked
+
+    private async Task Update()
     {
-        get => _isChecked;
-        set
-        {
-            _isChecked = value;
-            if (value)
-                TestObject.TestInteger = 25;
-        }
-    }*@
+        var test = Pohoda;
+        var stage = Stage;
+    }
+
+    
+    public bool IsChecked { get; set; }
+  
     protected override async Task OnInitializedAsync()
     {
         Festivals = (await FestivalService.GetFestivalList()).ToList();
+        Stage = (await StageService.GetStageDetail());
         Pohoda = Festivals.First();
     }
 
-    @*protected override void OnInitialized()
-    {
-        TestObject = new TestDto()
-        {
-            TestString = "ahoj",
-            TestInteger = 15,
-            //ListOfIntegers = new List<int>() { 1, 2, 3, 4 },
-            //Entity = new TestEntity(){Name = "janko", Surname = "Spavor", Age = 14}
-        };
-    }*@
+   
 }

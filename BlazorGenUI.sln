@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerSideTestApp", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FestivalProject.Common", "tests\sandbox\api\FestivalProject.Common\FestivalProject.Common.csproj", "{C710C90C-B0CF-4271-9917-D2E44A432EE5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{371A48C7-BBCD-4E38-B5D5-5FA3FB29FE4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionTests", "ReflectionTests\ReflectionTests.csproj", "{351B2F1D-6B72-4F14-9593-EA47009C58C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,10 @@ Global
 		{C710C90C-B0CF-4271-9917-D2E44A432EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C710C90C-B0CF-4271-9917-D2E44A432EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C710C90C-B0CF-4271-9917-D2E44A432EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{351B2F1D-6B72-4F14-9593-EA47009C58C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{351B2F1D-6B72-4F14-9593-EA47009C58C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{351B2F1D-6B72-4F14-9593-EA47009C58C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{351B2F1D-6B72-4F14-9593-EA47009C58C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +88,8 @@ Global
 		{41611198-07A6-4A7C-A69E-E00950B854E5} = {6604A9AE-253B-4C23-B189-A37B6696825E}
 		{5DBF4E60-11E0-48B2-8354-9D9B1CD1F811} = {23B72330-DC5E-4320-AAA2-A09912732E93}
 		{C710C90C-B0CF-4271-9917-D2E44A432EE5} = {6604A9AE-253B-4C23-B189-A37B6696825E}
+		{371A48C7-BBCD-4E38-B5D5-5FA3FB29FE4C} = {23B72330-DC5E-4320-AAA2-A09912732E93}
+		{351B2F1D-6B72-4F14-9593-EA47009C58C6} = {371A48C7-BBCD-4E38-B5D5-5FA3FB29FE4C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DAA6368A-1A6D-429C-9C42-B54157F073E1}

@@ -4,7 +4,9 @@ using System.Text;
 
 namespace BlazorGenUI.Reflection.Interfaces
 {
-    interface IComplexObject
+    public interface IComplexElement : IBaseElement
     {
+        IEnumerable<IBaseElement> GetKids();
+        string GetName();
     }
 }

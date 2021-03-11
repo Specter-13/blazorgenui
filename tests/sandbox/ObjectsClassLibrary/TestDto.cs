@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using BlazorGenUI.Components;
 using BlazorGenUI.Reflection;
+using BlazorGenUI.Reflection.Interfaces;
 
 
 namespace ObjectsClassLibrary
 {
-    public  class TestDto : EntryBase
+    public  class TestDto : IRenderableComponent
     {
         public string TestString { get; set; }
         public int TestInteger { get; set; }

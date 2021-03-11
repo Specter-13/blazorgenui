@@ -5,10 +5,10 @@ using System.Text;
 
 namespace BlazorGenUI.Reflection.Interfaces
 {
-    public interface IPropertyBaseData : IBaseElement
+    public interface IValueElement : IBaseElement
     {
-        
-        
+
+        string ElementName { get; set; }
         Type PropertyType { get; set; }
 
         event PropertyChangedEventHandler PropertyChanged;

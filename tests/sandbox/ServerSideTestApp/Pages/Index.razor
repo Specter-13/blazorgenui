@@ -7,17 +7,20 @@
 
 
 
-@*<RenderableContentControl ContextBase="TestObject" Presentation="PresentationType.Control">
 
-</RenderableContentControl>*@
 
 @if (Festivals != null)
 {
-    <p>@Festivals.First().City</p>
+    <RenderableContentControl ContextBase="@Pohoda" Presentation="PresentationType.Control">
+
+</RenderableContentControl>
+    <p>@Pohoda.City</p>
 }
 
+<button @onclick="UpdateHeading">Save</button>
 
-<input type="checkbox" @bind="IsChecked"/>
+@*<input type="checkbox" @bind="IsChecked"/>*@
+
 
 
 
@@ -29,9 +32,13 @@
     [Inject]
     public IFestivalService FestivalService {get; set; }
 
+    private async Task UpdateHeading(MouseEventArgs e)
+    {
+        var test = Pohoda;
+    }
 
     public IEnumerable<FestivalListDto> Festivals { get; set; }
-
+    public FestivalListDto Pohoda { get; set; }
     public TestDto TestObject { get; set; } = new TestDto();
 
     private bool _isChecked;
@@ -49,6 +56,7 @@
     protected override async Task OnInitializedAsync()
     {
         Festivals = (await FestivalService.GetFestivalList()).ToList();
+        Pohoda = Festivals.First();
     }
 
     @*protected override void OnInitialized()

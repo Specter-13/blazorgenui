@@ -1,11 +1,13 @@
 ﻿
 
+using BlazorGenUI.Reflection;
+using BlazorGenUI.Reflection.Interfaces;
 using FestivalProject.DAL.Entities;
 using FestivalProject.DAL.Enums;
 
-namespace FestivalProject.BL.Models.FestivalDto
+namespace FestivalProject.BL.Models.FestivalDto 
 {
-    public class FestivalListDto : EntityBase
+    public class FestivalListDto : EntryBase
     {
         public string Name { get; set; }
         public MusicGenre Genre { get; set; }

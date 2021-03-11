@@ -12,10 +12,10 @@ namespace BlazorGenUI.Components.Renderable
 {
     public class RenderableComponentBase : ComponentBase, IRenderableComponent
     {
-        
+
         //public async Task UpdateValuesOnChangeAsync<T>(PropertyBaseDataT<T> tag)
         //{
-            
+
         //    await Task.Run(() =>
         //    {
         //        (tag).PropertyChanged += HandlePropertyChangedAsync<T>;
@@ -26,6 +26,7 @@ namespace BlazorGenUI.Components.Renderable
         //protected async void HandlePropertyChangedAsync<T>(object sender, PropertyChangedEventArgs a)
         //{
         //    var castedSender = (PropertyBaseDataT<T>)sender;
+            
 
         //    castedSender.Instance.SetPropertyValue(castedSender.Name, castedSender.Data);
         //    //sender.Instance.SetPropertyValue(sender.Name, );

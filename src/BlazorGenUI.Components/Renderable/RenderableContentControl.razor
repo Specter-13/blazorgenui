@@ -4,11 +4,7 @@
 
 @RenderComponent(ContextBase);
 
-@*@foreach (var prop in PropertyBaseDataList)
-{
-    <ComponentBaseTypeControlView ContextData="@prop" >
-        </ComponentBaseTypeControlView>
-}*@
+
 
 
 @code
@@ -69,7 +65,7 @@
 
         __builder.AddAttribute(2, "BaseData", baseData);
 
-        __builder.AddAttribute(3, "Context", ContextBase);
+        //__builder.AddAttribute(3, "Context", ContextBase);
 
         __builder.CloseComponent();
     };

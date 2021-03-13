@@ -6,7 +6,10 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BlazorGenUI.Reflection.Annotations;
+using BlazorGenUI.Reflection.Attributes;
+using BlazorGenUI.Reflection.Enums;
 using BlazorGenUI.Reflection.Interfaces;
+using BlazorGenUI.Reflection.ValueElementTypes;
 using Fasterflect;
 
 namespace BlazorGenUI.Reflection
@@ -18,37 +21,36 @@ namespace BlazorGenUI.Reflection
             ElementName = this.GetType().UnderlyingSystemType.Name;
         }
         private IList<IBaseElement> Kids { get; set; } = new List<IBaseElement>();
+        private string ElementName { get; set; }
 
         public IEnumerable<IBaseElement> GetKids()
         {
-
-            Type underlyingSystemType = this.GetType().UnderlyingSystemType;
-            var listOfProperties = underlyingSystemType.GetRuntimeProperties();
-            //var kids = new IList<PropertyBaseData>;
-
-            //var propertyBaseDataList = new IEnumerable<PropertyBaseData>();
-            //Type type = typeof(PropertyBaseData);
+            var listOfProperties = this.GetType().UnderlyingSystemType.GetRuntimeProperties();
+     
             if (Kids.Count == 0)
             {
                 foreach (var property in listOfProperties)
                 {
                     var propertyType = property.PropertyType;
-                    if (propertyType.IsPrimitive || (propertyType == typeof(string)) || propertyType.IsEnum)
+                    if (propertyType.IsPrimitive || 
+                        (propertyType == typeof(string))
+                        )
                     {
                         //is generic
-                        Type genericType = typeof(ValueElementT<>).MakeGenericType(propertyType);
-                        var instance = (IValueElement) Activator.CreateInstance(genericType);
-
-                        instance.ElementName = property.Name;
-                        instance.PropertyType = propertyType;
-                 
-                        PropertyInfo prop = instance.GetType().GetProperty("Data");
-                        prop.SetValue(instance, property.GetValue(this, null), null);
-                        instance.PropertyChanged += HandlePropertyChangedAsync;
-                        // Set the value of the given property on the given instance
+                        var instance = CreateValueElementT(propertyType, property);
                         Kids.Add(instance);
-
                     }
+                    else if (propertyType == typeof(DateTime))
+                    {
+                        var instance = CreateValueElementDateTime(propertyType, property);
+                        Kids.Add(instance);
+                    }
+                    else if (propertyType.IsEnum)
+                    {
+                        var instance = CreateValueElementEnumT(propertyType, property);
+                        Kids.Add(instance);
+                    }
+                    //complex  
                     else
                     {
                        var complex = property.GetValue(this, null);
@@ -57,10 +59,58 @@ namespace BlazorGenUI.Reflection
 
                 }
             }
-
-            //return propertyBaseDataList;
-            //var propValue = context.GetType().GetProperty("TestString").GetValue(context, null);
             return Kids;
+        }
+
+        private IValueElement CreateValueElementEnumT(Type propertyType, PropertyInfo property)
+        {
+            Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
+            var instance = (IValueElement) Activator.CreateInstance(genericType);
+
+            instance.RawName = property.Name;
+            instance.PropertyType = propertyType;
+
+            PropertyInfo prop = instance.GetType().GetProperty("Data");
+            prop.SetValue(instance, property.GetValue(this, null), null);
+            instance.PropertyChanged += HandlePropertyChangedAsync;
+            return instance;
+        }
+
+        private ValueElementDateTime CreateValueElementDateTime(Type propertyType, PropertyInfo property)
+        {
+            var data = (DateTime) property.GetValue(this, null);
+            var dateAttribute = (DateAttribute) property.GetCustomAttribute(typeof(DateAttribute));
+            DateTypes dateType;
+            if (dateAttribute != null)
+            {
+                dateType = dateAttribute.GetDateType();
+            }
+            else
+            {
+                dateType = DateTypes.DateTime;
+            }
+
+            var instance = new ValueElementDateTime(property.Name,
+                propertyType,
+                dateType,
+                data
+            );
+            instance.PropertyChanged += HandlePropertyChangedAsync;
+            return instance;
+        }
+
+        private IValueElement CreateValueElementT(Type propertyType, PropertyInfo property)
+        {
+            Type genericType = typeof(ValueElementT<>).MakeGenericType(propertyType);
+            var instance = (IValueElement) Activator.CreateInstance(genericType);
+
+            instance.RawName = property.Name;
+            instance.PropertyType = propertyType;
+
+            PropertyInfo prop = instance.GetType().GetProperty("Data");
+            prop.SetValue(instance, property.GetValue(this, null), null);
+            instance.PropertyChanged += HandlePropertyChangedAsync;
+            return instance;
         }
 
         public string GetName()
@@ -74,10 +124,10 @@ namespace BlazorGenUI.Reflection
             {
                 var castedSender = (IValueElement) sender;
                 var data = castedSender.GetPropertyValue("Data");
-                this.SetPropertyValue(castedSender.ElementName, data);
+                this.SetPropertyValue(castedSender.RawName, data);
             });
         }
 
-        private string ElementName { get; set; }
+        
     }
 }

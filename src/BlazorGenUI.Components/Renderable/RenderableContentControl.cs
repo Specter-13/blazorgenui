@@ -54,7 +54,7 @@ namespace BlazorGenUI.Components.Renderable
         }
 
        
-        private T GetAttribute<T>(IComplexElement composeObject) where T : class
+        private T GetAttribute<T>(IBaseElement composeObject) where T : class
         {
             var typeAttribute = composeObject.GetType()
                 .GetCustomAttributes(true)

@@ -8,7 +8,7 @@ namespace BlazorGenUI.Reflection.Interfaces
     public interface IValueElement : IBaseElement
     {
 
-        string ElementName { get; set; }
+        string RawName { get; set; }
         Type PropertyType { get; set; }
 
         event PropertyChangedEventHandler PropertyChanged;

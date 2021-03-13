@@ -9,20 +9,15 @@
 
 @if (Festivals != null)
 {
-    <RenderableContentControl ContextBase="@Stage" Presentation="PresentationType.Control">
+    <RenderableContentControl ContextBase="@Pohoda" 
+                              Presentation="PresentationType.Control">
+    </RenderableContentControl>
+   
 
-</RenderableContentControl>
-    <p>@Pohoda.City</p>
 }
-
 <button @onclick="Update">Save</button>
 
-@*<input type="checkbox" @bind="IsChecked"/>*@
 
-
-
-
-@*<p>@TestObject.TestInteger</p>*@
 
 @code
 {

@@ -51,25 +51,26 @@
         {
             IComplexElement complexKid = (IComplexElement)kid;
             @GenerateComplex(complexKid)
-        }
+    }
 
 
     };
 
     private RenderFragment GeneratePrimitive(IValueElement kid) => __builder =>
     {
-        
-        var primitiveKidType = kid.GetType();
+
+        var primitiveKidType = kid.PropertyType;
         
 
-        var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.BaseType.Name, Presentation);
+        var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.Name, Presentation);
     //if component not found, use BaseGenericComponent
         if (primitiveComponent == null)
         {
-            var baseName = kid.ElementName;
+            bool isEnum = kid.PropertyType.IsEnum;
+            var baseName = kid.RawName;
             var genericTypeArg = kid.PropertyType;
            
-            bool isEnum = false;
+           
 
             primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
         }
@@ -99,12 +100,13 @@
 
     private RenderFragment CreatePrimitiveComponent(IValueElement value, IRenderableComponent primitiveComponent) => __builder =>
     {
+        
 
         __builder.OpenComponent(1, primitiveComponent.GetType());
 
-        __builder.AddAttribute(2, "BaseData", value);
+        __builder.AddAttribute(2, "ValueElement", value);
 
-        //__builder.AddAttribute(3, "Context", ContextBase);
+
 
         __builder.CloseComponent();
     };

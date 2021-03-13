@@ -1,0 +1,18 @@
+﻿
+@using BlazorGenUI.Components.RawComponents
+@inherits RenderableComponentBase
+@typeparam T
+
+
+<EditForm Model="@ValueElement.Data">
+    <div>
+        <label>@ValueElement.RawName</label>
+    </div>
+    <div>
+        <InputSelectEnum @bind-Value="ValueElement.Data" class="w-100 form-select">
+
+        </InputSelectEnum>
+       
+
+    </div>
+</EditForm>

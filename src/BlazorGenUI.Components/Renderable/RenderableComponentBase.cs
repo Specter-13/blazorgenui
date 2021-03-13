@@ -28,8 +28,8 @@ namespace BlazorGenUI.Components.Renderable
         //    var castedSender = (PropertyBaseDataT<T>)sender;
             
 
-        //    castedSender.Instance.SetPropertyValue(castedSender.ElementName, castedSender.Data);
-        //    //sender.Instance.SetPropertyValue(sender.ElementName, );
+        //    castedSender.Instance.SetPropertyValue(castedSender.RawName, castedSender.Data);
+        //    //sender.Instance.SetPropertyValue(sender.RawName, );
         //    //await InvokeAsync(StateHasChanged);
         //}
     }

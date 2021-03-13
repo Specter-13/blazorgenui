@@ -7,6 +7,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Humanizer.Core" Version="2.8.26" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.9" />
   </ItemGroup>
@@ -14,6 +15,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorGenUI.Reflection\BlazorGenUI.Reflection.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="ComponentTemplates\Display\" />
   </ItemGroup>
 
 </Project>

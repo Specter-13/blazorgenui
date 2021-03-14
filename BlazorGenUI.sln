@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FestivalProject.Common", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{371A48C7-BBCD-4E38-B5D5-5FA3FB29FE4C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionTests", "tests\sandbox\tests\ReflectionTests\ReflectionTests.csproj", "{BAA1725C-0D48-4C26-8C3F-83FBB36645AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorGenUI.Tests", "tests\sandbox\tests\ReflectionTests\BlazorGenUI.Tests.csproj", "{BAA1725C-0D48-4C26-8C3F-83FBB36645AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,4 +19,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\BlazorGenUI.Components\BlazorGenUI.Components.csproj" />
+    <ProjectReference Include="..\..\..\..\src\BlazorGenUI.Reflection\BlazorGenUI.Reflection.csproj" />
+    <ProjectReference Include="..\..\api\FestivalProject.Common\FestivalProject.Common.csproj" />
+  </ItemGroup>
+
 </Project>

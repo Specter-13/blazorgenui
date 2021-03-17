@@ -8,5 +8,7 @@ namespace BlazorGenUI.Reflection.Interfaces
     {
         IEnumerable<IBaseElement> GetKids();
         string GetName();
+
+        object EncapsulatedDto { get; set; }
     }
 }

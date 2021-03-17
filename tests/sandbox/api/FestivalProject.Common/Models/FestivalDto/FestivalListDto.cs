@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Enums;
@@ -10,8 +11,8 @@ using FestivalProject.DAL.Enums;
 
 namespace FestivalProject.BL.Models.FestivalDto 
 {
-    //[Template(ViewTemplate.DetailViewTemplate)]
-    public class FestivalListDto : ComplexElement
+    
+    public class FestivalListDto 
     {
         public string Name { get; set; }
         public MusicGenre Genre { get; set; }
@@ -21,10 +22,6 @@ namespace FestivalProject.BL.Models.FestivalDto
         public bool IsFestival { get; set; }
         [Date(DateTypes.Date)]
         public DateTime Date { get; set; }
-        [Date(DateTypes.DateTime)]
-        public DateTime Date2 { get; set; }
-        [Date(DateTypes.TimeOfDay)]
-        public DateTime Date3 { get; set; }
 
     }
 }

@@ -6,9 +6,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\BlazorGenUI.Components\BlazorGenUI.Components.csproj" />
+    <ProjectReference Include="..\apiclient\SampleApi.Client.csproj" />
     <ProjectReference Include="..\api\FestivalProject.Common\FestivalProject.Common.csproj" />
     <ProjectReference Include="..\FestivalProject.Common\FestivalProject.Common.csproj" />
     <ProjectReference Include="..\ObjectsClassLibrary\ObjectsClassLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="apiclient\" />
   </ItemGroup>
 
       

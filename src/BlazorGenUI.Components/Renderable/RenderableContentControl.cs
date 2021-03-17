@@ -17,7 +17,7 @@ namespace BlazorGenUI.Components.Renderable
     public partial class RenderableContentControl : ComponentBase
     {
         [Parameter]
-        public IComplexElement ContextBase { get; set; }
+        public object ContextBase { get; set; }
         
         
         [Parameter]
@@ -25,6 +25,8 @@ namespace BlazorGenUI.Components.Renderable
 
         [Parameter] 
         public bool OnlyRecursive { get; set; } = false;
+
+        public IComplexElement Wrapper { get; set; } 
 
 
 
@@ -34,6 +36,8 @@ namespace BlazorGenUI.Components.Renderable
         protected override void OnInitialized()
         {
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            Wrapper = new ComplexElement();
+            Wrapper.EncapsulatedDto = ContextBase;
         }
 
         public IRenderableComponent ViewBaseLocatorBuilder(string primitiveTypeName, PresentationType presentationType)

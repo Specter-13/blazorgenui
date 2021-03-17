@@ -10,7 +10,8 @@
 @if (Festivals != null)
 {
     <RenderableContentControl ContextBase="@Pohoda" 
-                              Presentation="PresentationType.Control">
+                              Presentation="PresentationType.Control"
+                              >
     </RenderableContentControl>
    
 
@@ -25,7 +26,7 @@
     public IFestivalService FestivalService {get; set; }
     [Inject]
     public IStageService StageService {get; set; }
-
+    
     
 
     public IEnumerable<FestivalListDto> Festivals { get; set; }

@@ -23,9 +23,11 @@ namespace BlazorGenUI.Reflection
         private IList<IBaseElement> Kids { get; set; } = new List<IBaseElement>();
         private string ElementName { get; set; }
 
+        public object EncapsulatedDto { get; set; }
+
         public IEnumerable<IBaseElement> GetKids()
         {
-            var listOfProperties = this.GetType().UnderlyingSystemType.GetRuntimeProperties();
+            var listOfProperties = EncapsulatedDto.GetType().UnderlyingSystemType.GetRuntimeProperties();
      
             if (Kids.Count == 0)
             {
@@ -53,8 +55,10 @@ namespace BlazorGenUI.Reflection
                     //complex  
                     else
                     {
-                       var complex = property.GetValue(this, null);
-                       Kids.Add((IBaseElement)complex);
+                       var dto = property.GetValue(this, null);
+                       var complex = new ComplexElement();
+                       complex.EncapsulatedDto = dto;
+                       Kids.Add(complex);
                     }
 
                 }
@@ -71,14 +75,14 @@ namespace BlazorGenUI.Reflection
             instance.PropertyType = propertyType;
 
             PropertyInfo prop = instance.GetType().GetProperty("Data");
-            prop.SetValue(instance, property.GetValue(this, null), null);
+            prop.SetValue(instance, property.GetValue(EncapsulatedDto, null), null);
             instance.PropertyChanged += HandlePropertyChangedAsync;
             return instance;
         }
 
         private ValueElementDateTime CreateValueElementDateTime(Type propertyType, PropertyInfo property)
         {
-            var data = (DateTime) property.GetValue(this, null);
+            var data = (DateTime) property.GetValue(EncapsulatedDto, null);
             var dateAttribute = (DateAttribute) property.GetCustomAttribute(typeof(DateAttribute));
             DateTypes dateType;
             if (dateAttribute != null)
@@ -108,7 +112,7 @@ namespace BlazorGenUI.Reflection
             instance.PropertyType = propertyType;
 
             PropertyInfo prop = instance.GetType().GetProperty("Data");
-            prop.SetValue(instance, property.GetValue(this, null), null);
+            prop.SetValue(instance, property.GetValue(EncapsulatedDto, null), null);
             instance.PropertyChanged += HandlePropertyChangedAsync;
             return instance;
         }
@@ -127,7 +131,7 @@ namespace BlazorGenUI.Reflection
             {
                 var castedSender = (IValueElement) sender;
                 var data = castedSender.GetPropertyValue("Data");
-                this.SetPropertyValue(castedSender.RawName, data);
+                EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
             });
         }
 

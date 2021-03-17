@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ServerSideTestApp.Services;
+using SampleApi.Client;
 
 namespace ServerSideTestApp
 {
@@ -26,13 +27,18 @@ namespace ServerSideTestApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddHttpClient<IFestivalService , FestivalService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44354/");
-            });
+            //services.AddSingleton<FestivalRestClient>();
+            //{
+            //    client.BaseAddress = new Uri("https://localhost:44354/");
+            //});
+            services.AddHttpClient<IFestivalService, FestivalService>(client =>
+           {
+               client.BaseAddress = new Uri("https://localhost:44354/");
+           });
             services.AddHttpClient<IStageService, StageService>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44354/");

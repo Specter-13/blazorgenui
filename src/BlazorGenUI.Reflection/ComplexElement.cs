@@ -16,20 +16,21 @@ namespace BlazorGenUI.Reflection
 {
     public class ComplexElement : IComplexElement
     {
-        public ComplexElement()
+        public ComplexElement(object context)
         {
-            ElementName = this.GetType().UnderlyingSystemType.Name;
+            EncapsulatedDto = context;
+            ElementRawName = context.GetType().Name;
         }
-        private IList<IBaseElement> Kids { get; set; } = new List<IBaseElement>();
-        private string ElementName { get; set; }
+        private IList<IBaseElement> Children { get; set; } = new List<IBaseElement>();
+        public string ElementRawName { get; set; }
 
         public object EncapsulatedDto { get; set; }
 
-        public IEnumerable<IBaseElement> GetKids()
+        public IEnumerable<IBaseElement> GetChildren()
         {
-            var listOfProperties = EncapsulatedDto.GetType().UnderlyingSystemType.GetRuntimeProperties();
+            var listOfProperties = EncapsulatedDto.GetType().GetRuntimeProperties();
      
-            if (Kids.Count == 0)
+            if (Children.Count == 0)
             {
                 foreach (var property in listOfProperties)
                 {
@@ -40,43 +41,44 @@ namespace BlazorGenUI.Reflection
                     {
                         //is generic
                         var instance = CreateValueElementT(propertyType, property);
-                        Kids.Add(instance);
+                        Children.Add(instance);
                     }
                     else if (propertyType == typeof(DateTime))
                     {
                         var instance = CreateValueElementDateTime(propertyType, property);
-                        Kids.Add(instance);
+                        Children.Add(instance);
                     }
                     else if (propertyType.IsEnum)
                     {
                         var instance = CreateValueElementEnumT(propertyType, property);
-                        Kids.Add(instance);
+                        Children.Add(instance);
                     }
-                    //complex  
+                    //complex  (consider arrays)
                     else
                     {
-                       var dto = property.GetValue(this, null);
-                       var complex = new ComplexElement();
-                       complex.EncapsulatedDto = dto;
-                       Kids.Add(complex);
+                       var dto = property.GetValue(EncapsulatedDto, null);
+                       if (dto != null)
+                       {
+                           var complex = new ComplexElement(dto);
+                           Children.Add(complex);
+                       }
                     }
 
                 }
             }
-            return Kids;
+            return Children;
         }
 
         private IValueElement CreateValueElementEnumT(Type propertyType, PropertyInfo property)
         {
             Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
             var instance = (IValueElement) Activator.CreateInstance(genericType);
-
             instance.RawName = property.Name;
             instance.PropertyType = propertyType;
 
             PropertyInfo prop = instance.GetType().GetProperty("Data");
             prop.SetValue(instance, property.GetValue(EncapsulatedDto, null), null);
-            instance.PropertyChanged += HandlePropertyChangedAsync;
+            instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
 
@@ -99,7 +101,7 @@ namespace BlazorGenUI.Reflection
                 dateType,
                 data
             );
-            instance.PropertyChanged += HandlePropertyChangedAsync;
+            instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
 
@@ -113,26 +115,17 @@ namespace BlazorGenUI.Reflection
 
             PropertyInfo prop = instance.GetType().GetProperty("Data");
             prop.SetValue(instance, property.GetValue(EncapsulatedDto, null), null);
-            instance.PropertyChanged += HandlePropertyChangedAsync;
+            instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
 
-        public string GetName()
+        protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs a)
         {
-            return ElementName;
-        }
-
-
-
-
-        protected async void HandlePropertyChangedAsync(object sender, PropertyChangedEventArgs a)
-        {
-            await Task.Run(() =>
-            {
-                var castedSender = (IValueElement) sender;
-                var data = castedSender.GetPropertyValue("Data");
-                EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
-            });
+           
+            var castedSender = (IValueElement) sender;
+            var data = castedSender.GetPropertyValue("Data");
+            EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
+            
         }
 
         

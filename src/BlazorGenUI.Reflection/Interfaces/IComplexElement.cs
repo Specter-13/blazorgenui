@@ -6,8 +6,8 @@ namespace BlazorGenUI.Reflection.Interfaces
 {
     public interface IComplexElement : IBaseElement
     {
-        IEnumerable<IBaseElement> GetKids();
-        string GetName();
+        IEnumerable<IBaseElement> GetChildren();
+        string ElementRawName { get; set; }
 
         object EncapsulatedDto { get; set; }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.Interfaces;
 using BlazorGenUI.Reflection.ValueElementTypes;
 using Xunit;
@@ -24,7 +25,7 @@ namespace ReflectionTests
             var testPrimitive = _fixture.TestPrimitive;
             var expectedNumber = testPrimitive.GetType().GetProperties().Length;
             //Act
-            var actualNumber = testPrimitive.GetKids().Count();
+            var actualNumber = (new ComplexElement(_fixture.TestPrimitive)).GetChildren().Count();
             //Assert
             Assert.Equal(expectedNumber, actualNumber);
         }
@@ -36,7 +37,7 @@ namespace ReflectionTests
             var testComplex = _fixture.TestComplex;
             var expectedNumber = testComplex.GetType().GetProperties().Length;
             //Act
-            var actualNumber = testComplex.GetKids().Count();
+            var actualNumber = (new ComplexElement(_fixture.TestComplex)).GetChildren().Count();
             //Assert
             Assert.Equal(expectedNumber, actualNumber);
         }
@@ -48,7 +49,7 @@ namespace ReflectionTests
             var testDateAttributes = _fixture.TestDateAttributes;
             var expectedNumber = testDateAttributes.GetType().GetProperties().Length;
             //Act
-            var actualNumber = testDateAttributes.GetKids().Count();
+            var actualNumber = (new ComplexElement(_fixture.TestDateAttributes)).GetChildren().Count();
             //Assert
             Assert.Equal(expectedNumber, actualNumber);
         }
@@ -60,7 +61,7 @@ namespace ReflectionTests
             var testEnum = _fixture.TestEnum;
             var expectedNumber = testEnum.GetType().GetProperties().Length;
             //Act
-            var actualNumber = testEnum.GetKids().Count();
+            var actualNumber = (new ComplexElement(_fixture.TestEnum)).GetChildren().Count();
             //Assert
             Assert.Equal(expectedNumber, actualNumber);
         }
@@ -72,7 +73,7 @@ namespace ReflectionTests
         //    var firstPropertyName = "Name";
         //    var expectedValue = "Grape";
         //    //Act
-        //    var firstKid = _fixture.TestPrimitive.GetKids().First();
+        //    var firstKid = _fixture.TestPrimitive.GetChildren().First();
         //    ((ValueElementT<string>) firstKid).Data = expectedValue;
 
 

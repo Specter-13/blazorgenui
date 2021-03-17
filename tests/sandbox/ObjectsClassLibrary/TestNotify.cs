@@ -5,7 +5,7 @@ using BlazorGenUI.Reflection;
 
 namespace ObjectsClassLibrary
 {
-    public class TestNotify : ComplexElement
+    public class TestNotify 
     {
         //private string _testString;
 

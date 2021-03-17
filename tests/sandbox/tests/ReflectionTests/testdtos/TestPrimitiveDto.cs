@@ -10,7 +10,7 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Tests.testdtos
 {
-    public class TestPrimitiveDto : ComplexElement
+    public class TestPrimitiveDto 
     {
         public string Name { get; set; }
         public string Country { get; set; }

@@ -18,12 +18,12 @@ namespace BlazorGenUI.Components.Renderable
 
         //    await Task.Run(() =>
         //    {
-        //        (tag).PropertyChanged += HandlePropertyChangedAsync<T>;
+        //        (tag).PropertyChanged += HandlePropertyChanged<T>;
 
         //    });
         //}
 
-        //protected async void HandlePropertyChangedAsync<T>(object sender, PropertyChangedEventArgs a)
+        //protected async void HandlePropertyChanged<T>(object sender, PropertyChangedEventArgs a)
         //{
         //    var castedSender = (PropertyBaseDataT<T>)sender;
             

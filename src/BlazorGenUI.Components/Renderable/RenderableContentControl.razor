@@ -7,14 +7,12 @@
 @RenderComponent(Wrapper);
 
 
-
-
 @code
 {
     public RenderFragment RenderComponent(IComplexElement complexElement) => __builder =>
     {
 
-        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement);
+        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
 
         var component = ViewComplexLocatorBuilder(typeAttribute);
 
@@ -31,7 +29,7 @@
 
     RenderFragment RenderKids(IComplexElement complexElement) => __builder =>
     {
-        var kids = complexElement.GetKids();
+        var kids = complexElement.GetChildren();
         foreach (var kid in kids)
         {
             @Generator(kid)
@@ -51,7 +49,7 @@
         {
             IComplexElement complexKid = (IComplexElement)kid;
             @GenerateComplex(complexKid)
-    }
+        }
 
 
     };
@@ -69,9 +67,7 @@
             bool isEnum = kid.PropertyType.IsEnum;
             var baseName = kid.RawName;
             var genericTypeArg = kid.PropertyType;
-           
-           
-
+                
             primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
         }
 
@@ -100,14 +96,8 @@
 
     private RenderFragment CreatePrimitiveComponent(IValueElement value, IRenderableComponent primitiveComponent) => __builder =>
     {
-        
-
         __builder.OpenComponent(1, primitiveComponent.GetType());
-
         __builder.AddAttribute(2, "ValueElement", value);
-
-
-
         __builder.CloseComponent();
     };
 

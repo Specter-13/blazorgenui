@@ -36,8 +36,8 @@ namespace BlazorGenUI.Components.Renderable
         protected override void OnInitialized()
         {
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            Wrapper = new ComplexElement();
-            Wrapper.EncapsulatedDto = ContextBase;
+            Wrapper = new ComplexElement(ContextBase);
+           
         }
 
         public IRenderableComponent ViewBaseLocatorBuilder(string primitiveTypeName, PresentationType presentationType)
@@ -58,7 +58,7 @@ namespace BlazorGenUI.Components.Renderable
         }
 
        
-        private T GetAttribute<T>(IBaseElement composeObject) where T : class
+        private T GetAttribute<T>(object composeObject) where T : class
         {
             var typeAttribute = composeObject.GetType()
                 .GetCustomAttributes(true)

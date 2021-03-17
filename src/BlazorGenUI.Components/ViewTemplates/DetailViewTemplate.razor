@@ -5,9 +5,9 @@
 
 @if(@ComplexObject != null)
 {
-    <p>@ComplexObject.GetName()</p>
+    <p>@ComplexObject.ElementRawName</p>
 
-    <RenderableContentControl ContextBase="ComplexObject" 
+    <RenderableContentControl ContextBase="ComplexObject.EncapsulatedDto" 
                               Presentation="PresentationType.Control" 
                               OnlyRecursive="true"></RenderableContentControl>
 

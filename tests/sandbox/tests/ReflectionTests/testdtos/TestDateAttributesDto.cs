@@ -10,7 +10,7 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Tests.testdtos
 {
-    public class TestDateAttributesDto : ComplexElement
+    public class TestDateAttributesDto 
     {
 
         [Date(DateTypes.Date)]

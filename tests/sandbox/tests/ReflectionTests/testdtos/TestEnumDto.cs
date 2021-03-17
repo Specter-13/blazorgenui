@@ -10,7 +10,7 @@ using FestivalProject.DAL.Enums;
 
 namespace BlazorGenUI.Tests.testdtos
 {
-    public class TestEnumDto : ComplexElement
+    public class TestEnumDto 
     {
         public MusicGenre Genre { get; set; }
        

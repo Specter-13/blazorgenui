@@ -1,0 +1,57 @@
+﻿@using BlazorGenUI.Reflection.Enums
+@switch (LayoutName)
+{
+    case "TabControlLayout":
+    {
+
+        <TabPage Text="Name">
+            @ChildContent
+        </TabPage>
+
+        break;
+    }
+    case "WrapPanelLayout":
+    {
+           
+        <div class="p-2">
+            @ChildContent
+        </div>
+
+        break;
+    }
+    case "GroupBoxLayout":
+    {
+
+        <div class="card-body">
+            @ChildContent
+        </div>
+
+
+        break;
+    }
+
+    default:    
+
+
+        @ChildContent
+
+
+        break;
+}
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public Type LayoutType { get; set; }
+    
+    public string LayoutName { get; set; }
+    protected override void OnInitialized()
+    {
+        if (LayoutType != null) LayoutName = LayoutType.Name;
+
+
+        base.OnInitialized();
+    }
+}

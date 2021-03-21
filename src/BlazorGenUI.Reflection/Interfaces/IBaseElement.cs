@@ -2,6 +2,6 @@
 {
     public interface IBaseElement
     {
-       
+        string RawName { get; set; }
     }
 }

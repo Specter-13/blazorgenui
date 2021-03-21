@@ -1,10 +1,14 @@
-﻿@using BlazorGenUI.Reflection.Interfaces
+﻿
+@using BlazorGenUI.Reflection.Interfaces
 @using BlazorGenUI.Reflection.Enums
 @using BlazorGenUI.Reflection.Attributes
+@using BlazorGenUI.Components.Layouts
 
 <h3>RenderableContentControl</h3>
 
+<LayoutView Layout="@LayoutType">
 @RenderComponent(Wrapper);
+</LayoutView>
 
 
 @code
@@ -32,7 +36,11 @@
         var kids = complexElement.GetChildren();
         foreach (var kid in kids)
         {
-            @Generator(kid)
+           
+            
+            <LayoutSetter LayoutType="@LayoutType"
+                          ChildContent="@Generator(kid)"></LayoutSetter>
+            //@Generator(kid)
         }
 
     };
@@ -71,7 +79,7 @@
             primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
         }
 
-        @CreatePrimitiveComponent(kid, primitiveComponent);
+        @CreatePrimitiveComponent(kid, primitiveComponent)
 
 
 
@@ -86,7 +94,7 @@
 
         if (component != null && !OnlyRecursive)
         {
-            @CreateComplexComponent(complexElement, component);
+            @CreateComplexComponent(complexElement, component)
         }
         else
         {

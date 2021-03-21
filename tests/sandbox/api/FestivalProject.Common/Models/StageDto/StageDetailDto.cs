@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using BlazorGenUI.Reflection;
+using BlazorGenUI.Reflection.Attributes;
+using BlazorGenUI.Reflection.Enums;
 using FestivalProject.BL.Models.FestivalDto;
 using FestivalProject.BL.Models.StageInterpretDto;
 using FestivalProject.DAL.Entities;

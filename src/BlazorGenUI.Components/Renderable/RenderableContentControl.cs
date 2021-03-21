@@ -27,15 +27,26 @@ namespace BlazorGenUI.Components.Renderable
         public bool OnlyRecursive { get; set; } = false;
 
         public IComplexElement Wrapper { get; set; } 
+        public Type LayoutType { get; set; }
 
 
-
-        public ComponentService ComponentService { get; set; } = new ComponentService();
         public ViewTemplateProvider ViewTemplateProvider { get; set; } = new ViewTemplateProvider();
+        public LayoutProvider LayoutProvider { get; set; } = new LayoutProvider();
+        public ComponentService ComponentService { get; set; } = new ComponentService();
+        
 
         protected override void OnInitialized()
         {
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var layoutAttribute = GetAttribute<ContainerAttribute>(ContextBase);
+            if (layoutAttribute != null)
+            {
+                var layout = layoutAttribute.GetLayout();
+                var layoutInfo = LayoutProvider.GetLayoutInfo(layout);
+                LayoutType = ComponentService.GetLayoutComponentType(layoutInfo.fullTypeName);
+            }
+
+            
             Wrapper = new ComplexElement(ContextBase);
            
         }

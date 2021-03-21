@@ -1,16 +1,26 @@
 ﻿@page "/counter"
+@using ServerSideTestApp.Services
+@using FestivalProject.BL.Models.StageDto
+@using BlazorGenUI.Reflection.Enums
 
-<h1>Counter</h1>
-
-<p>Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+@if (Stage != null)
+{
+    <RenderableContentControl ContextBase="@Stage"
+                              Presentation="PresentationType.Control">
+    </RenderableContentControl>
+}
 
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
+    [Inject]
+    public IStageService StageService {get; set; }
+
+    public StageDetailDto Stage { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+        
+        Stage = (await StageService.GetStageDetail());
+       
     }
 }

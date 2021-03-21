@@ -19,10 +19,10 @@ namespace BlazorGenUI.Reflection
         public ComplexElement(object context)
         {
             EncapsulatedDto = context;
-            ElementRawName = context.GetType().Name;
+            RawName = context.GetType().Name;
         }
         private IList<IBaseElement> Children { get; set; } = new List<IBaseElement>();
-        public string ElementRawName { get; set; }
+        public string RawName { get; set; }
 
         public object EncapsulatedDto { get; set; }
 

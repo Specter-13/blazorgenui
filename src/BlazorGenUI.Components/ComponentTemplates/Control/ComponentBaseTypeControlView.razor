@@ -1,9 +1,11 @@
 ﻿@inherits RenderableComponentBase
 @typeparam T
-<div>
-    <label>@ValueElement.RawName</label>
-</div>
-<div>
-    <input type="text" class="w-100 form-control"
-           @bind="@ValueElement.Data" />
+<div class=" form-group">
+    <div>
+        <label>@ValueElement.RawName</label>
+    </div>
+    <div >
+        <input type="text" class="w-100 form-control"
+               @bind="@ValueElement.Data" />
+    </div>
 </div>

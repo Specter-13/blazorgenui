@@ -10,7 +10,7 @@ using FestivalProject.DAL.Enums;
 
 namespace FestivalProject.BL.Models.FestivalDto 
 {
-    [Template(ViewTemplate.DetailViewTemplate)]
+    [Container(Layout.Wrap)]
     public class FestivalListDto
     {
         public string Name { get; set; }

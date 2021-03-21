@@ -11,7 +11,8 @@ namespace BlazorGenUI.Reflection
     {
 
         private string _assemblyName = "BlazorGenUI.Components";
-        public IEnumerable<Type> Components { get; private set; }
+        public IEnumerable<Type> Components { get; private set; } 
+        public IEnumerable<Type> LayoutsComponents { get; private set; } 
         public IRenderableComponent GetComponent(string name)
         {
             var foundedType = Components.FirstOrDefault(x => String.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
@@ -20,7 +21,12 @@ namespace BlazorGenUI.Reflection
             {
                 return (IRenderableComponent)Activator.CreateInstance(foundedType);
             }
-            else return null;
+            return null;
+        }
+
+        public Type GetLayoutComponentType(string name)
+        {
+            return LayoutsComponents.FirstOrDefault(x => String.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public IRenderableComponent GetGenericComponent(string name, Type typeArg)
@@ -31,27 +37,35 @@ namespace BlazorGenUI.Reflection
                 Type genericType = foundedType.MakeGenericType(typeArg);
                 return (IRenderableComponent)Activator.CreateInstance(genericType);
             }
-            else return null;
+            return null;
         }
 
         public void LoadComponents(string path)
         {
             var ass = Assembly.Load(_assemblyName);
             var components = new List<Type>();
+            var layoutComponents = new List<Type>();
 
-            var types = GetTypesWithInterface(ass);
+            var types = GetTypesWithInterface<IRenderableComponent>(ass);
             foreach (var typ in types)
             {
                 components.Add(typ);
             }
 
+            var layoutTypes = GetTypesWithInterface<ILayoutComponent>(ass);
+            foreach (var typ in layoutTypes)
+            {
+                layoutComponents.Add(typ);
+            }
+
+            LayoutsComponents = layoutComponents;
             Components = components;
         }
 
 
-        private IEnumerable<Type> GetTypesWithInterface(Assembly asm)
+        private IEnumerable<Type> GetTypesWithInterface<T>(Assembly asm)
         {
-            return GetLoadableTypes(asm).Where(typeof(IRenderableComponent).IsAssignableFrom).ToList();
+            return GetLoadableTypes(asm).Where(typeof(T).IsAssignableFrom).ToList();
         }
 
         private IEnumerable<Type> GetLoadableTypes(Assembly assembly)

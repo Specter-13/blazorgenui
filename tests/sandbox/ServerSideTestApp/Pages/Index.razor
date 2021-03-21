@@ -45,6 +45,7 @@
   
     protected override async Task OnInitializedAsync()
     {
+        
         Festivals = (await FestivalService.GetFestivalList()).ToList();
         Stage = (await StageService.GetStageDetail());
         Pohoda = Festivals.First();

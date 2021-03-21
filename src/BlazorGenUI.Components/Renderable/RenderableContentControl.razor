@@ -53,6 +53,10 @@
         {
             @GeneratePrimitive(primitiveKid)
         }
+        else if (kid is IArrayElement arrayKid)
+        {
+            
+        }
         else
         {
             IComplexElement complexKid = (IComplexElement)kid;
@@ -61,6 +65,27 @@
 
 
     };
+
+ @*   private RenderFragment GenerateArray(IArrayElement kid) => __builder =>
+    {
+
+        var primitiveKidType = kid.PropertyType;
+        
+
+        var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.Name, Presentation);
+    //if component not found, use BaseGenericComponent
+        if (primitiveComponent == null)
+        {
+            bool isEnum = kid.PropertyType.IsEnum;
+            var baseName = kid.RawName;
+            var genericTypeArg = kid.PropertyType;
+                
+            primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
+        }
+
+        @CreatePrimitiveComponent(kid, primitiveComponent)
+
+    };*@
 
     private RenderFragment GeneratePrimitive(IValueElement kid) => __builder =>
     {
@@ -80,9 +105,6 @@
         }
 
         @CreatePrimitiveComponent(kid, primitiveComponent)
-
-
-
 
     };
 

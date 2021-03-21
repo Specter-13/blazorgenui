@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -34,9 +35,11 @@ namespace BlazorGenUI.Reflection
             {
                 foreach (var property in listOfProperties)
                 {
+                    if (GetPropertyAttribute<RenderIgnoreAttribute>(property) != null) continue;
+
                     var propertyType = property.PropertyType;
                     if (propertyType.IsPrimitive || 
-                        (propertyType == typeof(string))
+                        (propertyType == typeof(string) || propertyType == typeof(decimal))
                         )
                     {
                         //is generic
@@ -53,7 +56,23 @@ namespace BlazorGenUI.Reflection
                         var instance = CreateValueElementEnumT(propertyType, property);
                         Children.Add(instance);
                     }
-                    //complex  (consider arrays)
+                    //is array
+                    else if (typeof(IEnumerable).IsAssignableFrom(propertyType))
+                    {
+                        var dto = property.GetValue(EncapsulatedDto);
+                        //ask for opinion
+                        //if (dto != null)
+                        //{
+                        //    var collection = (IEnumerable)dto;
+                        //    foreach (var item in collection)
+                        //    {
+                        //        var x = 1;
+                        //    }
+                        //    var instance = new ArrayElement(collection);
+                        //    Children.Add(instance);
+                        //}
+                    }
+                    //complex
                     else
                     {
                        var dto = property.GetValue(EncapsulatedDto, null);
@@ -128,6 +147,13 @@ namespace BlazorGenUI.Reflection
             
         }
 
-        
+        private T GetPropertyAttribute<T>(PropertyInfo prop) where T : class
+        {
+            var typeAttribute = prop
+                .GetCustomAttributes(true)
+                .ToList()
+                .Find(p => p.GetType() == typeof(T)) as T;
+            return typeAttribute;
+        }
     }
 }

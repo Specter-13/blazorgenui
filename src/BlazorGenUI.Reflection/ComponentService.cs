@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection
@@ -55,6 +56,7 @@ namespace BlazorGenUI.Reflection
             var layoutTypes = GetTypesWithInterface<ILayoutComponent>(ass);
             foreach (var typ in layoutTypes)
             {
+                
                 layoutComponents.Add(typ);
             }
 
@@ -80,5 +82,7 @@ namespace BlazorGenUI.Reflection
                 return e.Types.Where(t => t != null);
             }
         }
+
+      
     }
 }

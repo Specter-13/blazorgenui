@@ -11,8 +11,9 @@ using FestivalProject.DAL.Enums;
 namespace FestivalProject.BL.Models.FestivalDto 
 {
     [Container(Layout.Wrap)]
-    public class FestivalListDto
+    public class FestivalListDto : EntityBase
     {
+        
         public string Name { get; set; }
         public MusicGenre Genre { get; set; }
         public string Country { get; set; }

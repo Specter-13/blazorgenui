@@ -1,0 +1,61 @@
+﻿@using BlazorGenUI.Reflection.ValueElementTypes
+
+<h3>Table</h3>
+
+
+
+<table class="table">
+    <thead>
+    <tr>
+        
+        @foreach (var item in Children)
+        {
+            @if (item.IsIgnored) continue;
+            <th>@item.RawName</th>
+        }
+     
+    </tr>
+    </thead>
+    <tbody>
+    
+    @foreach (var item in Items)
+    {
+        <tr>
+            
+            @RenderRow(item)
+        </tr>
+    }
+    
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public ArrayElement ArrayElement { get; set; }
+
+    public IEnumerable<IComplexElement> Items { get; set; }
+    
+    private IEnumerable<IBaseElement> Children { get; set; }
+    protected override void OnInitialized()
+    {
+        
+        Items = ArrayElement.GetItems();
+        Children = Items.First().GetChildren();
+    }
+
+    public RenderFragment RenderRow(IComplexElement item) => __builder =>
+    {
+        var children = item.GetChildren();
+        @foreach (var child in children)
+        {
+            if (child.IsIgnored) continue;
+            if (child is IValueElement valueElement)
+            {
+                <td>@valueElement.RawData</td>
+            }
+        }
+      
+     
+    };
+
+}

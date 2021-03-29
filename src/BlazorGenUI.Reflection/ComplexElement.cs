@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorGenUI.Reflection.Annotations;
 using BlazorGenUI.Reflection.Attributes;
@@ -22,38 +23,50 @@ namespace BlazorGenUI.Reflection
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
         }
+        public ComplexElement(object context, string ignoredFields)
+        {
+            EncapsulatedDto = context;
+            RawName = context.GetType().Name;
+            IgnoredFields = ignoredFields;
+        }
         private IList<IBaseElement> Children { get; set; } = new List<IBaseElement>();
         public string RawName { get; set; }
+        public bool IsIgnored { get; set; }
 
         public object EncapsulatedDto { get; set; }
+        private string IgnoredFields { get; }
 
         public IEnumerable<IBaseElement> GetChildren()
         {
             var listOfProperties = EncapsulatedDto.GetType().GetRuntimeProperties();
-     
+           
             if (Children.Count == 0)
             {
                 foreach (var property in listOfProperties)
                 {
-                    if (GetPropertyAttribute<RenderIgnoreAttribute>(property) != null) continue;
+                    
+                    bool isIgnored = HasIgnore(property);
 
                     var propertyType = property.PropertyType;
                     if (propertyType.IsPrimitive || 
-                        (propertyType == typeof(string) || propertyType == typeof(decimal))
-                        )
+                        (propertyType == typeof(string) || propertyType == typeof(decimal) || propertyType == typeof(Guid))
+                    )
                     {
                         //is generic
                         var instance = CreateValueElementT(propertyType, property);
+                        instance.IsIgnored = isIgnored;
                         Children.Add(instance);
                     }
                     else if (propertyType == typeof(DateTime))
                     {
                         var instance = CreateValueElementDateTime(propertyType, property);
+                        instance.IsIgnored = isIgnored;
                         Children.Add(instance);
                     }
                     else if (propertyType.IsEnum)
                     {
                         var instance = CreateValueElementEnumT(propertyType, property);
+                        instance.IsIgnored = isIgnored;
                         Children.Add(instance);
                     }
                     //is array
@@ -61,32 +74,48 @@ namespace BlazorGenUI.Reflection
                     {
                         var dto = property.GetValue(EncapsulatedDto);
                         //ask for opinion
-                        //if (dto != null)
-                        //{
-                        //    var collection = (IEnumerable)dto;
-                        //    foreach (var item in collection)
-                        //    {
-                        //        var x = 1;
-                        //    }
-                        //    var instance = new ArrayElement(collection);
-                        //    Children.Add(instance);
-                        //}
+                        if (dto != null)
+                        {
+                            IList objList = (IList)dto;
+                            IEnumerable<object> collection = objList.Cast<object>();
+                            var instance = new ArrayElement(collection);
+                            instance.IsIgnored = isIgnored;
+                            Children.Add(instance);
+                        }
                     }
                     //complex
                     else
                     {
-                       var dto = property.GetValue(EncapsulatedDto, null);
-                       if (dto != null)
-                       {
-                           var complex = new ComplexElement(dto);
-                           Children.Add(complex);
-                       }
+                        var dto = property.GetValue(EncapsulatedDto, null);
+                        if (dto != null)
+                        {
+                            var complex = new ComplexElement(dto);
+                            complex.IsIgnored = isIgnored;
+                            Children.Add(complex);
+                        }
                     }
 
                 }
             }
             return Children;
         }
+
+        private bool HasIgnore(PropertyInfo property)
+        {
+            bool isIgnored;
+            if (IgnoredFields != null)
+            {
+                var r = new Regex(property.Name, RegexOptions.IgnoreCase);
+                isIgnored = r.IsMatch(IgnoredFields);
+            }
+            else
+            {
+                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>(property) != null;
+            }
+
+            return isIgnored;
+        }
+
 
         private IValueElement CreateValueElementEnumT(Type propertyType, PropertyInfo property)
         {
@@ -95,8 +124,10 @@ namespace BlazorGenUI.Reflection
             instance.RawName = property.Name;
             instance.PropertyType = propertyType;
 
-            PropertyInfo prop = instance.GetType().GetProperty("Data");
-            prop.SetValue(instance, property.GetValue(EncapsulatedDto, null), null);
+            var data = property.GetValue(EncapsulatedDto, null);
+            var prop = instance.GetType().GetProperty("Data");
+            prop.SetValue(instance, data, null);
+            instance.RawData = data;
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
@@ -132,8 +163,11 @@ namespace BlazorGenUI.Reflection
             instance.RawName = property.Name;
             instance.PropertyType = propertyType;
 
-            PropertyInfo prop = instance.GetType().GetProperty("Data");
-            prop.SetValue(instance, property.GetValue(EncapsulatedDto, null), null);
+            var data = property.GetValue(EncapsulatedDto, null);
+            var prop = instance.GetType().GetProperty("Data");
+
+            prop.SetValue(instance, data, null);
+            instance.RawData = data;
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }

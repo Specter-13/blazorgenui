@@ -4,10 +4,12 @@ using FestivalProject.DAL.Entities;
 using FestivalProject.DAL.Enums;
 using System;
 using System.Collections.Generic;
+using BlazorGenUI.Reflection.Attributes;
 
 namespace FestivalProject.BL.Models.FestivalDto
 {
-    public class FestivalDetailDto : EntityBase
+   
+    public class FestivalDetailDto 
     {
         public string Name { get; set; }
         public MusicGenre Genre { get; set; }
@@ -21,7 +23,9 @@ namespace FestivalProject.BL.Models.FestivalDto
         public decimal Price { get; set; }
         public int Capacity { get; set; }
 
+        [RenderIgnore]
         public IList<StageForFestivalDto> StageList { get; set; }
+        [RenderIgnore]
         public IList<FestivalInterpretForFestivalDto> FestivalInterpret { get; set; }
 
     }

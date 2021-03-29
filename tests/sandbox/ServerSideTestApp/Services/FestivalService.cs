@@ -14,6 +14,7 @@ namespace ServerSideTestApp.Services
         public FestivalService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
+            
         }
         public async Task<IEnumerable<FestivalListDto>> GetFestivalList()
         {

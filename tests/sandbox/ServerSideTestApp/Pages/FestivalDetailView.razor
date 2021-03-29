@@ -1,0 +1,26 @@
+﻿@page "/festival"
+@using ServerSideTestApp.Services
+@using FestivalProject.BL.Models.FestivalDto
+<h3>FestivalDetailView</h3>
+
+
+@if(Festival!=null)
+{
+    <RenderableContentControl ContextBase="@Festival" 
+                              Presentation="PresentationType.Control"></RenderableContentControl>
+}
+
+@code {
+    [Inject]
+    public IFestivalService FestivalService {get; set; }
+
+    public FestivalDetailDto Festival { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        Festival = await FestivalService.GetFestivalDetail();
+    }
+
+}

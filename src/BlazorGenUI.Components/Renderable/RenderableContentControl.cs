@@ -26,8 +26,14 @@ namespace BlazorGenUI.Components.Renderable
         [Parameter] 
         public bool OnlyRecursive { get; set; } = false;
 
+        [Parameter] 
+        public LayoutTypes Layout { get; set; } = LayoutTypes.Default;
+
+        [Parameter]
+        public string IgnoredFields { get; set; }
+
         public IComplexElement Wrapper { get; set; } 
-        public Type LayoutType { get; set; }
+        public Type LayoutComponentType { get; set; }
 
 
         public ViewTemplateProvider ViewTemplateProvider { get; set; } = new ViewTemplateProvider();
@@ -38,17 +44,32 @@ namespace BlazorGenUI.Components.Renderable
         protected override void OnInitialized()
         {
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            var layoutAttribute = GetAttribute<ContainerAttribute>(ContextBase);
-            if (layoutAttribute != null)
-            {
-                var layout = layoutAttribute.GetLayout();
-                var layoutInfo = LayoutProvider.GetLayoutInfo(layout);
-                LayoutType = ComponentService.GetLayoutComponentType(layoutInfo.fullTypeName);
-            }
 
-            
-            Wrapper = new ComplexElement(ContextBase);
+            HandleLayout();
+
+
+            Wrapper = new ComplexElement(ContextBase, IgnoredFields);
            
+        }
+
+        private void HandleLayout()
+        {
+            if (Layout != LayoutTypes.Default)
+            {
+                var layoutInfo = LayoutProvider.GetLayoutInfo(Layout);
+                LayoutComponentType = ComponentService.GetLayoutComponentType(layoutInfo.fullTypeName);
+            }
+            else 
+            { 
+
+                var layoutAttribute = GetAttribute<ContainerAttribute>(ContextBase);
+                if (layoutAttribute != null)
+                {
+                    var layout = layoutAttribute.GetLayout();
+                    var layoutInfo = LayoutProvider.GetLayoutInfo(layout);
+                    LayoutComponentType = ComponentService.GetLayoutComponentType(layoutInfo.fullTypeName);
+                }
+            }
         }
 
         public IRenderableComponent ViewBaseLocatorBuilder(string primitiveTypeName, PresentationType presentationType)

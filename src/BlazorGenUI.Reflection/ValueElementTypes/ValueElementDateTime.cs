@@ -17,11 +17,14 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
             PropertyType = propertyType;
             DateType = dateType;
             _data = data;
+            RawData = data;
         }
 
         private DateTime _data;
         public string RawName { get; set; }
+        public bool IsIgnored { get; set; }
         public Type PropertyType { get; set; }
+        public object RawData { get; set; }
         public DateTypes DateType { get; set; }
 
 

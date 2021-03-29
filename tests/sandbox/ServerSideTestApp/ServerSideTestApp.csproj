@@ -6,19 +6,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\BlazorGenUI.Components\BlazorGenUI.Components.csproj" />
-    <ProjectReference Include="..\apiclient\SampleApi.Client.csproj" />
     <ProjectReference Include="..\api\FestivalProject.Common\FestivalProject.Common.csproj" />
     <ProjectReference Include="..\FestivalProject.Common\FestivalProject.Common.csproj" />
     <ProjectReference Include="..\ObjectsClassLibrary\ObjectsClassLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="apiclient\" />
-    <Folder Include="Pages\Stage\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
       

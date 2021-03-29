@@ -31,7 +31,6 @@
     public IEnumerable<FestivalListDto> Festivals { get; set; }
     public StageDetailDto Stage { get; set; }
     public FestivalListDto Pohoda { get; set; }
-    public TestDto TestObject { get; set; } = new TestDto();
 
 
     private async Task Update()
@@ -42,14 +41,14 @@
 
     
     public bool IsChecked { get; set; }
-  
+
     protected override async Task OnInitializedAsync()
     {
-        
+
         Festivals = (await FestivalService.GetFestivalList()).ToList();
         Stage = (await StageService.GetStageDetail());
         Pohoda = Festivals.First();
     }
 
-   
+
 }

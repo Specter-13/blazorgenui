@@ -1,0 +1,29 @@
+﻿@page "/stagedetail"
+@using ServerSideTestApp.Services
+@using BlazorGenUI.Reflection.Enums
+@using FestivalProject.BL.Models.StageDto
+
+
+
+<h1>StageDetail</h1>
+@if (Stage != null)
+{
+    <RenderableContentControl ContextBase="@Stage"
+                              Presentation="PresentationType.Control">
+    </RenderableContentControl>
+}
+
+@code {
+
+    [Inject]
+    public IStageService StageService {get; set; }
+
+    public StageDetailDto Stage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        Stage = (await StageService.GetStageDetail());
+       
+    }
+}

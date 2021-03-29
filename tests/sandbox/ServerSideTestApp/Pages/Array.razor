@@ -1,0 +1,34 @@
+﻿@page "/array"
+@using ServerSideTestApp.Services
+
+
+@using FestivalProject.BL.Models.FestivalDto
+<h3>Table from array</h3>
+
+
+@if (Festivals != null)
+{
+    <RenderableContentListControl ContextList="@Festivals" Layout="ArrayLayout.Table">
+    </RenderableContentListControl>
+
+
+    
+}
+
+@code {
+    [Inject]
+    public IFestivalService FestivalService {get; set; }
+
+
+
+    public IEnumerable<FestivalListDto> Festivals { get; set; }
+    public ArrayElement FestivalsArray { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        Festivals = (await FestivalService.GetFestivalList()).ToList();
+        FestivalsArray = new ArrayElement(Festivals);
+
+    }
+}

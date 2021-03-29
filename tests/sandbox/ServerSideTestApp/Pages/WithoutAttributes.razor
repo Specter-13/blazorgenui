@@ -1,0 +1,30 @@
+﻿@page "/withoutattributes"
+@using ServerSideTestApp.Services
+@using FestivalProject.BL.Models.FestivalDto
+@using FestivalProject.BL.Models.UserDto
+<h3>WithoutAttributes</h3>
+
+@if (User != null)
+{
+    <RenderableContentControl ContextBase="@User"
+                              Presentation="PresentationType.Control"
+                              Layout="LayoutTypes.Wrap"
+                              IgnoredFields="ReservationList,username,password">
+    </RenderableContentControl>
+}
+
+
+@code {
+    [Inject]
+    public IUserService UserService {get; set; }
+
+    public UserDetailDto User { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var cities = new List<string>(){"ReservationList","Username","Password"};
+        User = await UserService.GetUserDetail();
+    }
+
+}

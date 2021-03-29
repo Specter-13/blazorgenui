@@ -8,9 +8,11 @@ using ServerSideTestApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ServerSideTestApp.Services;
-using SampleApi.Client;
+
+
 
 namespace ServerSideTestApp
 {
@@ -31,18 +33,11 @@ namespace ServerSideTestApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            //services.AddSingleton<FestivalRestClient>();
-            //{
-            //    client.BaseAddress = new Uri("https://localhost:44354/");
-            //});
-            services.AddHttpClient<IFestivalService, FestivalService>(client =>
-           {
-               client.BaseAddress = new Uri("https://localhost:44354/");
-           });
-            services.AddHttpClient<IStageService, StageService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44354/");
-            });
+            services.AddScoped(sp => new HttpClient {BaseAddress = new Uri("https://localhost:44354/")});
+            services.AddScoped<IFestivalService, FestivalService>();
+            services.AddScoped<IStageService, StageService>();
+            services.AddScoped<IUserService, UserService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,8 +9,8 @@ namespace BlazorGenUI.Reflection.Providers
         {
 
 
-            _layoutDictionary = new Dictionary<Layout, (string assembly, string fullTypeName)>();
-            _layoutDictionary[Layout.Wrap] = ("BlazorGenUI.Components", "WrapPanelLayout");
+            _layoutDictionary = new Dictionary<LayoutTypes, (string assembly, string fullTypeName)>();
+            _layoutDictionary[LayoutTypes.Wrap] = ("BlazorGenUI.Components", "WrapPanelLayout");
             //_layoutDictionary[Layout.Wrap] = ("Vortex.Presentation.Controls.Blazor", "Vortex.Presentation.Controls.Blazor.Layouts.WrapPanelLayout");
             //_layoutDictionary[Layout.Tabs] = ("Vortex.Presentation.Controls.Blazor", "Vortex.Presentation.Controls.Blazor.Layouts.TabControlLayout");
             //_layoutDictionary[Layout.Border] = ("Vortex.Presentation.Controls.Blazor", "Vortex.Presentation.Controls.Blazor.Layouts.BorderLayout");
@@ -20,8 +20,8 @@ namespace BlazorGenUI.Reflection.Providers
 
         }
 
-        private readonly Dictionary<Layout, (string assembly, string fullTypeName)> _layoutDictionary;
-        public (string assembly, string fullTypeName) GetLayoutInfo(Layout layout)
+        private readonly Dictionary<LayoutTypes, (string assembly, string fullTypeName)> _layoutDictionary;
+        public (string assembly, string fullTypeName) GetLayoutInfo(LayoutTypes layout)
         {
             return _layoutDictionary[layout];
         }

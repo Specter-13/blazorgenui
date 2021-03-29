@@ -12,5 +12,7 @@ namespace BlazorGenUI.Reflection.Interfaces
 
         event PropertyChangedEventHandler PropertyChanged;
 
+        object RawData { get; set; }
+
     }
 }

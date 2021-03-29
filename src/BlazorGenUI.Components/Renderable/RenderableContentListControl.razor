@@ -1,0 +1,46 @@
+﻿@using BlazorGenUI.Reflection.Attributes
+@using System.IO
+@using System.Reflection
+@using System.Collections
+@using BlazorGenUI.Reflection.Enums
+<h3>RenderableContentListControl</h3>
+
+
+@if(ContextList != null)
+{
+@RenderComponent(ContextList)
+}
+
+@code {
+    public RenderFragment RenderComponent(IEnumerable<object> list) => __builder =>
+    {
+
+        var arrayElement = new ArrayElement(list);
+        switch (Layout)
+        {
+            case ArrayLayout.Table:
+            {
+                <TableArrayLayout ArrayElement="arrayElement"></TableArrayLayout>
+                break;
+
+            }
+            case ArrayLayout.ListGroup:
+            {
+                <ListGroupArrayLayout 
+                    ArrayElement="arrayElement"
+                    DisplayedPropertyName=@LgaDisplayedPropertyName
+                    NavigationPrefix=@LgaNavigationPrefix
+                    NavigationPropertyName=@LgaNavigationPropertyName
+                />
+                break;
+
+            }
+        }
+       
+
+        
+        
+        
+
+    };
+}

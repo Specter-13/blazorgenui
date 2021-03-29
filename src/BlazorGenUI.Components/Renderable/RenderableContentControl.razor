@@ -6,8 +6,8 @@
 
 <h3>RenderableContentControl</h3>
 
-<LayoutView Layout="@LayoutType">
-@RenderComponent(Wrapper);
+<LayoutView Layout="@LayoutComponentType">
+@RenderComponent(Wrapper)
 </LayoutView>
 
 
@@ -36,9 +36,9 @@
         var kids = complexElement.GetChildren();
         foreach (var kid in kids)
         {
-           
-            
-            <LayoutSetter LayoutType="@LayoutType"
+
+            if (kid.IsIgnored) continue;
+            <LayoutSetter LayoutType="@LayoutComponentType"
                           ChildContent="@Generator(kid)"></LayoutSetter>
             //@Generator(kid)
         }
@@ -55,7 +55,12 @@
         }
         else if (kid is IArrayElement arrayKid)
         {
-            
+            var items = arrayKid.GetItems();
+            foreach (var item in items)
+            {
+                @RenderComponent(item)
+            }
+            @*<RenderableContentListControl ContextList="arrayKid" ></RenderableContentListControl>*@
         }
         else
         {
@@ -66,26 +71,6 @@
 
     };
 
- @*   private RenderFragment GenerateArray(IArrayElement kid) => __builder =>
-    {
-
-        var primitiveKidType = kid.PropertyType;
-        
-
-        var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.Name, Presentation);
-    //if component not found, use BaseGenericComponent
-        if (primitiveComponent == null)
-        {
-            bool isEnum = kid.PropertyType.IsEnum;
-            var baseName = kid.RawName;
-            var genericTypeArg = kid.PropertyType;
-                
-            primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
-        }
-
-        @CreatePrimitiveComponent(kid, primitiveComponent)
-
-    };*@
 
     private RenderFragment GeneratePrimitive(IValueElement kid) => __builder =>
     {
@@ -103,7 +88,7 @@
                 
             primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
         }
-
+       
         @CreatePrimitiveComponent(kid, primitiveComponent)
 
     };

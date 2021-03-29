@@ -3,5 +3,6 @@
     public interface IBaseElement
     {
         string RawName { get; set; }
+        bool IsIgnored { get; set; }
     }
 }

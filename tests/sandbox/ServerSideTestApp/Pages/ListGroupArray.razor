@@ -1,0 +1,31 @@
+﻿@page "/listgroup"
+@using ServerSideTestApp.Services
+@using FestivalProject.BL.Models.FestivalDto
+<h3>LsitGroup from array</h3>
+
+<RenderableContentListControl 
+    ContextList="@Festivals" 
+    Layout="ArrayLayout.ListGroup"
+    LgaDisplayedPropertyName="Name"
+    LgaNavigationPropertyName="Id"
+    LgaNavigationPrefix="festival/">
+</RenderableContentListControl>
+
+
+
+@code {
+    [Inject]
+    public IFestivalService FestivalService {get; set; }
+
+
+
+    public IEnumerable<FestivalListDto> Festivals { get; set; }
+ 
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        Festivals = (await FestivalService.GetFestivalList()).ToList();
+
+    }
+}

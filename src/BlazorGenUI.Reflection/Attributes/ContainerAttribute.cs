@@ -9,15 +9,15 @@ namespace BlazorGenUI.Reflection.Attributes
     ]
     public class ContainerAttribute : System.Attribute
     {
-        private Layout _layout;
+        private LayoutTypes _layout;
 
-        public ContainerAttribute(Layout layout)
+        public ContainerAttribute(LayoutTypes layout)
         {
             this._layout = layout;
         
         }
 
-        public Layout GetLayout()
+        public LayoutTypes GetLayout()
         {
             return _layout;
 

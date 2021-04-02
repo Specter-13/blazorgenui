@@ -3,7 +3,8 @@
     public enum ArrayLayout
     {
         Table,
-        ListGroup
+        ListGroup,
+        Tabs
         
     }
 }

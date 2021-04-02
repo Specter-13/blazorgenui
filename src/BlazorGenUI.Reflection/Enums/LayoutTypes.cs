@@ -4,8 +4,11 @@
     {
         Stack,
         Wrap,
+        Grid2,
+        Grid3,
+        Grid4,
         Tabs,
-        UniformGrid,
+        
         Default
     }
 }

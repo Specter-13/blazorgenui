@@ -4,7 +4,7 @@
 @using BlazorGenUI.Reflection.Attributes
 @using BlazorGenUI.Components.Layouts
 
-<h3>RenderableContentControl</h3>
+
 
 <LayoutView Layout="@LayoutComponentType">
 @RenderComponent(Wrapper)
@@ -13,12 +13,22 @@
 
 @code
 {
+    private LinkedListNode<IBaseElement> Child { get; set; }
+
     public RenderFragment RenderComponent(IComplexElement complexElement) => __builder =>
     {
+        ViewTemplate viewTemplate;
+        if (Template != ViewTemplate.None)
+        {
+            viewTemplate = Template;
+        }
+        else
+        {
+            var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
+            viewTemplate = typeAttribute?.GetViewTemplate() ?? ViewTemplate.None;
+        }
 
-        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
-
-        var component = ViewComplexLocatorBuilder(typeAttribute);
+        var component = ViewComplexLocatorBuilder(viewTemplate);
 
         if (component != null && !OnlyRecursive)
         {
@@ -26,23 +36,65 @@
         }
         else
         {
-            @RenderKids(complexElement)
-        }
+            @RenderChildren(complexElement)
+    }
     };
 
 
-    RenderFragment RenderKids(IComplexElement complexElement) => __builder =>
+    RenderFragment RenderChildren(IComplexElement complexElement) => __builder =>
     {
-        var kids = complexElement.GetChildren();
-        foreach (var kid in kids)
+        var linkedList = new LinkedList<IBaseElement>(complexElement.GetChildren());
+        Child = linkedList.First;
+
+        
+        while (Child != null)
         {
+            if (Child.Value.IsIgnored)
+            {
+                Child = Child.Next;
+                continue;
+            }
 
-            if (kid.IsIgnored) continue;
+            if (Layout == LayoutTypes.Grid2 ||
+                Layout == LayoutTypes.Grid3 ||
+                Layout == LayoutTypes.Grid4 )
+            {
+                
+                 @RenderGridLayout()
+                continue;
+            }
+           
+
             <LayoutSetter LayoutType="@LayoutComponentType"
-                          ChildContent="@Generator(kid)"></LayoutSetter>
-            //@Generator(kid)
-        }
+                  ChildContent="@Generator(Child.Value)"></LayoutSetter>
 
+            Child = Child.Next;
+        }
+        
+
+
+    };
+
+
+   RenderFragment RenderGridLayout() => __builder =>
+    {
+        int col = 0;
+        <div class="row">
+            @while (col != (int)Layout && Child != null)
+            {
+                if (Child.Value.IsIgnored)
+                {
+                    Child = Child.Next;
+                    continue;
+                }
+
+                <LayoutSetter LayoutType="@LayoutComponentType"
+                  ChildContent="@Generator(Child.Value)"></LayoutSetter>
+                Child = Child.Next;
+                col++;
+            }
+        </div>
+        
     };
 
 
@@ -51,7 +103,14 @@
 
         if (kid is IValueElement primitiveKid)
         {
-            @GeneratePrimitive(primitiveKid)
+            if (primitiveKid.IsPicture)
+            {
+                @GeneratePicture(primitiveKid)
+            }
+            else
+            {
+                @GeneratePrimitive(primitiveKid)
+            }
         }
         else if (kid is IArrayElement arrayKid)
         {
@@ -60,7 +119,6 @@
             {
                 @RenderComponent(item)
             }
-            @*<RenderableContentListControl ContextList="arrayKid" ></RenderableContentListControl>*@
         }
         else
         {
@@ -71,6 +129,11 @@
 
     };
 
+    private RenderFragment GeneratePicture(IValueElement kid) => __builder =>
+    {
+        var primitiveComponent = ViewBaseLocatorBuilder("Picture", PresentationType.Display);
+        @CreatePrimitiveComponent(kid, primitiveComponent)
+    };
 
     private RenderFragment GeneratePrimitive(IValueElement kid) => __builder =>
     {
@@ -95,9 +158,10 @@
 
     private RenderFragment GenerateComplex(IComplexElement complexElement) => __builder =>
     {
-        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement);
+        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
+        var viewTemplate = typeAttribute?.GetViewTemplate() ?? ViewTemplate.None;
 
-        var component = ViewComplexLocatorBuilder(typeAttribute);
+        var component = ViewComplexLocatorBuilder(viewTemplate);
 
         if (component != null && !OnlyRecursive)
         {
@@ -105,7 +169,7 @@
         }
         else
         {
-            @RenderKids(complexElement)
+            @RenderChildren(complexElement)
         }
     };
 

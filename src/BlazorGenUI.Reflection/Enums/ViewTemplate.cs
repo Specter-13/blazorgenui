@@ -2,6 +2,7 @@
 {
     public enum ViewTemplate
     {
+        None,
         DetailViewTemplate
     }
 }

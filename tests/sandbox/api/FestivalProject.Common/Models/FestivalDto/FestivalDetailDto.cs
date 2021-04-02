@@ -20,7 +20,10 @@ namespace FestivalProject.BL.Models.FestivalDto
         public string Description { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+
+       
         public decimal Price { get; set; }
+        
         public int Capacity { get; set; }
 
         [RenderIgnore]

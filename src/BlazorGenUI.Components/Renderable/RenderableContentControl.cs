@@ -32,6 +32,13 @@ namespace BlazorGenUI.Components.Renderable
         [Parameter]
         public string IgnoredFields { get; set; }
 
+        [Parameter] 
+        public ViewTemplate Template { get; set; } = ViewTemplate.None;
+        [Parameter]
+        public string PictureFields { get; set; }
+        [Parameter]
+        public IDictionary<string, int> Order { get; set; }
+
         public IComplexElement Wrapper { get; set; } 
         public Type LayoutComponentType { get; set; }
 
@@ -44,11 +51,8 @@ namespace BlazorGenUI.Components.Renderable
         protected override void OnInitialized()
         {
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-
             HandleLayout();
-
-
-            Wrapper = new ComplexElement(ContextBase, IgnoredFields);
+            Wrapper = new ComplexElement(ContextBase, IgnoredFields, PictureFields, Order);
            
         }
 
@@ -99,11 +103,10 @@ namespace BlazorGenUI.Components.Renderable
             return typeAttribute;
         }
 
-        private IRenderableComponent ViewComplexLocatorBuilder(TemplateAttribute typeAttribute)
+        private IRenderableComponent ViewComplexLocatorBuilder(ViewTemplate viewTemplate)
         {
-            if (typeAttribute == null) return null;
+            if (viewTemplate == ViewTemplate.None) return null;
 
-            var viewTemplate = typeAttribute.GetViewTemplate();
             var componentInfo = ViewTemplateProvider.GetTemplate(viewTemplate);
             var component = ComponentService.GetComponent(componentInfo.fullTypeName);
             return component;

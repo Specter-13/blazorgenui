@@ -1,0 +1,10 @@
+﻿@inherits RenderableComponentBase
+@using BlazorGenUI.Reflection.ValueElementTypes
+
+<img src="@ValueElement.Data" class="img-thumbnail w-50 h-50"/>
+
+@code {
+    [Parameter]
+    public ValueElementT<string> ValueElement { get; set; }
+
+}

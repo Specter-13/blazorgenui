@@ -24,6 +24,7 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
         public Type PropertyType { get; set; }
+        public bool IsPicture { get; set; }
         public object RawData { get; set; }
         public DateTypes DateType { get; set; }
 

@@ -23,18 +23,22 @@ namespace BlazorGenUI.Reflection
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
         }
-        public ComplexElement(object context, string ignoredFields)
+        public ComplexElement(object context, string ignoredFields, string pictureFields, IDictionary<string,int> order)
         {
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
             IgnoredFields = ignoredFields;
+            PictureFields = pictureFields;
+            Order = order;
         }
         private IList<IBaseElement> Children { get; set; } = new List<IBaseElement>();
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
 
+        public IDictionary<string, int> Order { get; }
         public object EncapsulatedDto { get; set; }
-        private string IgnoredFields { get; }
+        public string IgnoredFields { get; }
+        public string PictureFields { get; }
 
         public IEnumerable<IBaseElement> GetChildren()
         {
@@ -55,6 +59,7 @@ namespace BlazorGenUI.Reflection
                         //is generic
                         var instance = CreateValueElementT(propertyType, property);
                         instance.IsIgnored = isIgnored;
+                        instance.IsPicture = HasPicture(property);
                         Children.Add(instance);
                     }
                     else if (propertyType == typeof(DateTime))
@@ -80,6 +85,7 @@ namespace BlazorGenUI.Reflection
                             IEnumerable<object> collection = objList.Cast<object>();
                             var instance = new ArrayElement(collection);
                             instance.IsIgnored = isIgnored;
+                            instance.RawName = property.Name;
                             Children.Add(instance);
                         }
                     }
@@ -97,7 +103,25 @@ namespace BlazorGenUI.Reflection
 
                 }
             }
+
+            //reorder
+            if (Order != null) ReorderChildren();
+
             return Children;
+        }
+
+        private void ReorderChildren()
+        {
+            foreach (var item in Order)
+            {
+                var child = Children.FirstOrDefault(x =>
+                    x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
+                if (child != null)
+                {
+                    Children.Remove(child);
+                    Children.Insert(item.Value, child);
+                }
+            }
         }
 
         private bool HasIgnore(PropertyInfo property)
@@ -114,6 +138,24 @@ namespace BlazorGenUI.Reflection
             }
 
             return isIgnored;
+        }
+
+        private bool HasPicture(PropertyInfo property)
+        {
+            bool isPicture;
+            if (PictureFields != null)
+            {
+                var r = new Regex(property.Name, RegexOptions.IgnoreCase);
+                isPicture = r.IsMatch(PictureFields);
+            }
+            else
+            {
+                isPicture = false;
+                //add picture attribute
+                // = GetPropertyAttribute<RenderIgnoreAttribute>(property) != null;
+            }
+
+            return isPicture;
         }
 
 

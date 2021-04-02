@@ -11,7 +11,7 @@ namespace BlazorGenUI.Reflection.Interfaces
         Type PropertyType { get; set; }
 
         event PropertyChangedEventHandler PropertyChanged;
-
+        bool IsPicture { get; set; }
         object RawData { get; set; }
 
     }

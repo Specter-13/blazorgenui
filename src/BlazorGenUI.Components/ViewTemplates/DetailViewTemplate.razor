@@ -1,20 +1,42 @@
 ﻿@using BlazorGenUI.Reflection.Interfaces
 @using BlazorGenUI.Reflection.Enums
-<h3>DetailTemplate</h3>
+@using System.Collections
+
 @inherits RenderableComponentBase
 
 @if(@ComplexObject != null)
 {
-    <p>@ComplexObject.RawName</p>
-
-    <RenderableContentControl ContextBase="ComplexObject.EncapsulatedDto" 
-                              Presentation="PresentationType.Control" 
-                              OnlyRecursive="true"></RenderableContentControl>
+    
+    <div class="card w-75">
+        
+        <div class="m-3">
+            <h5 class="card-title">@ComplexObject.RawName</h5>
+            <RenderableContentControl ContextBase="ComplexObject.EncapsulatedDto"
+                                      Presentation="PresentationType.Control"
+                                      IgnoredFields="@ComplexObject.IgnoredFields"
+                                      PictureFields="@ComplexObject.PictureFields"
+                                      OnlyRecursive="true"
+                                      Order="@Order"
+                                      Layout="LayoutTypes.Wrap"> 
+            </RenderableContentControl>
+        </div>
+    </div>
 
 }
 @code {
-
-
-	[Parameter]
+    [Parameter]
 	public IComplexElement ComplexObject { get; set; }
+
+
+    private IDictionary<string, int> Order { get; set; } 
+
+    protected override void OnInitialized()
+    {
+        if (ComplexObject.PictureFields != null)
+        {
+            var pictureRawName = ComplexObject.PictureFields.Split(',').First();
+            Order = new Dictionary<string, int>() {{pictureRawName, 0}};
+        }
+    }
+
 }

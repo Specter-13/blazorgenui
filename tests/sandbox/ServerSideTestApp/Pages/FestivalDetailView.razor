@@ -6,8 +6,12 @@
 
 @if(Festival!=null)
 {
-    <RenderableContentControl ContextBase="@Festival" 
-                              Presentation="PresentationType.Control"></RenderableContentControl>
+    <RenderableContentControl ContextBase="@Festival"
+                              Presentation="PresentationType.Control"
+                              Order="@Order"
+                              Layout="LayoutTypes.Grid4">
+
+    </RenderableContentControl>
 }
 
 @code {
@@ -15,11 +19,11 @@
     public IFestivalService FestivalService {get; set; }
 
     public FestivalDetailDto Festival { get; set; }
-
+    private IDictionary<string, int> Order { get; set; } 
 
     protected override async Task OnInitializedAsync()
     {
-        
+        Order = new Dictionary<string, int>() {{"logouri", 0}};
         Festival = await FestivalService.GetFestivalDetail();
     }
 

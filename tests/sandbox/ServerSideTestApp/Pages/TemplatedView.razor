@@ -1,0 +1,50 @@
+﻿@page "/template"
+@using ServerSideTestApp.Services
+@using FestivalProject.BL.Models.FestivalDto
+@using FestivalProject.BL.Models.UserDto
+<h3>TemplatedView</h3>
+
+
+
+@if (User != null)
+{
+    <RenderableContentControl ContextBase="@User"
+                              Presentation="PresentationType.Control"
+                              Template="ViewTemplate.DetailViewTemplate"
+                              IgnoredFields="ReservationList,username,password">
+    </RenderableContentControl>
+}
+
+
+@if (Festival != null)
+{
+    <RenderableContentControl ContextBase="@Festival"
+                              Presentation="PresentationType.Control"
+                              Template="ViewTemplate.DetailViewTemplate"
+                              PictureFields="LogoUri"
+                              IgnoredFields="stagelist,festivalinterpret">
+    </RenderableContentControl>
+}
+
+@code {
+    [Inject]
+    public IUserService UserService {get; set; }
+    [Inject]
+    public IFestivalService FestivalService {get; set; }
+
+    public FestivalDetailDto Festival { get; set; }
+
+
+
+
+    public UserDetailDto User { get; set; }
+ 
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        User = await UserService.GetUserDetail();
+        Festival = await FestivalService.GetFestivalDetail();
+
+    }
+}

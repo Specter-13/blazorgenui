@@ -1,0 +1,33 @@
+﻿// Override Bootstrap default variables here
+
+
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #e74a3b !default;
+$orange: #fd7e14 !default;
+$yellow: #f6c23e !default;
+$green: #1cc88a !default;
+$teal: #20c9a6 !default;
+$cyan: #36b9cc !default;
+
+//inxton colors
+$inxton-blue: #0A319E !default;
+$inxton-dark-blue: #5f6371 !default;
+$inxton-orange: #FF4B27 !default;
+$inxton-alert: #ca2f14 !default;
+
+$primary: $inxton-blue !default;
+$secondary: $inxton-dark-blue !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $inxton-orange !default;
+$danger: $inxton-alert !default;
+$brand: #b3ccff;
+
+$theme-colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+
+// We've added brand, add, edit,...
+$theme-colors: map-merge( ( "primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "error": $danger, "brand": $brand, "add": $primary, "new": $info, "edit": $primary, "delete": $danger, "nav": $secondary, "change": $warning, "save": $success ), $theme-colors );
+

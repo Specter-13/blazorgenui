@@ -1,0 +1,20 @@
+﻿@inherits RenderableComponentBase
+
+<div class="form-group">
+    <div>
+        <label>@ValueElement.RawName</label>
+    </div>
+    
+    <div class="form-check form-switch">
+        <input class="form-check-input" 
+               type="checkbox" 
+               id="SwitchCheckDefault" @bind="ValueElement.Data"
+               disabled>
+    </div>
+    @*<input class="form-check-input"
+               type="checkbox"
+               id="checkbox"
+               name="onlineCheckbox"
+               @bind="Onliner.Cyclic">*@
+    
+</div>

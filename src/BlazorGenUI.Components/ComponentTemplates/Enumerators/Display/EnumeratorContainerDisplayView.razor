@@ -1,0 +1,16 @@
+﻿@inherits RenderableComponentBase
+@typeparam T
+
+
+<EditForm Model="@ValueElement.Data">
+    <div>
+        <label>@ValueElement.RawName</label>
+    </div>
+    <div>
+        <p  class="w-100 form-control">
+            @ValueElement.Data
+        </p>
+       
+
+    </div>
+</EditForm>

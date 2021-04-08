@@ -1,0 +1,34 @@
+﻿@inherits RenderableComponentBase
+@using Reflection.Enums
+<div class="form-group">
+    
+    <div>
+        <label>@ValueElement.RawName</label>
+    </div>
+    @if (ValueElement.DateType == DateTypes.Date)
+    {
+        <div class="w-100">
+            <p class="w-100 form-control">
+                @ValueElement.Data
+            </p>
+        </div>
+       
+    }
+    else if (ValueElement.DateType == DateTypes.TimeOfDay)
+    {
+        <div class="w-100">
+            <p class="w-100 form-control">
+                @ValueElement.Data
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="w-100">
+            <p class="w-100 form-control">
+                @ValueElement.Data
+            </p>
+        </div>
+    }
+
+</div>

@@ -3,6 +3,7 @@
 
 
 @using FestivalProject.BL.Models.FestivalDto
+@using FestivalProject.BL.Models.UserDto
 <h3>Table from array</h3>
 
 
@@ -12,7 +13,7 @@
     </RenderableContentListControl>
 
 
-    <RenderableContentListControl ContextList="@Festivals" 
+    <RenderableContentListControl ContextList="@Users" 
                                   Layout="ArrayLayout.Tabs">
     </RenderableContentListControl>
 
@@ -23,17 +24,21 @@
 @code {
     [Inject]
     public IFestivalService FestivalService {get; set; }
+    [Inject]
+    public IUserService UserService {get; set; }
 
 
 
     public IEnumerable<FestivalListDto> Festivals { get; set; }
-    public ArrayElement FestivalsArray { get; set; }
+    public IEnumerable<UserListDto> Users { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         
         Festivals = (await FestivalService.GetFestivalList()).ToList();
-        FestivalsArray = new ArrayElement(Festivals);
+        Users =  (await UserService.GetUserList()).ToList();
+     
 
     }
 }

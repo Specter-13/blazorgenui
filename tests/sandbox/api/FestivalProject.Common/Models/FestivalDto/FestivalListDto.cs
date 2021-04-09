@@ -25,6 +25,7 @@ namespace FestivalProject.BL.Models.FestivalDto
         public bool IsFestival { get; set; }
         //[Date(DateTypes.Date)] 
         public DateTime Date { get; set; }
+        public DateTimeOffset Date2 { get; set; }
 
     }
 }

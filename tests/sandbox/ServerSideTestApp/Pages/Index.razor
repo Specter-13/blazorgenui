@@ -31,7 +31,18 @@
    
 
 }
+
 <button @onclick="Update">Save</button>
+
+@if (GithubUser != null)
+{
+    <RenderableContentControl ContextBase="@GithubUser" 
+                              Presentation="PresentationType.Display"
+    >
+    </RenderableContentControl>
+
+    <p>@GithubUser.Name</p>
+}
 
 
 @code
@@ -47,11 +58,12 @@
     public StageDetailDto Stage { get; set; }
     public FestivalListDto Pohoda { get; set; }
 
-
-    private async Task Update()
+    private User GithubUser { get; set; }
+    private void Update()
     {
         var test = Pohoda;
         var stage = Stage;
+        
     }
 
     
@@ -59,7 +71,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+        var github = new GitHubClient(new ProductHeaderValue("BlazorGenUI"));
+        GithubUser = await github.User.Get("Specter-13");
         Festivals = (await FestivalService.GetFestivalList()).ToList();
         Stage = (await StageService.GetStageDetail());
         Pohoda = Festivals.First();

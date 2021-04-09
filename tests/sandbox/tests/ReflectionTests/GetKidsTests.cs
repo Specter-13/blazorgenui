@@ -8,11 +8,11 @@ using Xunit;
 
 namespace ReflectionTests
 {
-    public class ReflectionTests : IClassFixture<BlazorGenUITestsFixture>
+    public class GetKidsTests : IClassFixture<BlazorGenUITestsFixture>
     {
         private BlazorGenUITestsFixture _fixture;
         
-        public ReflectionTests(BlazorGenUITestsFixture fixture)
+        public GetKidsTests(BlazorGenUITestsFixture fixture)
         {
             this._fixture = fixture;
         }
@@ -66,20 +66,5 @@ namespace ReflectionTests
             Assert.Equal(expectedNumber, actualNumber);
         }
 
-        //[Fact]
-        //public void SetPropertyValue_TestPrimitive_Success()
-        //{
-        //    //Arrange
-        //    var firstPropertyName = "Name";
-        //    var expectedValue = "Grape";
-        //    //Act
-        //    var firstKid = _fixture.TestPrimitive.GetChildren().First();
-        //    ((ValueElementT<string>) firstKid).Data = expectedValue;
-
-
-        //    //Assert
-        //    //Assert.Equal(firstPropertyName, firstKid.RawName);
-        //    Assert.Equal(expectedValue, _fixture.TestPrimitive.Name);
-        //}
     }
 }

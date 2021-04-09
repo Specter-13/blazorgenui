@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using BlazorGenUI.Reflection.Annotations;
 using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Enums;
+using BlazorGenUI.Reflection.Exceptions;
 using BlazorGenUI.Reflection.Interfaces;
 using BlazorGenUI.Reflection.ValueElementTypes;
 using Fasterflect;
@@ -52,17 +53,9 @@ namespace BlazorGenUI.Reflection
                     bool isIgnored = HasIgnore(property);
 
                     var propertyType = property.PropertyType;
-                    if (propertyType.IsPrimitive || 
-                        (propertyType == typeof(string) || propertyType == typeof(decimal) || propertyType == typeof(Guid))
-                    )
-                    {
-                        //is generic
-                        var instance = CreateValueElementT(propertyType, property);
-                        instance.IsIgnored = isIgnored;
-                        instance.IsPicture = HasPicture(property);
-                        Children.Add(instance);
-                    }
-                    else if (propertyType == typeof(DateTime))
+                    
+                    if (propertyType == typeof(DateTime) ||
+                        propertyType == typeof(DateTimeOffset))
                     {
                         var instance = CreateValueElementDateTime(propertyType, property);
                         instance.IsIgnored = isIgnored;
@@ -74,11 +67,20 @@ namespace BlazorGenUI.Reflection
                         instance.IsIgnored = isIgnored;
                         Children.Add(instance);
                     }
+                    //primitive
+                    else if (propertyType.IsPrimitive ||
+                             typeof(IComparable).IsAssignableFrom(propertyType))
+                    {
+                        //is generic
+                        var instance = CreateValueElementT(propertyType, property);
+                        instance.IsIgnored = isIgnored;
+                        instance.IsPicture = HasPicture(property);
+                        Children.Add(instance);
+                    }
                     //is array
                     else if (typeof(IEnumerable).IsAssignableFrom(propertyType))
                     {
                         var dto = property.GetValue(EncapsulatedDto);
-                        //ask for opinion
                         if (dto != null)
                         {
                             IList objList = (IList)dto;
@@ -92,6 +94,7 @@ namespace BlazorGenUI.Reflection
                     //complex
                     else
                     {
+                        //if null error check
                         var dto = property.GetValue(EncapsulatedDto, null);
                         if (dto != null)
                         {
@@ -118,8 +121,20 @@ namespace BlazorGenUI.Reflection
                     x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
                 if (child != null)
                 {
-                    Children.Remove(child);
-                    Children.Insert(item.Value, child);
+                    try
+                    {
+                        Children.Remove(child);
+                        Children.Insert(item.Value, child);
+                    }
+                    catch 
+                    {
+                        throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
+                    }
+                    
+                }
+                else
+                {
+                    throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Some of the provided elements cannot be found!");
                 }
             }
         }
@@ -167,8 +182,8 @@ namespace BlazorGenUI.Reflection
             instance.PropertyType = propertyType;
 
             var data = property.GetValue(EncapsulatedDto, null);
-            var prop = instance.GetType().GetProperty("Data");
-            prop.SetValue(instance, data, null);
+            instance.SetPropertyValue("Data", data);
+
             instance.RawData = data;
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
@@ -176,7 +191,21 @@ namespace BlazorGenUI.Reflection
 
         private ValueElementDateTime CreateValueElementDateTime(Type propertyType, PropertyInfo property)
         {
-            var data = (DateTime) property.GetValue(EncapsulatedDto, null);
+            DateTime data; 
+            bool isOffset = false;
+            if (propertyType == typeof(DateTimeOffset))
+            {
+                isOffset = true;
+                propertyType = typeof(DateTime);
+                var dataWithOffset = (DateTimeOffset)property.GetValue(EncapsulatedDto, null);
+                data = dataWithOffset.DateTime;
+            }
+            else
+            {
+                data = (DateTime)property.GetValue(EncapsulatedDto, null);
+            }
+
+          
             var dateAttribute = (DateAttribute) property.GetCustomAttribute(typeof(DateAttribute));
             DateTypes dateType;
             if (dateAttribute != null)
@@ -191,7 +220,8 @@ namespace BlazorGenUI.Reflection
             var instance = new ValueElementDateTime(property.Name,
                 propertyType,
                 dateType,
-                data
+                data,
+                isOffset
             );
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
@@ -206,9 +236,8 @@ namespace BlazorGenUI.Reflection
             instance.PropertyType = propertyType;
 
             var data = property.GetValue(EncapsulatedDto, null);
-            var prop = instance.GetType().GetProperty("Data");
+            instance.SetPropertyValue("Data", data);
 
-            prop.SetValue(instance, data, null);
             instance.RawData = data;
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
@@ -216,11 +245,28 @@ namespace BlazorGenUI.Reflection
 
         protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs a)
         {
-           
             var castedSender = (IValueElement) sender;
             var data = castedSender.GetPropertyValue("Data");
-            EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
-            
+
+            if (castedSender.PropertyType == typeof(DateTime))
+            {
+                HandleDateTimeOffsetChange(castedSender);
+            }
+            else
+            {
+                EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
+            }
+        }
+
+        private void HandleDateTimeOffsetChange(IValueElement castedSender)
+        {
+            var castedSenderDateTime = (ValueElementDateTime) castedSender;
+            if (castedSenderDateTime.IsDateTimeOffset)
+            {
+                var utcTime1 = DateTime.SpecifyKind(castedSenderDateTime.Data, DateTimeKind.Utc);
+                DateTimeOffset utcTime2 = utcTime1;
+                EncapsulatedDto.SetPropertyValue(castedSender.RawName, utcTime2);
+            }
         }
 
         private T GetPropertyAttribute<T>(PropertyInfo prop) where T : class

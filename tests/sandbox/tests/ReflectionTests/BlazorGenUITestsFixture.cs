@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using BlazorGenUI.Components.Renderable;
 using BlazorGenUI.Tests.testdtos;
@@ -12,7 +13,19 @@ namespace ReflectionTests
         {
             RenderableContent = new RenderableContentControl();
             RenderableContent.ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            SeedTestData();
+        }
+       
+        public RenderableContentControl RenderableContent { get; set; }
+        public TestComplexDto TestComplex { get; set; }
+        public TestFromTemplateDto TestFromTemplate { get; set; }
+        public TestDateAttributesDto TestDateAttributes { get; set; }
+        public TestEnumDto TestEnum { get; set; }
+        public TestPrimitiveDto TestPrimitive{ get; set; }
+        public TestDateTimeOffset TestDateTimeOffset { get; set; }
 
+        private void SeedTestData()
+        {
             TestComplex = new TestComplexDto
             {
                 Name = "TestComplex",
@@ -62,13 +75,11 @@ namespace ReflectionTests
                 Date = default,
             };
 
-
+            TestDateTimeOffset = new TestDateTimeOffset
+            {
+                DateWithOffset = new DateTimeOffset(2008, 6, 19, 7, 0, 0, TimeSpan.Zero)
+            };
+        
         }
-        public RenderableContentControl RenderableContent { get; set; }
-        public TestComplexDto TestComplex { get; set; }
-        public TestFromTemplateDto TestFromTemplate { get; set; }
-        public TestDateAttributesDto TestDateAttributes { get; set; }
-        public TestEnumDto TestEnum { get; set; }
-        public TestPrimitiveDto TestPrimitive{ get; set; }
     }
 }

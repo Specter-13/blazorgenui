@@ -56,7 +56,7 @@ namespace BlazorGenUI.Components.Renderable
            
         }
 
-        private void HandleLayout()
+        public void HandleLayout()
         {
             if (Layout != LayoutTypes.Default)
             {

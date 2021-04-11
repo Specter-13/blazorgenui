@@ -51,12 +51,14 @@
     public IFestivalService FestivalService {get; set; }
     [Inject]
     public IStageService StageService {get; set; }
-    
+    [Inject]
+    public GitHubClient GitHubClient {get; set; }
     
 
     public IEnumerable<FestivalListDto> Festivals { get; set; }
     public StageDetailDto Stage { get; set; }
     public FestivalListDto Pohoda { get; set; }
+
 
     private User GithubUser { get; set; }
     private void Update()
@@ -71,8 +73,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var github = new GitHubClient(new ProductHeaderValue("BlazorGenUI"));
-        GithubUser = await github.User.Get("Specter-13");
+        GithubUser = await GitHubClient.User.Get("Specter-13");
         Festivals = (await FestivalService.GetFestivalList()).ToList();
         Stage = (await StageService.GetStageDetail());
         Pohoda = Festivals.First();

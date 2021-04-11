@@ -10,7 +10,6 @@ using FestivalProject.DAL.Enums;
 
 namespace BlazorGenUI.Tests.testdtos
 {
-    [Template(ViewTemplate.DetailViewTemplate)]
     public class TestFromTemplateDto 
     {
         public string Name { get; set; }

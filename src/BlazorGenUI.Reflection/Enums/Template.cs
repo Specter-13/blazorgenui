@@ -1,8 +1,8 @@
 ﻿namespace BlazorGenUI.Reflection.Enums
 {
-    public enum ViewTemplate
+    public enum Template
     {
         None,
-        DetailViewTemplate
+        DetailView
     }
 }

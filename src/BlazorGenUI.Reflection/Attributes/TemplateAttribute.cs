@@ -11,17 +11,17 @@ namespace BlazorGenUI.Reflection.Attributes
     public class TemplateAttribute : System.Attribute
     {
         private string _name;
-        private ViewTemplate _template;
+        private Template _template;
         public TemplateAttribute(string templateName)
         {
             this._name = templateName;
         }
-        public TemplateAttribute(ViewTemplate template)
+        public TemplateAttribute(Template template)
         {
             this._template = template;
         }
 
-        public ViewTemplate GetViewTemplate()
+        public Template GetViewTemplate()
         {
             return _template;
         }

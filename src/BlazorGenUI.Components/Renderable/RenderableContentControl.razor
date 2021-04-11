@@ -17,20 +17,20 @@
 
     public RenderFragment RenderComponent(IComplexElement complexElement) => __builder =>
     {
-        ViewTemplate viewTemplate;
-        if (Template != ViewTemplate.None)
+        Template viewTemplate;
+        if (Template != Template.None)
         {
             viewTemplate = Template;
         }
         else
         {
             var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
-            viewTemplate = typeAttribute?.GetViewTemplate() ?? ViewTemplate.None;
+            viewTemplate = typeAttribute?.GetViewTemplate() ?? Template.None;
         }
 
         var component = ViewComplexLocatorBuilder(viewTemplate);
 
-        if (component != null && !OnlyRecursive)
+        if (component != null)
         {
             @CreateComplexComponent(complexElement, component);
         }
@@ -159,11 +159,11 @@
     private RenderFragment GenerateComplex(IComplexElement complexElement) => __builder =>
     {
         var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
-        var viewTemplate = typeAttribute?.GetViewTemplate() ?? ViewTemplate.None;
+        var viewTemplate = typeAttribute?.GetViewTemplate() ?? Template.None;
 
         var component = ViewComplexLocatorBuilder(viewTemplate);
 
-        if (component != null && !OnlyRecursive)
+        if (component != null )
         {
             @CreateComplexComponent(complexElement, component)
         }
@@ -183,7 +183,7 @@
     private RenderFragment CreateComplexComponent(IComplexElement complex, IRenderableComponent component) => __builder =>
     {
         __builder.OpenComponent(0, component.GetType());
-        __builder.AddAttribute(1, "ComplexObject", complex);
+        __builder.AddAttribute(1, "ComplexElement", complex.EncapsulatedDto);
         __builder.CloseComponent();
     };
 }

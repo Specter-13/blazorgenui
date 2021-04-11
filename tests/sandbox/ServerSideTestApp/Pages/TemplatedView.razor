@@ -6,38 +6,35 @@
 
 
 
-@if (User != null)
+
+@if (Detail != null)
 {
-    <RenderableContentControl ContextBase="@User"
-                              Presentation="PresentationType.Control"
-                              Template="ViewTemplate.DetailViewTemplate"
-                              IgnoredFields="ReservationList,username,password">
+    <RenderableContentControl ContextBase="@Detail"
+                              Template="Template.DetailView">
+                             
     </RenderableContentControl>
 }
 
 
-@if (Festival != null)
-{
-    <RenderableContentControl ContextBase="@Festival"
-                              Presentation="PresentationType.Control"
-                              Template="ViewTemplate.DetailViewTemplate"
-                              PictureFields="LogoUri"
-                              IgnoredFields="stagelist,festivalinterpret">
-    </RenderableContentControl>
-}
 
 @code {
     [Inject]
     public IUserService UserService {get; set; }
     [Inject]
     public IFestivalService FestivalService {get; set; }
+    [Inject]
+    public GitHubClient GitHubClient {get; set; }
 
     public FestivalDetailDto Festival { get; set; }
 
 
 
+    public User GithubUser { get; set; }
 
     public UserDetailDto User { get; set; }
+
+    public DetailTemplateModel Detail { get; set; }
+
  
 
     protected override async Task OnInitializedAsync()
@@ -45,6 +42,25 @@
         
         User = await UserService.GetUserDetail();
         Festival = await FestivalService.GetFestivalDetail();
+        GithubUser = await GitHubClient.User.Get("Specter-13");
+
+        Detail = new DetailTemplateModel
+        {
+            Name = GithubUser.Name,
+            Image = GithubUser.AvatarUrl,
+            ItemNextToImage1Label = "Bio:",
+            ItemNextToImage1 = GithubUser.Bio,
+            ItemNextToImage2Label = "Login:",
+            ItemNextToImage2 = GithubUser.Login ,
+            ItemNextToImage3Label = "Created:",
+            ItemNextToImage3 = GithubUser.CreatedAt.Date.ToString("dd MM yyyy") ,
+            ItemNextToImage4Label = "HtmlUrl:",
+            ItemNextToImage4 = GithubUser.HtmlUrl,
+         
+        };
+
+
+
 
     }
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Octokit;
 using ServerSideTestApp.Services;
 
 
@@ -37,6 +38,13 @@ namespace ServerSideTestApp
             services.AddScoped<IFestivalService, FestivalService>();
             services.AddScoped<IStageService, StageService>();
             services.AddScoped<IUserService, UserService>();
+            var tokenAuth = new Credentials("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"); // NOTE: not real token
+            services.AddScoped(sp => new GitHubClient(new ProductHeaderValue("BlazorGenUI"))
+            {
+                Credentials = tokenAuth
+            });
+            
+           
 
         }
 

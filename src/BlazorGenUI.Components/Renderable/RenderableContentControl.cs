@@ -23,8 +23,6 @@ namespace BlazorGenUI.Components.Renderable
         [Parameter]
         public PresentationType Presentation { get; set; }
 
-        [Parameter] 
-        public bool OnlyRecursive { get; set; } = false;
 
         [Parameter] 
         public LayoutTypes Layout { get; set; } = LayoutTypes.Default;
@@ -33,7 +31,7 @@ namespace BlazorGenUI.Components.Renderable
         public string IgnoredFields { get; set; }
 
         [Parameter] 
-        public ViewTemplate Template { get; set; } = ViewTemplate.None;
+        public Template Template { get; set; } = Template.None;
         [Parameter]
         public string PictureFields { get; set; }
         [Parameter]
@@ -103,9 +101,9 @@ namespace BlazorGenUI.Components.Renderable
             return typeAttribute;
         }
 
-        private IRenderableComponent ViewComplexLocatorBuilder(ViewTemplate viewTemplate)
+        private IRenderableComponent ViewComplexLocatorBuilder(Template viewTemplate)
         {
-            if (viewTemplate == ViewTemplate.None) return null;
+            if (viewTemplate == Template.None) return null;
 
             var componentInfo = ViewTemplateProvider.GetTemplate(viewTemplate);
             var component = ComponentService.GetComponent(componentInfo.fullTypeName);

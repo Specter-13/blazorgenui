@@ -22,6 +22,9 @@ namespace BlazorGenUI.Components.Renderable
         public string LgaNavigationPropertyName { get; set; }
         [Parameter]
         public string LgaDisplayedPropertyName { get; set; }
+
+        [Parameter]
+        public string TcTabPageNameProperty { get; set; }
    
         
     }

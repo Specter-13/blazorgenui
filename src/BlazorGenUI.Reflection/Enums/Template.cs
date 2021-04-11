@@ -3,6 +3,7 @@
     public enum Template
     {
         None,
-        DetailView
+        DetailView,
+        LoginView
     }
 }

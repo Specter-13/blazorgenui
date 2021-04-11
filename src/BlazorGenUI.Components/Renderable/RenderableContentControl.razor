@@ -3,6 +3,8 @@
 @using BlazorGenUI.Reflection.Enums
 @using BlazorGenUI.Reflection.Attributes
 @using BlazorGenUI.Components.Layouts
+@using BlazorGenUI.Components.TemplatedViews
+@using BlazorGenUI.Reflection.Models
 
 
 
@@ -184,6 +186,14 @@
     {
         __builder.OpenComponent(0, component.GetType());
         __builder.AddAttribute(1, "ComplexElement", complex.EncapsulatedDto);
+
+        if (component is LoginTemplateView)
+        {
+            __builder.AddAttribute(2, "SignInEvent", EventCallback.Factory.Create(this, OnLoginSubmitCallBack));
+        }
         __builder.CloseComponent();
     };
+
+    
+    
 }

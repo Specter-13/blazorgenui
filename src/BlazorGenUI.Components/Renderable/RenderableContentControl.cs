@@ -8,6 +8,7 @@ using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Enums;
 using BlazorGenUI.Reflection.Interfaces;
+using BlazorGenUI.Reflection.Models;
 using BlazorGenUI.Reflection.Providers;
 using Fasterflect;
 using Microsoft.AspNetCore.Components;
@@ -36,6 +37,8 @@ namespace BlazorGenUI.Components.Renderable
         public string PictureFields { get; set; }
         [Parameter]
         public IDictionary<string, int> Order { get; set; }
+        [Parameter]
+        public EventCallback<bool> OnLoginSubmit  { get; set; }
 
         public IComplexElement Wrapper { get; set; } 
         public Type LayoutComponentType { get; set; }
@@ -108,6 +111,10 @@ namespace BlazorGenUI.Components.Renderable
             var componentInfo = ViewTemplateProvider.GetTemplate(viewTemplate);
             var component = ComponentService.GetComponent(componentInfo.fullTypeName);
             return component;
+        }
+        private void OnLoginSubmitCallBack()
+        {
+            OnLoginSubmit.InvokeAsync(true);
         }
     }
 }

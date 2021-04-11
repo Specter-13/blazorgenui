@@ -15,6 +15,22 @@
     </RenderableContentControl>
 }
 
+@if (Login != null)
+{
+
+    <RenderableContentControl ContextBase="@Login"
+                              Template="Template.LoginView"
+                              OnLoginSubmit="OnLogin">
+                             
+    </RenderableContentControl>
+
+    @if (IsLogged)
+    {
+        <p>Login mail:</p>
+        <p>@Login.Email</p>
+    }
+}
+
 
 
 @code {
@@ -35,7 +51,14 @@
 
     public DetailTemplateModel Detail { get; set; }
 
- 
+    public LoginTemplateModel Login { get; set; } = new LoginTemplateModel();
+
+    private bool IsLogged { get; set; }
+
+    private void OnLogin()
+    {
+        IsLogged = true;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,8 +82,8 @@
          
         };
 
-
-
+     
+        
 
     }
 }

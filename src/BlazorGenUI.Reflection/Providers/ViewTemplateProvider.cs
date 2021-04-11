@@ -13,6 +13,7 @@ namespace BlazorGenUI.Reflection.Providers
 
             _layoutDictionary = new Dictionary<Template, (string assembly, string fullTypeName)>();
             _layoutDictionary[Template.DetailView] = ("BlazorGenUI.Components", "DetailTemplateView");
+            _layoutDictionary[Template.LoginView] = ("BlazorGenUI.Components", "LoginTemplateView");
             //_layoutDictionary[Layout.Wrap] = ("Vortex.Presentation.Controls.Blazor", "Vortex.Presentation.Controls.Blazor.Layouts.WrapPanelLayout");
             //_layoutDictionary[Layout.Tabs] = ("Vortex.Presentation.Controls.Blazor", "Vortex.Presentation.Controls.Blazor.Layouts.TabControlLayout");
             //_layoutDictionary[Layout.Border] = ("Vortex.Presentation.Controls.Blazor", "Vortex.Presentation.Controls.Blazor.Layouts.BorderLayout");

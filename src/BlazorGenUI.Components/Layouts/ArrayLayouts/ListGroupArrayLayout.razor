@@ -27,7 +27,7 @@
 
     public RenderFragment RenderItem() => __builder =>
     {
-        Items = ArrayElement.GetItems();
+        Items = (IComplexElement[])ArrayElement.GetItems();
         @foreach (var item in Items)
         {
             var selectedChild = GetValueElementByRawName(item, DisplayedPropertyName);

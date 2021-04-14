@@ -41,67 +41,26 @@ namespace BlazorGenUI.Reflection
         public string IgnoredFields { get; }
         public string PictureFields { get; }
 
+        private List<object> AttributeList { get; set; }
+
         public IEnumerable<IBaseElement> GetChildren()
         {
-            var listOfProperties = EncapsulatedDto.GetType().GetRuntimeProperties();
-           
-            if (Children.Count == 0)
+            var listOfProperties = EncapsulatedDto?.GetType().GetRuntimeProperties();
+
+            if (Children.Count == 0 && listOfProperties != null)
             {
                 foreach (var property in listOfProperties)
                 {
-                    
-                    bool isIgnored = HasIgnore(property);
+                    AttributeList = property.GetCustomAttributes(true)?.ToList();
 
-                    var propertyType = property.PropertyType;
-                    
-                    if (propertyType == typeof(DateTime) ||
-                        propertyType == typeof(DateTimeOffset))
+                    if (HasIgnore(property.Name)) continue;
+
+                    var value = GetPropertyValue(property);
+                    var child = CreateBaseElement(property.PropertyType, property.Name, value);
+
+                    if (child != null)
                     {
-                        var instance = CreateValueElementDateTime(propertyType, property);
-                        instance.IsIgnored = isIgnored;
-                        Children.Add(instance);
-                    }
-                    else if (propertyType.IsEnum)
-                    {
-                        var instance = CreateValueElementEnumT(propertyType, property);
-                        instance.IsIgnored = isIgnored;
-                        Children.Add(instance);
-                    }
-                    //primitive
-                    else if (propertyType.IsPrimitive ||
-                             typeof(IComparable).IsAssignableFrom(propertyType))
-                    {
-                        //is generic
-                        var instance = CreateValueElementT(propertyType, property);
-                        instance.IsIgnored = isIgnored;
-                        instance.IsPicture = HasPicture(property);
-                        Children.Add(instance);
-                    }
-                    //is array
-                    else if (typeof(IEnumerable).IsAssignableFrom(propertyType))
-                    {
-                        var dto = property.GetValue(EncapsulatedDto);
-                        if (dto != null)
-                        {
-                            IList objList = (IList)dto;
-                            IEnumerable<object> collection = objList.Cast<object>();
-                            var instance = new ArrayElement(collection);
-                            instance.IsIgnored = isIgnored;
-                            instance.RawName = property.Name;
-                            Children.Add(instance);
-                        }
-                    }
-                    //complex
-                    else
-                    {
-                        //if null error check
-                        var dto = property.GetValue(EncapsulatedDto, null);
-                        if (dto != null)
-                        {
-                            var complex = new ComplexElement(dto);
-                            complex.IsIgnored = isIgnored;
-                            Children.Add(complex);
-                        }
+                        Children.Add(child);
                     }
 
                 }
@@ -113,83 +72,89 @@ namespace BlazorGenUI.Reflection
             return Children;
         }
 
-        private void ReorderChildren()
+        private object GetPropertyValue(PropertyInfo property)
         {
-            foreach (var item in Order)
+            object value;
+            if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType))
             {
-                var child = Children.FirstOrDefault(x =>
-                    x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
-                if (child != null)
-                {
-                    try
-                    {
-                        Children.Remove(child);
-                        Children.Insert(item.Value, child);
-                    }
-                    catch 
-                    {
-                        throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
-                    }
-                    
-                }
-                else
-                {
-                    throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Some of the provided elements cannot be found!");
-                }
-            }
-        }
-
-        private bool HasIgnore(PropertyInfo property)
-        {
-            bool isIgnored;
-            if (IgnoredFields != null)
-            {
-                var r = new Regex(property.Name, RegexOptions.IgnoreCase);
-                isIgnored = r.IsMatch(IgnoredFields);
+                value = property.GetValue(EncapsulatedDto);
             }
             else
             {
-                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>(property) != null;
+                value = property.GetValue(EncapsulatedDto, null);
             }
-
-            return isIgnored;
+            return value;
         }
 
-        private bool HasPicture(PropertyInfo property)
+        private IBaseElement CreateBaseElement(Type propertyType, string rawName, object value)
         {
-            bool isPicture;
-            if (PictureFields != null)
+            //is datetime
+            if (propertyType == typeof(DateTime) ||
+                propertyType == typeof(DateTimeOffset))
             {
-                var r = new Regex(property.Name, RegexOptions.IgnoreCase);
-                isPicture = r.IsMatch(PictureFields);
+                var instance = CreateValueElementDateTime(propertyType, rawName, value);
+                return instance;
             }
-            else
+            //is enum
+            if (propertyType.IsEnum)
             {
-                isPicture = false;
-                //add picture attribute
-                // = GetPropertyAttribute<RenderIgnoreAttribute>(property) != null;
+                var instance = CreateValueElementEnumT(propertyType, rawName, value);
+                return instance;
+            }
+            //is primitive
+            if (propertyType.IsPrimitive ||
+                     typeof(IComparable).IsAssignableFrom(propertyType))
+            {
+                //is generic
+                var instance = CreateValueElementT(propertyType, rawName, value);
+                instance.IsPicture = HasPicture(rawName);
+                return instance;
             }
 
-            return isPicture;
+            //is array
+            if (typeof(IEnumerable).IsAssignableFrom(propertyType))
+            {
+                if (value != null)
+                {
+                    var instance = CreateArrayElement(rawName, value);
+                    return instance;
+                }
+
+                return null;
+            }
+
+            //is complex
+            if (value != null)
+            {
+                var complex = new ComplexElement(value);
+                return complex;
+            }
+
+            return null;
+
         }
 
-
-        private IValueElement CreateValueElementEnumT(Type propertyType, PropertyInfo property)
+        private ArrayElement CreateArrayElement(string rawName, object value)
         {
-            Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
-            var instance = (IValueElement) Activator.CreateInstance(genericType);
-            instance.RawName = property.Name;
-            instance.PropertyType = propertyType;
+            IEnumerable<object> collection = ((IList)value).Cast<object>().ToList();
+            var instance = new ArrayElement(collection)
+            {
+                RawName = rawName,
+            };
 
-            var data = property.GetValue(EncapsulatedDto, null);
-            instance.SetPropertyValue("Data", data);
+            int i = 0;
+            foreach (var item in collection)
+            {
+                var baseElement = CreateBaseElement(item.GetType(), $"{rawName}[{i}]", item);
+                instance.Items.Add(baseElement);
+                i++;
+            }
 
-            instance.RawData = data;
-            instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
 
-        private ValueElementDateTime CreateValueElementDateTime(Type propertyType, PropertyInfo property)
+
+        private ValueElementDateTime CreateValueElementDateTime(Type propertyType, string rawName, object value)
         {
             DateTime data; 
             bool isOffset = false;
@@ -197,19 +162,20 @@ namespace BlazorGenUI.Reflection
             {
                 isOffset = true;
                 propertyType = typeof(DateTime);
-                var dataWithOffset = (DateTimeOffset)property.GetValue(EncapsulatedDto, null);
+                var dataWithOffset = (DateTimeOffset)value;
                 data = dataWithOffset.DateTime;
             }
             else
             {
-                data = (DateTime)property.GetValue(EncapsulatedDto, null);
+                data = (DateTime)value;
             }
 
-          
-            var dateAttribute = (DateAttribute) property.GetCustomAttribute(typeof(DateAttribute));
+            
             DateTypes dateType;
+            var dateAttribute = GetPropertyAttribute<DateAttribute>();
             if (dateAttribute != null)
             {
+                
                 dateType = dateAttribute.GetDateType();
             }
             else
@@ -217,7 +183,7 @@ namespace BlazorGenUI.Reflection
                 dateType = DateTypes.DateTime;
             }
 
-            var instance = new ValueElementDateTime(property.Name,
+            var instance = new ValueElementDateTime(rawName,
                 propertyType,
                 dateType,
                 data,
@@ -227,19 +193,31 @@ namespace BlazorGenUI.Reflection
             return instance;
         }
 
-        private IValueElement CreateValueElementT(Type propertyType, PropertyInfo property)
+        private IValueElement CreateValueElementEnumT(Type propertyType, string rawName, object value)
+        {
+            Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
+            var instance = (IValueElement) Activator.CreateInstance(genericType);
+
+            instance.RawName = rawName;
+            instance.PropertyType = propertyType;
+            instance.SetPropertyValue("Data", value);
+            instance.RawData = value;
+            instance.PropertyChanged += HandlePropertyChanged;
+
+            return instance;
+        }
+
+        private IValueElement CreateValueElementT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementT<>).MakeGenericType(propertyType);
             var instance = (IValueElement) Activator.CreateInstance(genericType);
 
-            instance.RawName = property.Name;
+            instance.RawName = rawName;
             instance.PropertyType = propertyType;
-
-            var data = property.GetValue(EncapsulatedDto, null);
-            instance.SetPropertyValue("Data", data);
-
-            instance.RawData = data;
+            instance.SetPropertyValue("Data", value);
+            instance.RawData = value;
             instance.PropertyChanged += HandlePropertyChanged;
+
             return instance;
         }
 
@@ -269,13 +247,67 @@ namespace BlazorGenUI.Reflection
             }
         }
 
-        private T GetPropertyAttribute<T>(PropertyInfo prop) where T : class
+        private T GetPropertyAttribute<T>() where T : class
         {
-            var typeAttribute = prop
-                .GetCustomAttributes(true)
-                .ToList()
-                .Find(p => p.GetType() == typeof(T)) as T;
-            return typeAttribute;
+            return AttributeList?.Find(p => p.GetType() == typeof(T)) as T;;
+        }
+
+        private void ReorderChildren()
+        {
+            foreach (var item in Order)
+            {
+                var child = Children.FirstOrDefault(x =>
+                    x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
+                if (child != null)
+                {
+                    try
+                    {
+                        Children.Remove(child);
+                        Children.Insert(item.Value, child);
+                    }
+                    catch 
+                    {
+                        throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
+                    }
+                    
+                }
+                else
+                {
+                    throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Some of the provided elements cannot be found!");
+                }
+            }
+        }
+
+        private bool HasIgnore(string rawName)
+        {
+            bool isIgnored;
+            if (IgnoredFields != null)
+            {
+                var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                isIgnored = r.IsMatch(IgnoredFields);
+            }
+            else
+            {
+                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
+            }
+
+            return isIgnored;
+        }
+
+        private bool HasPicture(string rawName)
+        {
+            bool isPicture;
+            if (PictureFields != null)
+            {
+                var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                isPicture = r.IsMatch(PictureFields);
+            }
+            else
+            {
+                isPicture = GetPropertyAttribute<PictureAttribute>() != null;
+            }
+
+            return isPicture;
         }
     }
 }

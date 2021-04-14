@@ -6,8 +6,8 @@ namespace BlazorGenUI.Reflection
 {
     public class ArrayElement : IArrayElement 
     {
-        private IEnumerable<object> Array { get; set; }
-        private IList<IComplexElement> Items { get; set; } = new List<IComplexElement>();
+        internal IEnumerable<object> Array { get; set; }
+        internal IList<IBaseElement> Items { get; set; } = new List<IBaseElement>();
         public ArrayElement(IEnumerable<object> array)
         {
             Array = array;
@@ -15,15 +15,8 @@ namespace BlazorGenUI.Reflection
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
 
-        public IEnumerable<IComplexElement> GetItems()
+        public IEnumerable<IBaseElement> GetItems()
         {
-            foreach (var item in Array)
-            {
-                //osetri primitivne typy
-                var complex = new ComplexElement(item);
-                Items.Add(complex);
-            }
-
             return Items;
         }
     }

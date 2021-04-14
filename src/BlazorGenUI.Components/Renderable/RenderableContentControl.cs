@@ -37,6 +37,7 @@ namespace BlazorGenUI.Components.Renderable
         public string PictureFields { get; set; }
         [Parameter]
         public IDictionary<string, int> Order { get; set; }
+
         [Parameter]
         public EventCallback<bool> OnLoginSubmit  { get; set; }
 

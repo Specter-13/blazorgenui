@@ -39,7 +39,7 @@
         else
         {
             @RenderChildren(complexElement)
-    }
+        }
     };
 
 
@@ -96,7 +96,6 @@
                 col++;
             }
         </div>
-        
     };
 
 
@@ -105,7 +104,12 @@
 
         if (kid is IValueElement primitiveKid)
         {
-            if (primitiveKid.IsPicture)
+            if (Presentation == PresentationType.Display &&
+            primitiveKid.RawData == null)
+            {
+                //do not generate output
+            }
+            else if (primitiveKid.IsPicture)
             {
                 @GeneratePicture(primitiveKid)
             }
@@ -119,7 +123,7 @@
             var items = arrayKid.GetItems();
             foreach (var item in items)
             {
-                @RenderComponent(item)
+                @Generator(item)
             }
         }
         else

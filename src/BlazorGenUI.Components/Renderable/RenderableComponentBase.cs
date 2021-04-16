@@ -13,24 +13,5 @@ namespace BlazorGenUI.Components.Renderable
     public class RenderableComponentBase : ComponentBase, IRenderableComponent
     {
 
-        //public async Task UpdateValuesOnChangeAsync<T>(PropertyBaseDataT<T> tag)
-        //{
-
-        //    await Task.Run(() =>
-        //    {
-        //        (tag).PropertyChanged += HandlePropertyChanged<T>;
-
-        //    });
-        //}
-
-        //protected async void HandlePropertyChanged<T>(object sender, PropertyChangedEventArgs a)
-        //{
-        //    var castedSender = (PropertyBaseDataT<T>)sender;
-            
-
-        //    castedSender.Instance.SetPropertyValue(castedSender.RawName, castedSender.Data);
-        //    //sender.Instance.SetPropertyValue(sender.RawName, );
-        //    //await InvokeAsync(StateHasChanged);
-        //}
     }
 }

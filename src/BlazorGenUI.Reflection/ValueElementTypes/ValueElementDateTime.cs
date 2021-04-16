@@ -28,6 +28,7 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
         private DateTime _data;
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
+        public bool IsValueElement { get; set; }
         public Type PropertyType { get; set; }
         public bool IsPicture { get; set; }
         public bool IsDateTimeOffset { get; set; }

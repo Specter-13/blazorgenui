@@ -14,9 +14,19 @@ namespace BlazorGenUI.Reflection
         }
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
+        public bool IsValueElement { get; set; }
 
         public IEnumerable<IBaseElement> GetItems()
         {
+            if (Items.Count == 0 && Array != null)
+            {
+                foreach (var item in Array)
+                {
+                    var complex = new ComplexElement(item);
+                    Items.Add(complex);
+                }
+            }
+
             return Items;
         }
     }

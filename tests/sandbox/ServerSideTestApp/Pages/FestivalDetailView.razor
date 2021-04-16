@@ -5,12 +5,13 @@
 <h3>FestivalDetailView</h3>
 
 
-@if(Festival.BoolArray!=null)
+@if(Festival!=null)
 {
     <RenderableContentControl ContextBase="@Festival"
                               Presentation="PresentationType.Control"
                               Order="@Order"
-                              Layout="LayoutTypes.Grid4">
+                              Layout="LayoutTypes.Grid4"
+                              IgnoredFields="city, description">
 
     </RenderableContentControl>
 }
@@ -26,28 +27,11 @@
     {
         Order = new Dictionary<string, int>() {{"logouri", 0}};
 
-       // Festival = await FestivalService.GetFestivalDetail();
-        //Festival.BoolArray = new List<bool>();
+       Festival = await FestivalService.GetFestivalDetail();
+        
 
 
-        Festival = new FestivalDetailDto
-        {
-            Name = null,
-            Genre = MusicGenre.Rock,
-            Country = null,
-            LogoUri = null,
-            City = null,
-            Street = "cus",
-            Description = null,
-            StartTime = default,
-            EndTime = default,
-            BoolArray = new List<string>{"true","true","false","true","true","true","false"},
-            Price = 0,
-            Capacity = 0,
-            StageList = null,
-            FestivalInterpret = null
-
-        };
+       
 
 
 

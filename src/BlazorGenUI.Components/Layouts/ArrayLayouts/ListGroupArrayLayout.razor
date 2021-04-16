@@ -21,21 +21,23 @@
     [Parameter]
     public string DisplayedPropertyName { get; set; }
 
-    public IEnumerable<IComplexElement> Items { get; set; }
+    public IEnumerable<IBaseElement> Items { get; set; }
 
-  
 
     public RenderFragment RenderItem() => __builder =>
     {
-        Items = (IComplexElement[])ArrayElement.GetItems();
+        Items = ArrayElement.GetItems();
         @foreach (var item in Items)
         {
-            var selectedChild = GetValueElementByRawName(item, DisplayedPropertyName);
-            var id = GetValueElementByRawName(item, NavigationPropertyName);
-            if (selectedChild is IValueElement valueElement && id is IValueElement valueId)
+            if (item is IComplexElement complex)
             {
-                var href = $"{NavigationPrefix}{valueId.RawData}";
-                <a href="@href" class="list-group-item list-group-item-action">@valueElement.RawData</a>
+                var selectedChild = GetValueElementByRawName(complex, DisplayedPropertyName);
+                var id = GetValueElementByRawName(complex, NavigationPropertyName);
+                if (selectedChild is IValueElement valueElement && id is IValueElement valueId)
+                {
+                    var href = $"{NavigationPrefix}{valueId.RawData}";
+                    <a href="@href" class="list-group-item list-group-item-action">@valueElement.RawData</a>
+                }
             }
         }
     };

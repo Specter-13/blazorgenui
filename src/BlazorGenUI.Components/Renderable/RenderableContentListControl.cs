@@ -15,6 +15,7 @@ namespace BlazorGenUI.Components.Renderable
         [Parameter]
         public ArrayLayout Layout { get; set; }
 
+        
         [Parameter]
         public string LgaNavigationPrefix { get; set; }
 
@@ -23,6 +24,9 @@ namespace BlazorGenUI.Components.Renderable
         [Parameter]
         public string LgaDisplayedPropertyName { get; set; }
 
+
+        [Parameter]
+        public PresentationType TcPresentation { get; set; }
         [Parameter]
         public string TcTabPageNameProperty { get; set; }
    

@@ -35,6 +35,7 @@ namespace BlazorGenUI.Reflection
         private IList<IBaseElement> Children { get; set; } = new List<IBaseElement>();
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
+        public bool IsValueElement { get; set; }
 
         public IDictionary<string, int> Order { get; }
         public object EncapsulatedDto { get; set; }
@@ -42,7 +43,6 @@ namespace BlazorGenUI.Reflection
         public string PictureFields { get; }
 
         private List<object> AttributeList { get; set; }
-
         public IEnumerable<IBaseElement> GetChildren()
         {
             var listOfProperties = EncapsulatedDto?.GetType().GetRuntimeProperties();
@@ -53,13 +53,14 @@ namespace BlazorGenUI.Reflection
                 {
                     AttributeList = property.GetCustomAttributes(true)?.ToList();
 
-                    if (HasIgnore(property.Name)) continue;
 
                     var value = GetPropertyValue(property);
                     var child = CreateBaseElement(property.PropertyType, property.Name, value);
+                    
 
                     if (child != null)
                     {
+                 
                         Children.Add(child);
                     }
 
@@ -86,7 +87,77 @@ namespace BlazorGenUI.Reflection
             return value;
         }
 
-        private IBaseElement CreateBaseElement(Type propertyType, string rawName, object value)
+       
+
+        private void ReorderChildren()
+        {
+            foreach (var item in Order)
+            {
+                var child = Children.FirstOrDefault(x =>
+                    x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
+                if (child != null)
+                {
+                    try
+                    {
+                        Children.Remove(child);
+                        Children.Insert(item.Value, child);
+                    }
+                    catch 
+                    {
+                        throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
+                    }
+                    
+                }
+                else
+                {
+                    throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Some of the provided elements cannot be found!");
+                }
+            }
+        }
+
+        protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs a)
+        {
+            var castedSender = (IValueElement) sender;
+            var data = castedSender.GetPropertyValue("Data");
+
+            if (castedSender.PropertyType == typeof(DateTime))
+            {
+                HandleDateTimeOffsetChange(castedSender);
+            }
+            else
+            {
+                EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
+            }
+        }
+
+        private void HandleDateTimeOffsetChange(IValueElement castedSender)
+        {
+            var castedSenderDateTime = (ValueElementDateTime) castedSender;
+            if (castedSenderDateTime.IsDateTimeOffset)
+            {
+                var utcTime1 = DateTime.SpecifyKind(castedSenderDateTime.Data, DateTimeKind.Utc);
+                DateTimeOffset utcTime2 = utcTime1;
+                EncapsulatedDto.SetPropertyValue(castedSender.RawName, utcTime2);
+            }
+        }
+
+        private bool HasIgnore(string rawName)
+        {
+            bool isIgnored;
+            if (IgnoredFields != null)
+            {
+                var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                isIgnored = r.IsMatch(IgnoredFields);
+            }
+            else
+            {
+                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
+            }
+
+            return isIgnored;
+        }
+
+         public IBaseElement CreateBaseElement(Type propertyType, string rawName, object value)
         {
             //is datetime
             if (propertyType == typeof(DateTime) ||
@@ -107,7 +178,6 @@ namespace BlazorGenUI.Reflection
             {
                 //is generic
                 var instance = CreateValueElementT(propertyType, rawName, value);
-                instance.IsPicture = HasPicture(rawName);
                 return instance;
             }
 
@@ -127,6 +197,7 @@ namespace BlazorGenUI.Reflection
             if (value != null)
             {
                 var complex = new ComplexElement(value);
+                complex.IsIgnored = HasIgnore(rawName);
                 return complex;
             }
 
@@ -134,7 +205,7 @@ namespace BlazorGenUI.Reflection
 
         }
 
-        private ArrayElement CreateArrayElement(string rawName, object value)
+         public ArrayElement CreateArrayElement(string rawName, object value)
         {
             IEnumerable<object> collection = ((IList)value).Cast<object>().ToList();
             var instance = new ArrayElement(collection)
@@ -149,12 +220,12 @@ namespace BlazorGenUI.Reflection
                 instance.Items.Add(baseElement);
                 i++;
             }
-
+            instance.IsIgnored = HasIgnore(rawName);
             return instance;
         }
 
 
-        private ValueElementDateTime CreateValueElementDateTime(Type propertyType, string rawName, object value)
+         public ValueElementDateTime CreateValueElementDateTime(Type propertyType, string rawName, object value)
         {
             DateTime data; 
             bool isOffset = false;
@@ -189,11 +260,13 @@ namespace BlazorGenUI.Reflection
                 data,
                 isOffset
             );
+            instance.IsValueElement = true;
+            instance.IsIgnored = HasIgnore(rawName);
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
 
-        private IValueElement CreateValueElementEnumT(Type propertyType, string rawName, object value)
+         public IValueElement CreateValueElementEnumT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
             var instance = (IValueElement) Activator.CreateInstance(genericType);
@@ -202,112 +275,53 @@ namespace BlazorGenUI.Reflection
             instance.PropertyType = propertyType;
             instance.SetPropertyValue("Data", value);
             instance.RawData = value;
+            instance.IsValueElement = true;
+            instance.IsIgnored = HasIgnore(rawName);
             instance.PropertyChanged += HandlePropertyChanged;
 
             return instance;
         }
 
-        private IValueElement CreateValueElementT(Type propertyType, string rawName, object value)
+         public IValueElement CreateValueElementT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementT<>).MakeGenericType(propertyType);
             var instance = (IValueElement) Activator.CreateInstance(genericType);
 
+            instance.IsPicture = HasPicture(rawName);
             instance.RawName = rawName;
             instance.PropertyType = propertyType;
             instance.SetPropertyValue("Data", value);
             instance.RawData = value;
+            instance.IsValueElement = true;
+            instance.IsIgnored = HasIgnore(rawName);
             instance.PropertyChanged += HandlePropertyChanged;
 
             return instance;
         }
 
-        protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs a)
-        {
-            var castedSender = (IValueElement) sender;
-            var data = castedSender.GetPropertyValue("Data");
+      
 
-            if (castedSender.PropertyType == typeof(DateTime))
-            {
-                HandleDateTimeOffsetChange(castedSender);
-            }
-            else
-            {
-                EncapsulatedDto.SetPropertyValue(castedSender.RawName, data);
-            }
-        }
-
-        private void HandleDateTimeOffsetChange(IValueElement castedSender)
-        {
-            var castedSenderDateTime = (ValueElementDateTime) castedSender;
-            if (castedSenderDateTime.IsDateTimeOffset)
-            {
-                var utcTime1 = DateTime.SpecifyKind(castedSenderDateTime.Data, DateTimeKind.Utc);
-                DateTimeOffset utcTime2 = utcTime1;
-                EncapsulatedDto.SetPropertyValue(castedSender.RawName, utcTime2);
-            }
-        }
-
-        private T GetPropertyAttribute<T>() where T : class
+         public T GetPropertyAttribute<T>() where T : class
         {
             return AttributeList?.Find(p => p.GetType() == typeof(T)) as T;;
         }
 
-        private void ReorderChildren()
-        {
-            foreach (var item in Order)
-            {
-                var child = Children.FirstOrDefault(x =>
-                    x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
-                if (child != null)
-                {
-                    try
-                    {
-                        Children.Remove(child);
-                        Children.Insert(item.Value, child);
-                    }
-                    catch 
-                    {
-                        throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
-                    }
-                    
-                }
-                else
-                {
-                    throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Some of the provided elements cannot be found!");
-                }
-            }
-        }
+         private bool HasPicture(string rawName)
+         {
+             bool isPicture;
+             if (PictureFields != null)
+             {
+                 var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                 isPicture = r.IsMatch(PictureFields);
+             }
+             else
+             {
+                 isPicture = GetPropertyAttribute<PictureAttribute>() != null;
+             }
 
-        private bool HasIgnore(string rawName)
-        {
-            bool isIgnored;
-            if (IgnoredFields != null)
-            {
-                var r = new Regex(rawName, RegexOptions.IgnoreCase);
-                isIgnored = r.IsMatch(IgnoredFields);
-            }
-            else
-            {
-                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
-            }
+             return isPicture;
+         }
 
-            return isIgnored;
-        }
-
-        private bool HasPicture(string rawName)
-        {
-            bool isPicture;
-            if (PictureFields != null)
-            {
-                var r = new Regex(rawName, RegexOptions.IgnoreCase);
-                isPicture = r.IsMatch(PictureFields);
-            }
-            else
-            {
-                isPicture = GetPropertyAttribute<PictureAttribute>() != null;
-            }
-
-            return isPicture;
-        }
+       
     }
 }

@@ -9,13 +9,16 @@
 
 @if (Festivals != null)
 {
-    <RenderableContentListControl ContextList="@Festivals" Layout="ArrayLayout.Table">
+    <RenderableContentListControl 
+        ContextList="@Festivals" 
+        Layout="ArrayLayout.Table">
     </RenderableContentListControl>
 
 
     <RenderableContentListControl ContextList="@Users" 
                                   Layout="ArrayLayout.Tabs"
-                                  TcTabPageNameProperty="Name">
+                                  TcTabPageNameProperty="Name"
+                                  TcPresentation="PresentationType.Control">
     </RenderableContentListControl>
 
 

@@ -7,17 +7,20 @@
         <div class="content">
             @foreach (var item in Items)
             {
-                var tabName = @item.EncapsulatedDto.TryGetPropertyValue(TabNameProperty);
-                if (tabName == null)
+                if (item is IComplexElement complex)
                 {
-                    throw new IncorrectTabNameException($"Error! Property with name {TabNameProperty} doesn't exists! Make sure you wrote correct property name!");
-                }
-                <TabPage Text="@tabName.ToString()">
+                    var tabName = @complex.EncapsulatedDto.TryGetPropertyValue(TabNameProperty);
+                    if (tabName == null)
+                    {
+                        throw new IncorrectTabNameException($"Error! Property with name {TabNameProperty} doesn't exists! Make sure you wrote correct property name!");
+                    }
+                    <TabPage Text="@tabName.ToString()">
 
-                    <RenderableContentControl
-                        ContextBase="@item.EncapsulatedDto"
-                        Presentation="PresentationType.Control"/>
-                </TabPage>
+                        <RenderableContentControl
+                            ContextBase="@complex.EncapsulatedDto"
+                            Presentation="@Presentation"/>
+                    </TabPage>
+                }
             }
         </div>
     </TabControl>
@@ -30,13 +33,15 @@
     public ArrayElement ArrayElement { get; set; }
     [Parameter]
     public string TabNameProperty { get; set; }
-    public IEnumerable<IComplexElement> Items { get; set; }
+    [Parameter]
+    public PresentationType Presentation { get; set; }
+    public IEnumerable<IBaseElement> Items { get; set; }
 
 
     protected override void OnInitialized()
     {
         
-        Items = (IComplexElement[])ArrayElement.GetItems();
+        Items = ArrayElement.GetItems();
   
     }
 }

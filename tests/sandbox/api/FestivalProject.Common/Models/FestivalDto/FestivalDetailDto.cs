@@ -28,9 +28,9 @@ namespace FestivalProject.BL.Models.FestivalDto
         
         public int Capacity { get; set; }
 
-        [RenderIgnore]
+       
         public IList<StageForFestivalDto> StageList { get; set; }
-        [RenderIgnore]
+     
         public IList<FestivalInterpretForFestivalDto> FestivalInterpret { get; set; }
 
         

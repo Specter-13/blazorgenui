@@ -66,5 +66,29 @@ namespace ReflectionTests
             Assert.Equal(expectedNumber, actualNumber);
         }
 
+        [Fact]
+        public void GetKids_TestArray_ReturnsCountEqual()
+        {
+            //Arrange
+            var testEnum = _fixture.TestArray;
+            var expectedNumber = testEnum.GetType().GetProperties().Length;
+            //Act
+            var actualNumber = (new ComplexElement(_fixture.TestArray)).GetChildren().Count();
+            //Assert
+            Assert.Equal(expectedNumber, actualNumber);
+        }
+
+        [Fact]
+        public void GetKids_TestDateTimeOffset_ReturnsCountEqual()
+        {
+            //Arrange
+            var testEnum = _fixture.TestDateTimeOffset;
+            var expectedNumber = testEnum.GetType().GetProperties().Length;
+            //Act
+            var actualNumber = (new ComplexElement(_fixture.TestDateTimeOffset)).GetChildren().Count();
+            //Assert
+            Assert.Equal(expectedNumber, actualNumber);
+        }
+
     }
 }

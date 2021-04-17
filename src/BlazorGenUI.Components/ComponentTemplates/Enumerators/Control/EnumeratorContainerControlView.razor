@@ -1,18 +1,28 @@
-﻿
-@using BlazorGenUI.Components.RawComponents
-@inherits RenderableComponentBase
+﻿@inherits RenderableComponentBase
 @typeparam T
 
+<div>
+    <label>@(ValueElement.AttributeName??ValueElement.RawName)</label>
+</div>
+@if (ValueElement.IsRadio)
+{
+    @foreach (var name in Names)
+    {
 
+        <input type="radio" value="@name"
+               checked="@(ValueElement.Data.ToString().Equals(name))"
+               @onchange="ValueChanged"/>
+        <label>@name</label>
+
+    }
+}
+else
+{
 <EditForm Model="@ValueElement.Data">
     <div>
-        <label>@ValueElement.RawName</label>
-    </div>
-    <div>
         <InputSelectEnum @bind-Value="ValueElement.Data" class="w-100 form-select">
-
         </InputSelectEnum>
-       
-
     </div>
 </EditForm>
+
+}

@@ -32,7 +32,7 @@ namespace BlazorGenUI.Tests
             var __builder = new RenderTreeBuilder();
 
             //Act
-            _fixture.RenderableContent.HandleLayout();
+            _fixture.RenderableContent.TrySetLayout();
             var renderer = _fixture.RenderableContent.RenderComponent(complex);
             renderer.Invoke(__builder);
             var frames = __builder.GetFrames();
@@ -55,8 +55,9 @@ namespace BlazorGenUI.Tests
             var complex = new ComplexElement(_fixture.TestPrimitive,
                 ignoredFields,
                 null,
+                null,
                 null);
-            var expectedCount = 3;
+            var expectedCount = 7;
             var __builder = new RenderTreeBuilder();
 
 
@@ -82,7 +83,8 @@ namespace BlazorGenUI.Tests
             var complex = new ComplexElement(_fixture.TestPrimitive,
                 null,
                 null,
-                order);
+                order,
+                null);
 
 
             //Act
@@ -106,7 +108,8 @@ namespace BlazorGenUI.Tests
             var complex = new ComplexElement(_fixture.TestPrimitive,
                 null,
                 null,
-                order);
+                order,
+                null);
 
             //Act
             //Assert
@@ -125,7 +128,8 @@ namespace BlazorGenUI.Tests
             var complex = new ComplexElement(_fixture.TestPrimitive,
                 null,
                 null,
-                order);
+                order,
+                null);
 
             //Act
             //Assert

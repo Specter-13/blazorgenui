@@ -2,10 +2,18 @@
 @typeparam T
 <div class=" form-group">
     <div>
-        <label>@ValueElement.RawName</label>
+        <label>@(ValueElement.AttributeName??ValueElement.RawName)</label>
     </div>
     <div >
-        <input type="text" class="w-100 form-control"
-               @bind="@ValueElement.Data" />
+        @if (IsNumeric(ValueElement.PropertyType)) 
+        {
+            <input type="number" class="w-100 form-control"
+                   @bind="@ValueElement.Data"/>
+        }
+        else
+        {
+            <input type="text" class="w-100 form-control"
+                   @bind="@ValueElement.Data"/>
+        }
     </div>
 </div>

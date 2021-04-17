@@ -24,20 +24,27 @@ namespace BlazorGenUI.Reflection
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
         }
-        public ComplexElement(object context, string ignoredFields, string pictureFields, IDictionary<string,int> order)
+        public ComplexElement(object context, 
+            string ignoredFields, 
+            string pictureFields, 
+            IDictionary<string,int> order,
+            IDictionary<string,string> labels)
         {
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
             IgnoredFields = ignoredFields;
             PictureFields = pictureFields;
             Order = order;
+            Labels = labels;
         }
         private IList<IBaseElement> Children { get; set; } = new List<IBaseElement>();
+        public string AttributeName { get; set; }
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
         public bool IsValueElement { get; set; }
 
         public IDictionary<string, int> Order { get; }
+        public IDictionary<string, string> Labels { get; }
         public object EncapsulatedDto { get; set; }
         public string IgnoredFields { get; }
         public string PictureFields { get; }
@@ -53,14 +60,13 @@ namespace BlazorGenUI.Reflection
                 {
                     AttributeList = property.GetCustomAttributes(true)?.ToList();
 
-
+                    var rawName = property.Name;
                     var value = GetPropertyValue(property);
-                    var child = CreateBaseElement(property.PropertyType, property.Name, value);
-                    
-
+                    var child = CreateBaseElement(property.PropertyType, rawName, value);
                     if (child != null)
                     {
-                 
+                        child.IsIgnored = HasIgnore(rawName);
+                        child.AttributeName = GetCustomPropertyName(rawName);
                         Children.Add(child);
                     }
 
@@ -138,6 +144,10 @@ namespace BlazorGenUI.Reflection
                 var utcTime1 = DateTime.SpecifyKind(castedSenderDateTime.Data, DateTimeKind.Utc);
                 DateTimeOffset utcTime2 = utcTime1;
                 EncapsulatedDto.SetPropertyValue(castedSender.RawName, utcTime2);
+            }
+            else
+            {
+                EncapsulatedDto.SetPropertyValue(castedSender.RawName, castedSenderDateTime.Data);
             }
         }
 
@@ -220,7 +230,6 @@ namespace BlazorGenUI.Reflection
                 instance.Items.Add(baseElement);
                 i++;
             }
-            instance.IsIgnored = HasIgnore(rawName);
             return instance;
         }
 
@@ -261,7 +270,6 @@ namespace BlazorGenUI.Reflection
                 isOffset
             );
             instance.IsValueElement = true;
-            instance.IsIgnored = HasIgnore(rawName);
             instance.PropertyChanged += HandlePropertyChanged;
             return instance;
         }
@@ -276,7 +284,7 @@ namespace BlazorGenUI.Reflection
             instance.SetPropertyValue("Data", value);
             instance.RawData = value;
             instance.IsValueElement = true;
-            instance.IsIgnored = HasIgnore(rawName);
+            instance.IsRadio = (GetPropertyAttribute<RadioButtonsEnumAttribute>() != null);
             instance.PropertyChanged += HandlePropertyChanged;
 
             return instance;
@@ -293,7 +301,6 @@ namespace BlazorGenUI.Reflection
             instance.SetPropertyValue("Data", value);
             instance.RawData = value;
             instance.IsValueElement = true;
-            instance.IsIgnored = HasIgnore(rawName);
             instance.PropertyChanged += HandlePropertyChanged;
 
             return instance;
@@ -320,6 +327,29 @@ namespace BlazorGenUI.Reflection
              }
 
              return isPicture;
+         }
+
+         private string GetCustomPropertyName(string rawName)
+         {
+             string value;
+             if (Labels != null)
+             {
+                 if (Labels.TryGetValue(rawName, out value))
+                 {
+                     return value;
+                 }
+
+             }
+             else
+             {
+                 var nameAttribute = GetPropertyAttribute<AttributeName>();
+                 if(nameAttribute != null) return nameAttribute.GetCustomName();
+             }
+
+             return null;
+             
+
+
          }
 
        

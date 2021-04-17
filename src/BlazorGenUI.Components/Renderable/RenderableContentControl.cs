@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Enums;
+using BlazorGenUI.Reflection.Exceptions;
 using BlazorGenUI.Reflection.Interfaces;
 using BlazorGenUI.Reflection.Models;
 using BlazorGenUI.Reflection.Providers;
+using BlazorGenUI.Reflection.Services;
 using Fasterflect;
 using Microsoft.AspNetCore.Components;
 
@@ -18,47 +20,51 @@ namespace BlazorGenUI.Components.Renderable
     public partial class RenderableContentControl : ComponentBase
     {
         [Parameter]
-        public object ContextBase { get; set; }
-        
-        
+        public object Context { get; set; }
         [Parameter]
         public PresentationType Presentation { get; set; }
-
-
         [Parameter] 
         public LayoutTypes Layout { get; set; } = LayoutTypes.Default;
-
         [Parameter]
         public string IgnoredFields { get; set; }
-
         [Parameter] 
         public Template Template { get; set; } = Template.None;
         [Parameter]
         public string PictureFields { get; set; }
         [Parameter]
         public IDictionary<string, int> Order { get; set; }
-
+        [Parameter]
+        public IDictionary<string, string> Labels { get; set; }
         [Parameter]
         public EventCallback<bool> OnLoginSubmit  { get; set; }
 
+        [Inject]
+        public ViewTemplateProvider ViewTemplateProvider { get; set; } 
+        [Inject]
+        public LayoutProvider LayoutProvider { get; set; } 
+
+        [Inject]
+        public ComponentService ComponentService { get; set; }
+
         public IComplexElement Wrapper { get; set; } 
         public Type LayoutComponentType { get; set; }
-
-
-        public ViewTemplateProvider ViewTemplateProvider { get; set; } = new ViewTemplateProvider();
-        public LayoutProvider LayoutProvider { get; set; } = new LayoutProvider();
-        public ComponentService ComponentService { get; set; } = new ComponentService();
         
 
         protected override void OnInitialized()
         {
+            if (Context == null)
+            {
+                throw new ContextNullException(
+                    "Error! Context cannot be null! Make sure to render UI after context is set!");
+            }
+
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            HandleLayout();
-            Wrapper = new ComplexElement(ContextBase, IgnoredFields, PictureFields, Order);
+            TrySetLayout();
+            Wrapper = new ComplexElement(Context, IgnoredFields, PictureFields, Order, Labels);
            
         }
 
-        public void HandleLayout()
+        public void TrySetLayout()
         {
             if (Layout != LayoutTypes.Default)
             {
@@ -68,11 +74,10 @@ namespace BlazorGenUI.Components.Renderable
             else 
             { 
 
-                var layoutAttribute = GetAttribute<ContainerAttribute>(ContextBase);
+                var layoutAttribute = GetAttribute<ContainerAttribute>(Context);
                 if (layoutAttribute != null)
                 {
-                    var layout = layoutAttribute.GetLayout();
-                    var layoutInfo = LayoutProvider.GetLayoutInfo(layout);
+                    var layoutInfo = LayoutProvider.GetLayoutInfo(layoutAttribute.GetLayout());
                     LayoutComponentType = ComponentService.GetLayoutComponentType(layoutInfo.fullTypeName);
                 }
             }

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Interfaces;
 
-namespace BlazorGenUI.Reflection
+namespace BlazorGenUI.Reflection.Services
 {
     public class ComponentService 
     {

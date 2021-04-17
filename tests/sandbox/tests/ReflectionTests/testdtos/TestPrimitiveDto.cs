@@ -18,6 +18,11 @@ namespace BlazorGenUI.Tests.testdtos
         public string City { get; set; }
         public bool IsFestival { get; set; }
         public DateTime Date { get; set; }
+        public Single SingleNumber { get; set; }
+        public float FloatNumber { get; set; }
+        public double DoubleNumber { get; set; }
+        public int IntNumber { get; set; }
+
         
     }
 }

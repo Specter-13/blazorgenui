@@ -9,7 +9,7 @@
 
 @if (Detail != null)
 {
-    <RenderableContentControl ContextBase="@Detail"
+    <RenderableContentControl Context="@Detail"
                               Template="Template.DetailView">
                              
     </RenderableContentControl>
@@ -18,7 +18,7 @@
 @if (Login != null)
 {
 
-    <RenderableContentControl ContextBase="@Login"
+    <RenderableContentControl Context="@Login"
                               Template="Template.LoginView"
                               OnLoginSubmit="OnLogin">
                              

@@ -6,7 +6,7 @@
 
 @if (User != null)
 {
-    <RenderableContentControl ContextBase="@User"
+    <RenderableContentControl Context="@User"
                               Presentation="PresentationType.Control"
                               Layout="LayoutTypes.Wrap"
                               IgnoredFields="ReservationList,username,password">

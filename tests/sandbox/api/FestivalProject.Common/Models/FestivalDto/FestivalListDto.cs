@@ -16,16 +16,24 @@ namespace FestivalProject.BL.Models.FestivalDto
         [RenderIgnore]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        
+        [AttributeName("Zaner")]
+        [RadioButtonsEnum]
         public MusicGenre Genre { get; set; }
         public string Country { get; set; }
         [RenderIgnore]
         public string LogoUri { get; set; }
         public string City { get; set; }
         public bool IsFestival { get; set; }
-        //[Date(DateTypes.Date)] 
+
+        [Date(DateTypes.DateTime)]
+        public DateTime DateTimeVar { get; set; }
+
+        [Date(DateTypes.Date)]
         public DateTime Date { get; set; }
-        public DateTimeOffset Date2 { get; set; }
+
+        [Date(DateTypes.TimeOfDay)]
+        public DateTime TimeOfDay { get; set; }
+        public DateTimeOffset DatOffset { get; set; }
 
     }
 }

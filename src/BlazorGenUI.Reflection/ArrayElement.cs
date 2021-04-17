@@ -12,6 +12,8 @@ namespace BlazorGenUI.Reflection
         {
             Array = array;
         }
+
+        public string AttributeName { get; set; }
         public string RawName { get; set; }
         public bool IsIgnored { get; set; }
         public bool IsValueElement { get; set; }

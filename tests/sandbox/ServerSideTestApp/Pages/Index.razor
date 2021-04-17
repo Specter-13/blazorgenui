@@ -2,7 +2,6 @@
 @using BlazorGenUI.Reflection.Enums
 @using FestivalProject.BL.Models.FestivalDto
 @using FestivalProject.BL.Models.StageDto
-@using ObjectsClassLibrary
 @using ServerSideTestApp.Services
 
 
@@ -18,13 +17,15 @@
 @if (Festivals != null)
 {
   
-    <RenderableContentControl ContextBase="@Pohoda" 
+    <RenderableContentControl Context="@Pohoda" 
                               Presentation="PresentationType.Control"
+                    
+                              
     >
     </RenderableContentControl>
 
-    <RenderableContentControl ContextBase="@Pohoda" 
-                              Presentation="PresentationType.Display"
+    <RenderableContentControl Context="@Stage" 
+                              Presentation="PresentationType.Control"
     >
     </RenderableContentControl>
     
@@ -36,7 +37,7 @@
 
 @if (GithubUser != null)
 {
-    <RenderableContentControl ContextBase="@GithubUser" 
+    <RenderableContentControl Context="@GithubUser" 
                               Presentation="PresentationType.Display"
                               IgnoredFields="Blog"
     >
@@ -44,7 +45,12 @@
 
     <p>@GithubUser.Name</p>
 }
-
+@if (Test != null)
+{
+    <RenderableContentControl Context="@Test"
+                              Presentation="PresentationType.Control">
+    </RenderableContentControl>
+}
 
 @code
 {
@@ -59,7 +65,7 @@
     public IEnumerable<FestivalListDto> Festivals { get; set; }
     public StageDetailDto Stage { get; set; }
     public FestivalListDto Pohoda { get; set; }
-
+    public TestClass Test { get; set; }
 
     private User GithubUser { get; set; }
     private void Update()
@@ -68,7 +74,8 @@
         var stage = Stage;
         
     }
-
+    private Dictionary<string,string> CustomNames { get; set; }
+    
     
     public bool IsChecked { get; set; }
 
@@ -78,7 +85,19 @@
         Festivals = (await FestivalService.GetFestivalList()).ToList();
         Stage = (await StageService.GetStageDetail());
         Pohoda = Festivals.First();
+        Test = new TestClass {Generic = "This is generic UI element.", Boolean = false};
+        CustomNames = new Dictionary<string, string>
+        {
+            {"Name", "Nazov festivalu:"},
+            {"City", "Mesto:"}
+        };
     }
 
+    public class TestClass 
+    {
+      
+        public string Generic { get; set; }
+        public bool Boolean { get; set; }
 
+    }
 }

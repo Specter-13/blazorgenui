@@ -2,7 +2,7 @@
 <div class="form-group">
     
     <div>
-        <label>@ValueElement.RawName</label>
+        <label>@(ValueElement.AttributeName??ValueElement.RawName)</label>
     </div>
     @if (ValueElement.DateType == DateTypes.Date)
     {
@@ -18,20 +18,20 @@
     {
         <div class="w-100">
             <input class="w-100 form-control"
-                   type="text"
+                   type="time"
                    id="time"
                    name="onlineTime"
-                   @bind="ValueElement.Data">
+                   @bind="@ValueElement.Data">
         </div>
     }
-    else
+    else if (ValueElement.DateType == DateTypes.DateTime)
     {
         <div class="w-100">
             <input class="w-100 form-control"
-                   type="datetime"
-                   id="time"
-                   name="onlineTime"
-                   @bind="ValueElement.Data">
+                   type="datetime-local"
+                   id="datetime"
+                   @bind="@ValueElement.Data"
+                   @bind:format="yyyy-MM-ddTHH:mm">
         </div>
     }
 

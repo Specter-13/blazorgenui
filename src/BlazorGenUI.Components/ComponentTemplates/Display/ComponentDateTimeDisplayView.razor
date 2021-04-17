@@ -3,7 +3,7 @@
 <div class="form-group">
     
     <div>
-        <label>@ValueElement.RawName</label>
+        <label>@(ValueElement.AttributeName??ValueElement.RawName)</label>
     </div>
     @if (ValueElement.DateType == DateTypes.Date)
     {

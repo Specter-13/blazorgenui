@@ -103,10 +103,17 @@ namespace BlazorGenUI.Reflection
                     x.RawName.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
                 if (child != null)
                 {
+                    var currentIndex = Children.IndexOf(child);
+                    var newIndex = item.Value;
                     try
                     {
+                        if (currentIndex < newIndex)
+                        {
+                            newIndex--;
+                        }
                         Children.Remove(child);
-                        Children.Insert(item.Value, child);
+                        Children.Insert(newIndex, child);
+                        
                     }
                     catch 
                     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.Attributes;
@@ -15,6 +16,7 @@ using BlazorGenUI.Reflection.Services;
 using Fasterflect;
 using Microsoft.AspNetCore.Components;
 
+[assembly: InternalsVisibleTo("BlazorGenUI.Tests")]
 namespace BlazorGenUI.Components.Renderable
 {
     public partial class RenderableContentControl : ComponentBase
@@ -41,8 +43,7 @@ namespace BlazorGenUI.Components.Renderable
         [Inject]
         public ViewTemplateProvider ViewTemplateProvider { get; set; } 
         [Inject]
-        public LayoutProvider LayoutProvider { get; set; } 
-
+        public LayoutProvider LayoutProvider { get; set; }
         [Inject]
         public ComponentService ComponentService { get; set; }
 
@@ -64,7 +65,7 @@ namespace BlazorGenUI.Components.Renderable
            
         }
 
-        public void TrySetLayout()
+        internal void TrySetLayout()
         {
             if (Layout != LayoutTypes.Default)
             {
@@ -83,14 +84,14 @@ namespace BlazorGenUI.Components.Renderable
             }
         }
 
-        public IRenderableComponent ViewBaseLocatorBuilder(string primitiveTypeName, PresentationType presentationType)
+        internal IRenderableComponent ViewBaseLocatorBuilder(string primitiveTypeName, PresentationType presentationType)
         {
             var buildedComponentName = $"Component{primitiveTypeName}{presentationType}View";
             return ComponentService.GetComponent(buildedComponentName);
 
         }
 
-        public IRenderableComponent ViewGenericBaseLocatorBuilder(string genericName, PresentationType presentationType, Type typeArg, bool isEnum)
+        internal IRenderableComponent ViewGenericBaseLocatorBuilder(PresentationType presentationType, Type typeArg, bool isEnum)
         {
             string buildedComponentName;
             if (isEnum)
@@ -110,7 +111,7 @@ namespace BlazorGenUI.Components.Renderable
             return typeAttribute;
         }
 
-        private IRenderableComponent ViewComplexLocatorBuilder(Template viewTemplate)
+        internal IRenderableComponent ViewComplexLocatorBuilder(Template viewTemplate)
         {
             if (viewTemplate == Template.None) return null;
 

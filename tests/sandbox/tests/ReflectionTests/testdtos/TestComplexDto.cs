@@ -5,8 +5,8 @@ namespace BlazorGenUI.Tests.testdtos
 {
     public class TestComplexDto 
     {
-        public string Name { get; set; }
-        public int Capacity { get; set; }
-        public FestivalListDto Festival { get; set; }
+        public ComplexType Complex1 { get; set; }
+        public ComplexType Complex2 { get; set; }
+        public ComplexType Complex3 { get; set; }
     }
 }

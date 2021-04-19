@@ -5,90 +5,94 @@ using System.Reflection;
 using BlazorGenUI.Components.Renderable;
 using BlazorGenUI.Reflection.Providers;
 using BlazorGenUI.Reflection.Services;
+using BlazorGenUI.Tests;
 using BlazorGenUI.Tests.testdtos;
 using FestivalProject.DAL.Enums;
 
-namespace ReflectionTests
+namespace BlazorGenUI.Tests
 {
     public class BlazorGenUITestsFixture
     {
         public BlazorGenUITestsFixture()
         {
-            RenderableContent = new RenderableContentControl();
-            RenderableContent.ComponentService = new ComponentService();
-            RenderableContent.LayoutProvider = new LayoutProvider();
-            RenderableContent.ViewTemplateProvider = new ViewTemplateProvider();
+            RenderableContent = new RenderableContentControl
+            {
+                ComponentService = new ComponentService(),
+                LayoutProvider = new LayoutProvider(),
+                ViewTemplateProvider = new ViewTemplateProvider()
+            };
             RenderableContent.ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             SeedTestData();
         }
        
         public RenderableContentControl RenderableContent { get; set; }
         public TestComplexDto TestComplex { get; set; }
-        public TestFromTemplateDto TestFromTemplate { get; set; }
-        public TestDateAttributesDto TestDateAttributes { get; set; }
-        public TestEnumDto TestEnum { get; set; }
+        public TestMixedDto TestMixed { get; set; }
         public TestPrimitiveDto TestPrimitive{ get; set; }
-        public TestDateTimeOffset TestDateTimeOffset { get; set; }
         public TestArrayDto TestArray { get; set; }
+        public TestAttributeDto TestAttribute { get; set; }
 
         private void SeedTestData()
         {
             TestComplex = new TestComplexDto
             {
-                Name = "TestComplex",
-                Capacity = 20,
-                Festival = new FestivalProject.BL.Models.FestivalDto.FestivalListDto
+              
+                Complex1 = new ComplexType
                 {
-                    Name = "TestFestival",
-                    Genre = MusicGenre.Pop,
-                    Country = "Argentina",
-                    LogoUri = "logo",
-                    City = "Bueno Aires",
-                    IsFestival = true,
-                    Date = default,
+                    Name = "complex1",
+                    Country = "slovakia",
+                    Genre = EnumType.Value1
+                },
+
+                Complex2 = new ComplexType
+                {
+                    Name = "complex2",
+                    Country = "czech",
+                    Genre = EnumType.Value1
+                },
+
+                Complex3 = new ComplexType
+                {
+                    Name = "complex3",
+                    Country = "poland",
+                    Genre = EnumType.Value1
                 }
+
             };
 
-            TestFromTemplate = new TestFromTemplateDto
-            {
-                Name = "TestFestivalFromTemplate",
-                Genre = MusicGenre.Pop,
-                Country = "Argentina",
-                LogoUri = "logo",
-                City = "Bueno Aires",
-                IsFestival = true,
-                Date = default,
-            };
 
-            TestDateAttributes = new TestDateAttributesDto
+            TestMixed = new TestMixedDto
             {
                 Date = default,
-                Date2 = default,
-                Date3 = default
-            };
+                Name = "mixed",
+                IsFestival = false,
+                Complex1 = new ComplexType
+                {
+                    Name = "complex1",
+                    Country = "slovakia",
+                    Genre = EnumType.Value1
+                },
 
-            TestEnum = new TestEnumDto
-            {
-                Genre = MusicGenre.Rock
+                Complex2 = new ComplexType
+                {
+                    Name = "complex2",
+                    Country = "czech",
+                    Genre = EnumType.Value1
+                },
             };
 
             TestPrimitive = new TestPrimitiveDto
             {
                 Name = "TestFestivalPrimitive",
-                Country = "Brazil",
-                LogoUri = "logo",
-                City = "Rio",
                 IsFestival = true,
                 Date = default,
+                DateOffset = new DateTimeOffset(2008, 6, 19, 7, 0, 0, TimeSpan.Zero),
                 SingleNumber = (Single)12.1,
                 FloatNumber = (float)12.546,
+                DecimalNumber = (decimal)123.5476,
                 DoubleNumber = 12.231,
-                IntNumber = 200
-            };
-
-            TestDateTimeOffset = new TestDateTimeOffset
-            {
-                DateWithOffset = new DateTimeOffset(2008, 6, 19, 7, 0, 0, TimeSpan.Zero)
+                IntNumber = 200,
+                MyEnum = EnumType.Value3
             };
 
             TestArray = new TestArrayDto
@@ -103,6 +107,21 @@ namespace ReflectionTests
                 }
                     
             };
+
+            TestAttribute = new TestAttributeDto
+            {
+                Name = "nazov",
+                PictureUri = "fadsfdsafasdfafa",
+                IsFestival = false,
+                Date = default,
+                DateOffset = default,
+                FloatNumber = 0,
+                DoubleNumber = 0,
+                DecimalNumber = 0,
+                IntNumber = 0,
+                MyEnum = EnumType.Value1
+            };
+
         }
     }
 }

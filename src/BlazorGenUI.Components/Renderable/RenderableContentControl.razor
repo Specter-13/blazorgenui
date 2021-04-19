@@ -150,14 +150,13 @@
         
 
         var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.Name, Presentation);
-    //if component not found, use BaseGenericComponent
+        //if component not found, use BaseGenericComponent
         if (primitiveComponent == null)
         {
             bool isEnum = kid.PropertyType.IsEnum;
-            var baseName = kid.RawName;
             var genericTypeArg = kid.PropertyType;
                 
-            primitiveComponent = ViewGenericBaseLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
+            primitiveComponent = ViewGenericBaseLocatorBuilder(Presentation, genericTypeArg, isEnum);
         }
        
         @CreatePrimitiveComponent(kid, primitiveComponent)

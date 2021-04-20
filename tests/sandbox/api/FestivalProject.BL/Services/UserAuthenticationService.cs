@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,7 +6,6 @@ using AutoMapper;
 using FestivalProject.BL.Facade;
 using FestivalProject.BL.Helpers;
 using FestivalProject.BL.Models.UserDto;
-using FestivalProject.DAL.Repositories;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

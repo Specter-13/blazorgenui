@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorGenUI.Components.Renderable
 {
-    public partial class RenderableContentListControl : ComponentBase
+    public partial class RenderableContentListControl 
     {
         [Parameter]
         public IEnumerable<object> ContextList{ get; set; }

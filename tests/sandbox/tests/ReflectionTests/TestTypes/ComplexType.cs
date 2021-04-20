@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BlazorGenUI.Tests.testdtos
+﻿namespace BlazorGenUI.Tests.testdtos
 {
     public class ComplexType
     {

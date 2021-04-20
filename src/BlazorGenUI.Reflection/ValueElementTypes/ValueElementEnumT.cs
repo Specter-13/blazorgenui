@@ -1,5 +1,4 @@
 ﻿using System;
-using BlazorGenUI.Reflection.Enums;
 using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection.ValueElementTypes

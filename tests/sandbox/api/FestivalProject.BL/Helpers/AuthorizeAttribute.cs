@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using FestivalProject.BL.Models.UserDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FestivalProject.BL.Facade;
-using FestivalProject.BL.Models;
 using FestivalProject.BL.Models.InterpretDto;
-using FestivalProject.BL.Models.StageDto;
-using FestivalProject.BL.Models.StageInterpretDto;
-using FestivalProject.DAL.Entities;
-using FestivalProject.DAL.Enums;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FestivalProject.Controllers

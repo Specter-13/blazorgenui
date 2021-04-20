@@ -8,7 +8,6 @@
         Grid3,
         Grid4,
         Tabs,
-        
         Default
     }
 }

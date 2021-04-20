@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using BlazorGenUI.Reflection.Annotations;
 using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Enums;
 using BlazorGenUI.Reflection.Exceptions;
@@ -93,8 +90,6 @@ namespace BlazorGenUI.Reflection
             return value;
         }
 
-       
-
         private void ReorderChildren()
         {
             foreach (var item in Order)
@@ -113,13 +108,11 @@ namespace BlazorGenUI.Reflection
                         }
                         Children.Remove(child);
                         Children.Insert(newIndex, child);
-                        
                     }
                     catch 
                     {
                         throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
                     }
-                    
                 }
                 else
                 {
@@ -158,23 +151,7 @@ namespace BlazorGenUI.Reflection
             }
         }
 
-        private bool HasIgnore(string rawName)
-        {
-            bool isIgnored;
-            if (IgnoredFields != null)
-            {
-                var r = new Regex(rawName, RegexOptions.IgnoreCase);
-                isIgnored = r.IsMatch(IgnoredFields);
-            }
-            else
-            {
-                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
-            }
-
-            return isIgnored;
-        }
-
-         public IBaseElement CreateBaseElement(Type propertyType, string rawName, object value)
+        public IBaseElement CreateBaseElement(Type propertyType, string rawName, object value)
         {
             //is datetime
             if (propertyType == typeof(DateTime) ||
@@ -217,12 +194,10 @@ namespace BlazorGenUI.Reflection
                 complex.IsIgnored = HasIgnore(rawName);
                 return complex;
             }
-
             return null;
-
         }
 
-         public ArrayElement CreateArrayElement(string rawName, object value)
+        public ArrayElement CreateArrayElement(string rawName, object value)
         {
             IEnumerable<object> collection = ((IList)value).Cast<object>().ToList();
             var instance = new ArrayElement(collection)
@@ -240,8 +215,7 @@ namespace BlazorGenUI.Reflection
             return instance;
         }
 
-
-         public ValueElementDateTime CreateValueElementDateTime(Type propertyType, string rawName, object value)
+        public ValueElementDateTime CreateValueElementDateTime(Type propertyType, string rawName, object value)
         {
             DateTime data; 
             bool isOffset = false;
@@ -281,7 +255,7 @@ namespace BlazorGenUI.Reflection
             return instance;
         }
 
-         public IValueElement CreateValueElementEnumT(Type propertyType, string rawName, object value)
+        public IValueElement CreateValueElementEnumT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
             var instance = (IValueElement) Activator.CreateInstance(genericType);
@@ -297,7 +271,7 @@ namespace BlazorGenUI.Reflection
             return instance;
         }
 
-         public IValueElement CreateValueElementT(Type propertyType, string rawName, object value)
+        public IValueElement CreateValueElementT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementT<>).MakeGenericType(propertyType);
             var instance = (IValueElement) Activator.CreateInstance(genericType);
@@ -313,9 +287,7 @@ namespace BlazorGenUI.Reflection
             return instance;
         }
 
-      
-
-         public T GetPropertyAttribute<T>() where T : class
+        public T GetPropertyAttribute<T>() where T : class
         {
             return AttributeList?.Find(p => p.GetType() == typeof(T)) as T;;
         }
@@ -332,8 +304,22 @@ namespace BlazorGenUI.Reflection
              {
                  isPicture = GetPropertyAttribute<PictureAttribute>() != null;
              }
-
              return isPicture;
+         }
+         private bool HasIgnore(string rawName)
+         {
+             bool isIgnored;
+             if (IgnoredFields != null)
+             {
+                 var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                 isIgnored = r.IsMatch(IgnoredFields);
+             }
+             else
+             {
+                 isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
+             }
+
+             return isIgnored;
          }
 
          private string GetCustomPropertyName(string rawName)
@@ -352,11 +338,7 @@ namespace BlazorGenUI.Reflection
                  var nameAttribute = GetPropertyAttribute<AttributeName>();
                  if(nameAttribute != null) return nameAttribute.GetCustomName();
              }
-
              return null;
-             
-
-
          }
 
        

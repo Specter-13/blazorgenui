@@ -1,5 +1,4 @@
-﻿@using BlazorGenUI.Reflection.Enums
-@switch (LayoutName)
+﻿@switch (LayoutName)
 {
     case "TabControlLayout":
     {
@@ -7,7 +6,6 @@
         <TabPage Text="Name">
             @ChildContent
         </TabPage>
-
         break;
     }
     case "WrapPanelLayout":
@@ -16,7 +14,6 @@
         <div class="p-2">
             @ChildContent
         </div>
-
         break;
     }
     case "UniformGridLayout":
@@ -25,16 +22,11 @@
         <div class="col">
             @ChildContent
         </div>
-
-
         break;
     }
 
-    default:    
-
-
+    default:
         @ChildContent
-
 
         break;
 }

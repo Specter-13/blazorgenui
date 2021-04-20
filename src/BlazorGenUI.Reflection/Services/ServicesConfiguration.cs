@@ -10,7 +10,6 @@ namespace BlazorGenUI.Reflection.Services
             services.AddSingleton<ComponentService>();
             services.AddSingleton<LayoutProvider>();
             services.AddSingleton<ViewTemplateProvider>();
-
         }
     }
 }

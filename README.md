@@ -95,6 +95,3 @@ Feel free to create issues and pull requests.
 # License
 This project is licensed under the MIT License - see the LICENSE file for details
 
-Bachelor thesis Generate Blazor components from C# classes.
-Implementation and planning.
-Dávid Špavor.

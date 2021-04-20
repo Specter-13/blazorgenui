@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using FestivalProject.BL.Models.FestivalDto;
 using FestivalProject.BL.Models.StageDto;
 
 namespace ServerSideTestApp.Services

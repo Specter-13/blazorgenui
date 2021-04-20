@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using FestivalProject.BL.Models.FestivalDto;
-using FestivalProject.BL.Models.InterpretDto;
 using FestivalProject.DAL.Entities;
-using FestivalProject.DAL.Interfaces;
 using FestivalProject.DAL.Repositories;
 
 namespace FestivalProject.BL.Facade

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FestivalProject.DAL.Enums
+﻿namespace FestivalProject.DAL.Enums
 {
     public enum ReservationStatus
     {

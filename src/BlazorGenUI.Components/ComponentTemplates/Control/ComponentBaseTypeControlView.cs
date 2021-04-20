@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
-using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.ValueElementTypes;
-using Fasterflect;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorGenUI.Components.ComponentTemplates.Control
@@ -18,7 +12,6 @@ namespace BlazorGenUI.Components.ComponentTemplates.Control
         private bool IsNumeric(Type type)
         {
             if (type == null) return false;
-            // from http://stackoverflow.com/a/5182747/172132
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Byte:

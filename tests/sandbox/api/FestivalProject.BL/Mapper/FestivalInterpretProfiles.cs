@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
-using FestivalProject.BL.Models;
+﻿using AutoMapper;
 using FestivalProject.BL.Models.FestivalInterpretDto;
 using FestivalProject.DAL.Entities;
 

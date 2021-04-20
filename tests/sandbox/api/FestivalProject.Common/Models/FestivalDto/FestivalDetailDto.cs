@@ -1,6 +1,5 @@
 ﻿using FestivalProject.BL.Models.FestivalInterpretDto;
 using FestivalProject.BL.Models.StageDto;
-using FestivalProject.DAL.Entities;
 using FestivalProject.DAL.Enums;
 using System;
 using System.Collections.Generic;

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
-using FestivalProject.BL.Models;
+﻿using AutoMapper;
 using FestivalProject.BL.Models.StageDto;
-using FestivalProject.BL.Models.StageInterpretDto;
 using FestivalProject.DAL.Entities;
 
 namespace FestivalProject.BL.Mapper

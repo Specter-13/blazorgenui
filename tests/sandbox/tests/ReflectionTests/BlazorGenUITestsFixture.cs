@@ -5,9 +5,7 @@ using System.Reflection;
 using BlazorGenUI.Components.Renderable;
 using BlazorGenUI.Reflection.Providers;
 using BlazorGenUI.Reflection.Services;
-using BlazorGenUI.Tests;
 using BlazorGenUI.Tests.testdtos;
-using FestivalProject.DAL.Enums;
 
 namespace BlazorGenUI.Tests
 {

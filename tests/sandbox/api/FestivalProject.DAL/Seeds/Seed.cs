@@ -1,6 +1,5 @@
 ﻿using FestivalProject.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Converters;
 
 namespace FestivalProject.DAL.Seed
 {

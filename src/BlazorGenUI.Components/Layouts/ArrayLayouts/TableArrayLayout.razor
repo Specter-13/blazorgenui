@@ -1,15 +1,9 @@
 ﻿@using BlazorGenUI.Reflection.ValueElementTypes
 
-<h3>Table</h3>
-
-
-
 <table class="table">
     <thead>
     <tr>
-        
         @RenderHead(Items.First())
-     
     </tr>
     </thead>
     <tbody>
@@ -27,13 +21,11 @@
 @code {
     [Parameter]
     public ArrayElement ArrayElement { get; set; }
-   
 
     public IEnumerable<IBaseElement> Items { get; set; }
 
     protected override void OnInitialized()
     {
-        
         Items = ArrayElement.GetItems();
     }
 
@@ -64,7 +56,6 @@
                 }
             }
         }
-
 
     };
 

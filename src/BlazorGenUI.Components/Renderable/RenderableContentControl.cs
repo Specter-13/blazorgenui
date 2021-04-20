@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Components;
 [assembly: InternalsVisibleTo("BlazorGenUI.Tests")]
 namespace BlazorGenUI.Components.Renderable
 {
-    public partial class RenderableContentControl : ComponentBase
+    public partial class RenderableContentControl
     {
         [Parameter]
         public object Context { get; set; }

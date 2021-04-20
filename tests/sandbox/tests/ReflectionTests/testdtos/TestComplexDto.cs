@@ -1,7 +1,4 @@
-﻿using BlazorGenUI.Reflection;
-using FestivalProject.BL.Models.FestivalDto;
-
-namespace BlazorGenUI.Tests.testdtos
+﻿namespace BlazorGenUI.Tests.testdtos
 {
     public class TestComplexDto 
     {

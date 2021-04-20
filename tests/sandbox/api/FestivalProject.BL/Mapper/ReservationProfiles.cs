@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using FestivalProject.BL.Models.ReservationDto;
 using FestivalProject.DAL.Entities;
-using FestivalProject.DAL.Repositories;
 
 namespace FestivalProject.BL.Mapper
 {

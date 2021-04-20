@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FestivalProject.BL.Models.UserDto;
+﻿using FestivalProject.BL.Models.UserDto;
 
 namespace FestivalProject.BL.Services
 {

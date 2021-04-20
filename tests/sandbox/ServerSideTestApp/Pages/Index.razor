@@ -18,15 +18,16 @@
   
     <RenderableContentControl Context="@Pohoda" 
                               Presentation="PresentationType.Control"
+                              Layout="LayoutTypes.Tabs"
                     
                               
     >
     </RenderableContentControl>
 
-    <RenderableContentControl Context="@Stage" 
+    @*<RenderableContentControl Context="@Stage" 
                               Presentation="PresentationType.Control"
     >
-    </RenderableContentControl>
+    </RenderableContentControl>*@
     
    
 
@@ -34,7 +35,7 @@
 
 <button @onclick="Update">Save</button>
 
-@if (GithubUser != null)
+@*@if (GithubUser != null)
 {
     <RenderableContentControl Context="@GithubUser" 
                               Presentation="PresentationType.Display"
@@ -49,7 +50,7 @@
     <RenderableContentControl Context="@Test"
                               Presentation="PresentationType.Control">
     </RenderableContentControl>
-}
+}*@
 
 @code
 {

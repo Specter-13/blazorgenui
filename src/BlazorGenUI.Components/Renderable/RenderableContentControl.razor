@@ -64,10 +64,11 @@
                  @RenderGridLayout()
                 continue;
             }
-           
 
+            var childName = Child.Value.AttributeName ?? Child.Value.RawName;
             <LayoutSetter LayoutType="@LayoutComponentType"
-                  ChildContent="@Generator(Child.Value)"></LayoutSetter>
+                          ChildContent="@Generator(Child.Value)"
+                          ChildName=@childName></LayoutSetter>
 
             Child = Child.Next;
         }

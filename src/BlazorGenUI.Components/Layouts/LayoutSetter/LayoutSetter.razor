@@ -3,7 +3,7 @@
     case "TabControlLayout":
     {
 
-        <TabPage Text="Name">
+        <TabPage Text=@ChildName>
             @ChildContent
         </TabPage>
         break;
@@ -37,6 +37,8 @@
     public RenderFragment ChildContent { get; set; }
     [Parameter]
     public Type LayoutType { get; set; }
+    [Parameter]
+    public string ChildName { get; set; }
     
     public string LayoutName { get; set; }
     protected override void OnInitialized()

@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <Authors>Dávid Špavor</Authors>
+    <Product>BlazorGenUI</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>BlazorGenUI is framework to generate simple UI from C# objects. Based on BootStrap.</Description>
+    <PackageId>BlazorGenUI</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +17,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="compilerconfig.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\bootstrap-primary.css" />
   </ItemGroup>
 
   <ItemGroup>

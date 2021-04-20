@@ -1,6 +1,10 @@
 ﻿[
   {
-    "outputFile": "wwwroot/primary-style.css",
-    "inputFile": "Styles/primary-style.scss"
+    "outputFile": "wwwroot/bootstrap-primary.css",
+    "inputFile": "Styles/bootstrap-primary.scss"
+  },
+  {
+    "outputFile": "wwwroot/bootstrap-generic.css",
+    "inputFile": "Styles/bootstrap-generic.scss"
   }
 ]

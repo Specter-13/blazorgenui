@@ -62,6 +62,7 @@ namespace BlazorGenUI.Components.Renderable
             ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             TrySetLayout();
             Wrapper = new ComplexElement(Context, IgnoredFields, PictureFields, Order, Labels);
+            base.OnInitialized();
            
         }
 
@@ -123,5 +124,6 @@ namespace BlazorGenUI.Components.Renderable
         {
             OnLoginSubmit.InvokeAsync(true);
         }
+
     }
 }

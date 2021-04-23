@@ -6,5 +6,9 @@
   {
     "outputFile": "wwwroot/bootstrap-generic.css",
     "inputFile": "Styles/bootstrap-generic.scss"
+  },
+  {
+    "outputFile": "wwwroot/bootstrap-secondary.css",
+    "inputFile": "Styles/bootstrap-secondary.scss"
   }
 ]

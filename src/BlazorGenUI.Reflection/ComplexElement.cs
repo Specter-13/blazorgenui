@@ -40,11 +40,11 @@ namespace BlazorGenUI.Reflection
         public bool IsIgnored { get; set; }
         public bool IsValueElement { get; set; }
 
-        public IDictionary<string, int> Order { get; }
-        public IDictionary<string, string> Labels { get; }
+        public IDictionary<string, int> Order { get; set;}
+        public IDictionary<string, string> Labels { get; set;}
         public object EncapsulatedDto { get; set; }
-        public string IgnoredFields { get; }
-        public string PictureFields { get; }
+        public string IgnoredFields { get; set;}
+        public string PictureFields { get;set; }
 
         private List<object> AttributeList { get; set; }
         public IEnumerable<IBaseElement> GetChildren()

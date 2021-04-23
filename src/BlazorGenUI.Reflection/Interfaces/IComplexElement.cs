@@ -6,9 +6,9 @@ namespace BlazorGenUI.Reflection.Interfaces
     {
         IEnumerable<IBaseElement> GetChildren();
 
-        string IgnoredFields { get; }
-        string PictureFields { get; }
-        IDictionary<string, int> Order { get; }
+        string IgnoredFields { get; set;}
+        string PictureFields { get;set; }
+        IDictionary<string, int> Order { get; set;}
         object EncapsulatedDto { get; set; }
     }
 }

@@ -1,0 +1,114 @@
+﻿@page "/arrays"
+@inject HttpClient Http
+
+<h1 class="text-secondary fn-bold">Auto-generated UI from Arrays</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <div class="row">
+       
+        <div class="col p-5 m-4 bg-light rounded-3 shadow">
+            <h2 class="text-secondary fn-bold">Auto generated table</h2>
+
+            <RenderableContentListControl ContextList="forecasts"
+                                          Layout="ArrayLayout.Table">
+
+            </RenderableContentListControl>
+        </div>
+        <div class="col p-5 m-4 bg-light rounded-3 shadow">
+            <h2 class="text-secondary fn-bold">Generic table</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Temp. (C)</th>
+                    <th>Temp. (F)</th>
+                    <th>Summary</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var forecast in forecasts)
+                {
+                    <tr>
+                        <td>@forecast.Name</td>
+                        <td>@forecast.Date.ToShortDateString()</td>
+                        <td>@forecast.TemperatureC</td>
+                        <td>@forecast.TemperatureF</td>
+                        <td>@forecast.Summary</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+     <div class="col p-5 m-4 bg-light rounded-3 shadow">
+         <h2 class="text-secondary fn-bold">List group</h2>
+
+          <button class="btn btn-primary" 
+                        type="button"
+                        id="listinfo">Info</button>
+
+                <BSTooltip Target="listinfo"
+                           Placement="Placement.RightStart"
+                           >
+                           
+                    <p style="text-align: left;">
+                         Auto-generated ListGroup from array. Navigation parameters set to detail of station.
+                    </p>
+                           
+                </BSTooltip>
+
+        <RenderableContentListControl 
+            ContextList="@forecasts" 
+            Layout="ArrayLayout.ListGroup"
+            LgaDisplayedPropertyName="Name"
+            LgaNavigationPropertyName="Name"
+            LgaNavigationPrefix="station/">
+          </RenderableContentListControl>
+    </div>
+
+     <div class="col p-5 m-4 bg-light rounded-3 shadow">
+         <h2 class="text-secondary fn-bold">Tabs</h2>
+
+          <button class="btn btn-primary" 
+                        type="button"
+                        id="tabinfo">Info</button>
+
+                <BSTooltip Target="tabinfo"
+                           Placement="Placement.RightStart"
+                           >
+                           
+                    <p style="text-align: left;">
+                         Auto-generated Tabs from array. Names of tab pages set on Name property.
+                    </p>
+                           
+                </BSTooltip>
+
+        <RenderableContentListControl 
+            ContextList="@forecasts" 
+            Layout="ArrayLayout.Tabs"
+            TcPresentation="PresentationType.Display"
+            TcTabPageNameProperty="Name">
+          </RenderableContentListControl>
+    </div>
+
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+}

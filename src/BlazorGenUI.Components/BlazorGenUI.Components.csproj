@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="compilerconfig.json" />
-    <_ContentIncludedByDefault Remove="wwwroot\bootstrap-primary.css" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,122 @@
+﻿@page "/"
+@using BlazorGenUIDemo.Models
+<div class="p-5 mb-4 bg-light rounded-3 shadow">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold text-secondary">Hello, world!</h1>
+        <p class="col-md-8 fs-4">This is BlazorGenUI! An example app to show what is possible with BlazorGenUI framework.</p>
+        <p class="col-md-8 fs-4">BlazorGenUI is framework for automatic generation of simple UI from C# objects.</p>
+        <button class="btn btn-primary btn-lg" type="button" @onclick="Generate" >Click me to generate UI!</button>
+    </div>
+</div>
+
+
+@if (IsGenerate)
+{
+    @if (TestPerson != null)
+    {
+        <div class="row">
+            <div class="col p-5 m-4 bg-light rounded-3 shadow">
+                <h2 class="text-secondary">Control Presentation Type</h2>
+
+                <button class="btn btn-primary" 
+                        type="button"
+                        id="tooltip1">Info</button>
+
+                <BSTooltip Target="tooltip1"
+                           Placement="Placement.RightStart"
+                           >
+                           
+                    <p style="text-align: left;">
+                         You are able to edit following elements and when you click Save button, values are changed in source object as well!
+                    </p>
+                           
+                </BSTooltip>
+
+                <RenderableContentControl Context="TestPerson"
+                                          Presentation="PresentationType.Control"
+                                          IgnoredFields="AvatarUri"/>
+
+                <button class="btn btn-primary" @onclick="Update">Save</button>
+                @if (IsUpdated)
+                {
+                    <p class="text-secondary">Successfuly saved! Scroll down to see updated data!</p>
+                }
+            </div>
+
+            <div class="col p-5 m-4 bg-light rounded-3 shadow">
+                <h2 class="text-secondary ">Display Presentation Type</h2>
+                
+                <button class="btn btn-primary" 
+                        type="button"
+                        id="tooltip2">Info</button>
+
+                <BSTooltip Target="tooltip2"
+                           Placement="Placement.RightStart">
+                    <p style="text-align: left;">
+                         Following elements serve only for displaying data. Clicking on Detail button you will be referenced to detail view.
+                    </p>
+                </BSTooltip>
+
+                <RenderableContentControl Context="TestPerson"
+                                          Presentation="PresentationType.Display"
+                                          IgnoredFields="AvatarUri"/>
+
+            <a class="btn btn-primary" href="/templates">Detail</a>
+            </div>
+        </div>
+    }
+
+
+
+
+    @if (IsUpdated)
+    {
+        <div class="p-5 m-4 bg-light rounded-3 shadow">
+            <h2 class="text-secondary">Updated data</h2>
+            <p>@TestPerson.Name</p>
+            <p>@TestPerson.Surname</p>
+            <p>@TestPerson.Gender</p>
+            <p>@TestPerson.Age</p>
+            <p>@TestPerson.City</p>
+            
+        </div>
+    }
+}
+
+
+
+@code{
+    
+
+
+    private Person TestPerson {get; set; }
+    private bool IsUpdated { get; set; }
+    private bool IsGenerate { get; set; }
+    private void Generate()
+    {
+        IsGenerate = true;
+    }
+
+    private void Update()
+    {
+        IsUpdated = true;
+    }
+
+    protected override void OnInitialized()
+    {
+        TestPerson = new Person
+        {
+            Name = "John",
+            Surname = "Smith",
+            Age = 30,
+            City= "New York",
+            Gender= Gender.Male
+        };
+    }
+
+    
+    
+
+   
+
+}

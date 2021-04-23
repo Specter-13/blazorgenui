@@ -44,7 +44,9 @@
 
     RenderFragment RenderChildren(IComplexElement complexElement) => __builder =>
     {
-        var linkedList = new LinkedList<IBaseElement>(complexElement.GetChildren());
+        
+        var children = complexElement.GetChildren();
+        var linkedList = new LinkedList<IBaseElement>(children);
         Child = linkedList.First;
 
         
@@ -131,6 +133,7 @@
         else
         {
             IComplexElement complexKid = (IComplexElement)kid;
+            complexKid.IgnoredFields = IgnoredFields;
             @GenerateComplex(complexKid)
         }
 
@@ -173,9 +176,10 @@
         if (component != null )
         {
             @CreateComplexComponent(complexElement, component)
-        }
+    }
         else
         {
+            if (Layout == LayoutTypes.Tabs) LayoutComponentType = null;
             @RenderChildren(complexElement)
         }
     };

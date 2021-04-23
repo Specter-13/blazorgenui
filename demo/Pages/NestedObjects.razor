@@ -1,0 +1,32 @@
+﻿@page "/nested"
+@using BlazorGenUIDemo.Models
+@using System.Net
+@inject HttpClient Http
+
+<h2 class="text-secondary">Auto-generated object with nested objects in Tabs Layout</h2>
+@if (employees != null)
+{
+    <div class="p-5 m-4 bg-light rounded-3 shadow">
+        <RenderableContentControl Context="@employees"
+                                  Layout="LayoutTypes.Tabs"
+                                  Presentation="PresentationType.Control"
+                                  Labels="CustomNames"
+                                  IgnoredFields="AvatarUri">
+
+    </RenderableContentControl>
+    </div>
+}
+
+@code {
+    private Employees employees;
+    private Dictionary<string,string> CustomNames { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        employees = await Http.GetFromJsonAsync<Employees>("sample-data/employees.json");
+        CustomNames = new Dictionary<string, string>
+        {
+            {"Person1", "Employee 1"}, {"Person2", "Employee 2"}, {"Person3", "Employee 3"}
+        };
+
+    }
+}

@@ -8,6 +8,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>BlazorGenUI is framework to generate simple UI from C# objects. Based on BootStrap.</Description>
     <PackageId>BlazorGenUI</PackageId>
+    <PackageProjectUrl>https://github.com/Specter-13/blazorgenui</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

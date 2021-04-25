@@ -95,9 +95,6 @@ See **[demo application](https://specter-13.github.io/)** for usage and more fea
 # Contributing
 Feel free to create issues and pull requests. For questions don't hesitate to contact me.
 
-# Contributing
-Feel free to create issues and pull requests. For questions don't hesitate to contact me.
-
 
 # License
 This project is licensed under the MIT License - see the LICENSE file for details.

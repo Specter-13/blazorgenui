@@ -2,7 +2,10 @@
 {
     public interface IBaseElement
     {
-        IEntryBase Instance { get; set; }
-        string Name { get; set; }
+        string AttributeName { get; set; }
+        string RawName { get; set; }
+        bool IsIgnored { get; set; }
+
+        bool IsValueElement {get; set;}
     }
 }

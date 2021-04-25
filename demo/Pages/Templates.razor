@@ -1,0 +1,100 @@
+﻿@page "/templates"
+@using BlazorGenUIDemo.Models
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@inject HttpClient Http
+
+<h1 class="text-secondary font-weight-bold">Templates</h1>
+<p>Demonstration of usage of current supported UI templates.</p>
+@if(Detail != null)
+{
+    <div class="p-5 m-4 bg-light rounded-3 shadow">
+        <h2 class="text-secondary">Detail Template</h2>
+        <RenderableContentControl Context="@Detail"
+                                  Template="Template.DetailView"
+                                  Layout="LayoutTypes.Grid2"
+                                  >
+
+        </RenderableContentControl>
+    </div>
+}
+
+@if (Login != null)
+{
+    <div class="p-5 m-4 bg-light rounded-3 shadow">
+        <h2 class="text-secondary">Login Template</h2>
+        <RenderableContentControl Context="@Login"
+                                  Template="Template.LoginView"
+                                  OnLoginSubmit="@(() => { IsLogged = true; })"/>
+        @if (IsLogged)
+        {
+            <p><b>Logged as:</b> @Login.Email</p>
+        }
+    </div>
+}
+
+@code {
+    private bool IsLogged { get; set; }
+    private Person person;
+    private LoginTemplateModel Login { get; set; } = new LoginTemplateModel();
+    protected override async Task OnInitializedAsync()
+    {
+        if(person == null ) person = await Http.GetFromJsonAsync<Person>("sample-data/person.json");
+        
+
+        Detail = new DetailTemplateModel
+        {
+            Name = person.Name + " " + person.Surname,
+            Image = person.AvatarUri,
+            ItemNextToImage1Label = "Gender:",
+            ItemNextToImage1 = person.Gender.ToString(),
+
+            ItemNextToImage2Label = "Age:",
+            ItemNextToImage2 = person.Age.ToString() ,
+
+            ItemNextToImage3Label = "Date of birth:",
+            ItemNextToImage3 = person.Born.ToString("dd.MM.yyyy") ,
+
+            ItemNextToImage4Label = "City:",
+            ItemNextToImage4 = person.City
+
+
+        };
+       
+    }
+
+   
+
+    public DetailTemplateModel Detail { get; set; }
+
+    @*protected override async Task OnInitializedAsync()
+    {
+        
+        User = await UserService.GetUserDetail();
+        Festival = await FestivalService.GetFestivalDetail();
+        GithubUser = await GitHubClient.User.Get("Specter-13");
+
+        Detail = new DetailTemplateModel
+        {
+            Name = GithubUser.Name,
+            Image = GithubUser.AvatarUrl,
+            ItemNextToImage1Label = "Bio:",
+            ItemNextToImage1 = GithubUser.Bio,
+
+            ItemNextToImage2Label = "Login:",
+            ItemNextToImage2 = GithubUser.Login ,
+
+            ItemNextToImage3Label = "Created:",
+            ItemNextToImage3 = GithubUser.CreatedAt.Date.ToString("dd MM yyyy") ,
+
+            ItemNextToImage4Label = "HtmlUrl:",
+            ItemNextToImage4 = GithubUser.HtmlUrl,
+         
+        };
+
+     
+        
+
+    }*@
+
+}

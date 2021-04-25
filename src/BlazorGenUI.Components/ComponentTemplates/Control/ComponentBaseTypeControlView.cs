@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
-using BlazorGenUI.Reflection;
-using Fasterflect;
+using BlazorGenUI.Reflection.ValueElementTypes;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorGenUI.Components.ComponentTemplates.Control
@@ -12,18 +7,27 @@ namespace BlazorGenUI.Components.ComponentTemplates.Control
     public partial class ComponentBaseTypeControlView<T>
     {
         [Parameter]
-        public PropertyBaseDataT<T> BaseData { get; set; }
+        public ValueElementT<T> ValueElement { get; set; }
 
-        //[Parameter]
-        //public EntryBase Context { get; set; }
-
-        protected override async Task OnInitializedAsync()
+        private bool IsNumeric(Type type)
         {
-            //await UpdateValuesOnChangeAsync<T>(BaseData);
-            //BaseData.PropertyChanged += HandlePropertyChangedAsync<T>;
-            //await UpdateValuesOnChangeAsync<T>(BaseData);
+            if (type == null) return false;
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Byte:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.SByte:
+                case TypeCode.Single:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                    return true;
+            }
+            return false;
         }
-
-      
     }
 }

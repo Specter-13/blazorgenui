@@ -1,76 +1,208 @@
 ﻿@using BlazorGenUI.Reflection.Interfaces
 @using BlazorGenUI.Reflection.Enums
-<h3>RenderableContentControl</h3>
+@using BlazorGenUI.Reflection.Attributes
+@using BlazorGenUI.Components.Layouts
+@using BlazorGenUI.Components.TemplatedViews
+@using BlazorGenUI.Reflection.Models
 
-@RenderComponent(ContextBase);
 
-@*@foreach (var prop in PropertyBaseDataList)
-{
-    <ComponentBaseTypeControlView ContextData="@prop" >
-        </ComponentBaseTypeControlView>
-}*@
+
+<LayoutView Layout="@LayoutComponentType">
+@RenderComponent(Wrapper)
+</LayoutView>
 
 
 @code
 {
-    public RenderFragment RenderComponent(EntryBase composeObject) => __builder =>
-    {
+    private LinkedListNode<IBaseElement> Child { get; set; }
 
-        var component = ViewLocatorBuilder(composeObject.GetType().Name, Presentation);
-        if (component != null)
+    public RenderFragment RenderComponent(IComplexElement complexElement) => __builder =>
+    {
+        Template viewTemplate;
+        if (Template != Template.None)
         {
-            @*@CreateComplexComponent(composeObject, component);*@
+            viewTemplate = Template;
         }
         else
         {
-            @RenderKids(composeObject)
+            var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
+            viewTemplate = typeAttribute?.GetViewTemplate() ?? Template.None;
         }
-    };
 
+        var component = ViewComplexLocatorBuilder(viewTemplate);
 
-    RenderFragment RenderKids(EntryBase composeObject) => __builder =>
-    {
-        var kids = composeObject.GetKids();
-        foreach (var kid in kids)
+        if (component != null)
         {
-            var component = ViewLocatorBuilder(kid.GetType().Name, Presentation);
-            @GeneratePrimitive(kid)
-       
+            @CreateComplexComponent(complexElement, component);
         }
+        else
+        {
+            @RenderChildren(complexElement)
+        }
+    };
+
+
+    RenderFragment RenderChildren(IComplexElement complexElement) => __builder =>
+    {
+        
+        var children = complexElement.GetChildren();
+        var linkedList = new LinkedList<IBaseElement>(children);
+        Child = linkedList.First;
+
+        
+        while (Child != null)
+        {
+            if (Child.Value.IsIgnored)
+            {
+                Child = Child.Next;
+                continue;
+            }
+
+            if (Layout == LayoutTypes.Grid2 ||
+                Layout == LayoutTypes.Grid3 ||
+                Layout == LayoutTypes.Grid4 )
+            {
+                
+                 @RenderGridLayout()
+                continue;
+            }
+
+            var childName = Child.Value.AttributeName ?? Child.Value.RawName;
+            <LayoutSetter LayoutType="@LayoutComponentType"
+                          ChildContent="@Generator(Child.Value)"
+                          ChildName=@childName></LayoutSetter>
+
+            Child = Child.Next;
+        }
+        
+
 
     };
 
-    private RenderFragment GeneratePrimitive(IPropertyBaseData kid) => __builder =>
+
+   RenderFragment RenderGridLayout() => __builder =>
     {
-        
-        var primitiveKidType = kid.GetType();
+        int col = 0;
+        <div class="row">
+            @while (col != (int)Layout && Child != null)
+            {
+                if (Child.Value.IsIgnored)
+                {
+                    Child = Child.Next;
+                    continue;
+                }
+
+                <LayoutSetter LayoutType="@LayoutComponentType"
+                  ChildContent="@Generator(Child.Value)"></LayoutSetter>
+                Child = Child.Next;
+                col++;
+            }
+        </div>
+    };
+
+
+    RenderFragment Generator(IBaseElement kid) => __builder =>
+    {
+
+        if (kid is IValueElement primitiveKid)
+        {
+            if (Presentation == PresentationType.Display &&
+            primitiveKid.RawData == null)
+            {
+                //do not generate output
+            }
+            else if (primitiveKid.IsPicture)
+            {
+                @GeneratePicture(primitiveKid)
+            }
+            else
+            {
+
+
+                @GeneratePrimitive(primitiveKid)
+            }
+        }
+        else if (kid is IArrayElement arrayKid)
+        {
+            var items = arrayKid.GetItems();
+            foreach (var item in items)
+            {
+                @Generator(item)
+            }
+        }
+        else
+        {
+            IComplexElement complexKid = (IComplexElement)kid;
+            complexKid.IgnoredFields = IgnoredFields;
+            @GenerateComplex(complexKid)
+        }
+
+
+    };
+
+    private RenderFragment GeneratePicture(IValueElement kid) => __builder =>
+    {
+        var primitiveComponent = ViewBaseLocatorBuilder("Picture", PresentationType.Display);
+        @CreatePrimitiveComponent(kid, primitiveComponent)
+    };
+
+    private RenderFragment GeneratePrimitive(IValueElement kid) => __builder =>
+    {
+
+        var primitiveKidType = kid.PropertyType;
         
 
-        var primitiveComponent = ViewLocatorBuilder(primitiveKidType.BaseType.Name, Presentation);
-    //if component not found, use BaseGenericComponent
+        var primitiveComponent = ViewBaseLocatorBuilder(primitiveKidType.Name, Presentation);
+        //if component not found, use BaseGenericComponent
         if (primitiveComponent == null)
         {
-            var baseName = kid.Name;
+            bool isEnum = kid.PropertyType.IsEnum;
             var genericTypeArg = kid.PropertyType;
-           
-            bool isEnum = false;
-
-            primitiveComponent = ViewGenericLocatorBuilder(baseName, Presentation, genericTypeArg, isEnum);
+                
+            primitiveComponent = ViewGenericBaseLocatorBuilder(Presentation, genericTypeArg, isEnum);
         }
-  
+       
         @CreatePrimitiveComponent(kid, primitiveComponent)
-    
+
     };
 
-    private RenderFragment CreatePrimitiveComponent(IPropertyBaseData baseData, IRenderableComponent primitiveComponent) => __builder =>
+    private RenderFragment GenerateComplex(IComplexElement complexElement) => __builder =>
     {
+        var typeAttribute = GetAttribute<TemplateAttribute>(complexElement.EncapsulatedDto);
+        var viewTemplate = typeAttribute?.GetViewTemplate() ?? Template.None;
 
+        var component = ViewComplexLocatorBuilder(viewTemplate);
+
+        if (component != null )
+        {
+            @CreateComplexComponent(complexElement, component)
+    }
+        else
+        {
+            if (Layout == LayoutTypes.Tabs) LayoutComponentType = null;
+            @RenderChildren(complexElement)
+        }
+    };
+
+    private RenderFragment CreatePrimitiveComponent(IValueElement value, IRenderableComponent primitiveComponent) => __builder =>
+    {
         __builder.OpenComponent(1, primitiveComponent.GetType());
-
-        __builder.AddAttribute(2, "BaseData", baseData);
-
-        __builder.AddAttribute(3, "Context", ContextBase);
-
+        __builder.AddAttribute(2, "ValueElement", value);
         __builder.CloseComponent();
     };
+
+    private RenderFragment CreateComplexComponent(IComplexElement complex, IRenderableComponent component) => __builder =>
+    {
+        __builder.OpenComponent(0, component.GetType());
+        __builder.AddAttribute(1, "ComplexElement", complex.EncapsulatedDto);
+
+        if (component is LoginTemplateView)
+        {
+            __builder.AddAttribute(2, "SignInEvent", EventCallback.Factory.Create(this, OnLoginSubmitCallBack));
+        }
+        __builder.CloseComponent();
+    };
+
+    
+    
 }

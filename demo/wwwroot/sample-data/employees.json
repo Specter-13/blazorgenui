@@ -1,0 +1,29 @@
+{
+  "Person1": {
+    "Name": "John",
+    "Surname": "Smith",
+    "Gender": 0,
+    "Age": 32,
+    "City": "New York",
+    "Born": "1987-05-06",
+    "AvatarUri": "https://i.pinimg.com/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
+  },
+  "Person2": {
+    "Name": "David",
+    "Surname": "Bolek",
+    "Gender": 0,
+    "Age": 42,
+    "City": "Washington",
+    "Born": "1987-01-06",
+    "AvatarUri": "https://i.pinimg.com/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
+  },
+  "Person3": {
+    "Name": "Anna",
+    "Surname": "Fox",
+    "Gender":1,
+    "Age": 22,
+    "City": "New York",
+    "Born": "1999-10-16",
+    "AvatarUri": "https://i.pinimg.com/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
+  }
+}

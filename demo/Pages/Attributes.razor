@@ -1,0 +1,25 @@
+﻿@page "/attributes"
+
+@inject HttpClient Http
+<h1 class="text-secondary">Attributes</h1>
+<p>You can customize generated UI with data annotations within source object.</p>
+@if(person != null)
+{ 
+ <div class="p-5 m-4 bg-light rounded-3 shadow">
+     <h2 class="text-secondary">Customization with attributes from source class</h2>
+
+        <RenderableContentControl Context="@person"
+                                  Presentation="PresentationType.Control"/>
+    </div>
+
+}
+
+@code {
+    private PersonAttributes person;
+    protected override async Task OnInitializedAsync()
+    {
+        
+        person = await Http.GetFromJsonAsync<PersonAttributes>("sample-data/person.json");
+      
+    }
+}

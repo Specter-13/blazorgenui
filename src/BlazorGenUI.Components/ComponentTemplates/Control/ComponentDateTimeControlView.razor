@@ -1,0 +1,38 @@
+﻿@inherits RenderableComponentBase
+<div class="form-group">
+    
+    <div>
+        <label>@(ValueElement.AttributeName??ValueElement.RawName)</label>
+    </div>
+    @if (ValueElement.DateType == DateTypes.Date)
+    {
+        <div class="w-100">
+            <input class="w-100 form-control"
+                   type="date"
+                   id="mydate"
+                   @bind="@ValueElement.Data" />
+        </div>
+       
+    }
+    else if (ValueElement.DateType == DateTypes.TimeOfDay)
+    {
+        <div class="w-100">
+            <input class="w-100 form-control"
+                   type="time"
+                   id="time"
+                   name="onlineTime"
+                   @bind="@ValueElement.Data">
+        </div>
+    }
+    else if (ValueElement.DateType == DateTypes.DateTime)
+    {
+        <div class="w-100">
+            <input class="w-100 form-control"
+                   type="datetime-local"
+                   id="datetime"
+                   @bind="@ValueElement.Data"
+                   @bind:format="yyyy-MM-ddTHH:mm">
+        </div>
+    }
+
+</div>

@@ -1,0 +1,51 @@
+﻿@switch (LayoutName)
+{
+    case "TabControlLayout":
+    {
+
+        <TabPage Text=@ChildName>
+            @ChildContent
+        </TabPage>
+        break;
+    }
+    case "WrapPanelLayout":
+    {
+           
+        <div class="p-2">
+            @ChildContent
+        </div>
+        break;
+    }
+    case "UniformGridLayout":
+    {
+
+        <div class="col">
+            @ChildContent
+        </div>
+        break;
+    }
+
+    default:
+        @ChildContent
+
+        break;
+}
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public Type LayoutType { get; set; }
+    [Parameter]
+    public string ChildName { get; set; }
+    
+    public string LayoutName { get; set; }
+    protected override void OnInitialized()
+    {
+        if (LayoutType != null) LayoutName = LayoutType.Name;
+
+
+        base.OnInitialized();
+    }
+}

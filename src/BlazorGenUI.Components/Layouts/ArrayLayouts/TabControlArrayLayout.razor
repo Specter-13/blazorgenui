@@ -1,0 +1,47 @@
+﻿@using Fasterflect
+@using BlazorGenUI.Reflection.Exceptions
+
+
+<div class="w-100">
+    <TabControl>
+        <div class="content">
+            @foreach (var item in Items)
+            {
+                if (item is IComplexElement complex)
+                {
+                    var tabName = @complex.EncapsulatedDto.TryGetPropertyValue(TabNameProperty);
+                    if (tabName == null)
+                    {
+                        throw new IncorrectTabNameException($"Error! Property with name {TabNameProperty} doesn't exists! Make sure you wrote correct property name!");
+                    }
+                    <TabPage Text="@tabName.ToString()">
+
+                        <RenderableContentControl
+                            Context="@complex.EncapsulatedDto"
+                            Presentation="@Presentation"/>
+                    </TabPage>
+                }
+            }
+        </div>
+    </TabControl>
+</div>
+
+
+@code{
+
+    [Parameter]
+    public ArrayElement ArrayElement { get; set; }
+    [Parameter]
+    public string TabNameProperty { get; set; }
+    [Parameter]
+    public PresentationType Presentation { get; set; }
+    public IEnumerable<IBaseElement> Items { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        
+        Items = ArrayElement.GetItems();
+  
+    }
+}

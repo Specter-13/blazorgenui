@@ -1,0 +1,31 @@
+﻿// Override Bootstrap default variables here
+
+
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #e74a3b !default;
+$orange: #fd7e14 !default;
+$yellow: #f6c23e !default;
+$green: #1cc88a !default;
+$teal: #20c9a6 !default;
+$cyan: #36b9cc !default;
+
+//blazorgenui colors
+$blazorgenui-blue: #34495e !default;
+$blazorgenui-green: #3bc492 !default;
+$blazorgenui-orange: #FF4B27 !default;
+$blazorgenui-alert: #ca2f14 !default;
+
+$primary: $blazorgenui-blue !default;
+$secondary: $blazorgenui-green !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $blazorgenui-orange !default;
+$danger: $blazorgenui-alert !default;
+$brand: #b3ccff;
+
+$theme-colors: () !default;
+
+$theme-colors: map-merge( ( "primary": $primary, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, "danger": $danger, "error": $danger, "brand": $brand, "add": $primary, "new": $info, "edit": $primary, "delete": $danger, "nav": $secondary, "change": $warning, "save": $success ), $theme-colors );
+

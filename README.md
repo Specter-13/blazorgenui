@@ -9,13 +9,13 @@ I'm really excited about Blazor technology. Some time ago I stumble upon idea to
 
 Framework provides Blazor component for dynamic UI generation. It requires context in the form of instantiated object and is able to generate corresponding UI.
 
-This can be used to create scalable UI interfaces with often changing models. You are able to generate UI from encapsulated DTO's (data transfer objects) acquired from API quick and with low effort. You can customize UI with supported layouts and styles. Customization is possible in code with component's parameters or within objects with data annotations. See **features**.
+This can be used to create scalable UI interfaces with often changing models. You are able to generate UI from encapsulated DTO's (data transfer objects) acquired from API quick and with low effort. You can customize UI with supported layouts and styles. Customization is possible in code with component's parameters or within objects with data annotations.
 
-**This is still experimental so bugs may occur!**
+**This is still experimental!**
 
 ## Getting Started
 
-**See [demo application](https://specter-13.github.io/) for examples.**
+**See [demo application](https://specter-13.github.io/) for examples and usage.**
 
 ### Prerequisites
 Blazor WebAssembly or Blazor Server project based on .NET5.
@@ -24,9 +24,12 @@ After you have created your Blazor project, you need to do the following steps:
 
 **Install latest NuGet package BlazorGenUI.**
 
-BlazorGenUI NuGet: link
+BlazorGenUI NuGet: https://www.nuget.org/packages/BlazorGenUI/
 
-
+Or install with Package Manager:
+```
+Install-Package BlazorGenUI -Version 1.0.0
+```
 In *index.html* or *_Host.cshtml* based on your Blazor application type add reference to bootstrap. Replace Blazor built-in bootstrap with following line:
 
 ```
@@ -85,13 +88,19 @@ protected override void OnInitialized()
     };
 }
 ```
-You will get following automatic generated UI:
+You will get following auto-generated UI:
 ![Logo](assets/example-screen.png)
 
-See **features** more customizable options.
+See **[demo application](https://specter-13.github.io/)** for usage and more features.
 # Contributing
-Feel free to create issues and pull requests.
+Feel free to create issues and pull requests. For questions don't hesitate to contact me.
+
+# Contributing
+Feel free to create issues and pull requests. For questions don't hesitate to contact me.
+
 
 # License
-This project is licensed under the MIT License - see the LICENSE file for details
+This project is licensed under the MIT License - see the LICENSE file for details.
 
+---
+Contact: <david.spavor@gmail.com>

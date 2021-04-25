@@ -1,7 +1,8 @@
 ﻿@page "/features"
 
 @inject HttpClient Http
-
+<h1 class="text-secondary">Customization</h1>
+<p>You are able to customize generated UI with parameters.</p>
 @if(person != null)
 { 
  <div class="p-5 m-4 bg-light rounded-3 shadow">
@@ -13,11 +14,23 @@
 
         </RenderableContentControl>
     </div>
+
+    <div class="p-5 m-4 bg-light rounded-3 shadow">
+     <h2 class="text-secondary">Custom labels</h2>
+
+        <RenderableContentControl Context="@person"
+                                  Order="order"
+                                  PictureFields="AvatarUri"
+                                  Labels="labels">
+
+        </RenderableContentControl>
+    </div>
 }
 
 @code {
     private Person person;
     private Dictionary<string, int> order;
+    private Dictionary<string, string> labels;
     protected override async Task OnInitializedAsync()
     {
         
@@ -27,6 +40,14 @@
             {"AvatarUri", 0},
             { "City", 1},
             { "Born", 2}
+        };
+
+        labels = new Dictionary<string, string>
+        {
+            {"Name", "Person name:"},
+            {"Surname", "Person surname:"},
+            { "City", "Town:"},
+            { "Born", "Date Of Birth:"}
         };
 
     }

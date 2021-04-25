@@ -3,17 +3,16 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @inject HttpClient Http
-<h2 class="text-secondary">Detail Template</h2>
 
-
-
+<h1 class="text-secondary font-weight-bold">Templates</h1>
+<p>Demonstration of usage of current supported UI templates.</p>
 @if(Detail != null)
 {
     <div class="p-5 m-4 bg-light rounded-3 shadow">
+        <h2 class="text-secondary">Detail Template</h2>
         <RenderableContentControl Context="@Detail"
                                   Template="Template.DetailView"
                                   Layout="LayoutTypes.Grid2"
-                                 
                                   >
 
         </RenderableContentControl>
@@ -22,7 +21,7 @@
 
 @if (Login != null)
 {
-    <div class="m-4">
+    <div class="p-5 m-4 bg-light rounded-3 shadow">
         <h2 class="text-secondary">Login Template</h2>
         <RenderableContentControl Context="@Login"
                                   Template="Template.LoginView"

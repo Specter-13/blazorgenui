@@ -2,11 +2,13 @@
 @using BlazorGenUIDemo.Models
 @using System.Net
 @inject HttpClient Http
+<h1 class="text-secondary">Nested objects</h1>
+<p>Demonstration how nested objects can be generated</p>
 
-<h2 class="text-secondary">Auto-generated object with nested objects in Tabs Layout</h2>
 @if (employees != null)
 {
     <div class="p-5 m-4 bg-light rounded-3 shadow">
+        <h2 class="text-secondary">Auto-generated UI with nested objects in Tabs Layout</h2>
         <RenderableContentControl Context="@employees"
                                   Layout="LayoutTypes.Tabs"
                                   Presentation="PresentationType.Control"

@@ -3,7 +3,7 @@
 
 
 <EditForm Model="@ComplexElement" OnValidSubmit="@(() => SignInEvent.InvokeAsync(ComplexElement))"
-          class="text-center w-25 bg-light rounded-3 shadow p-2">
+          class="text-center">
     <DataAnnotationsValidator/>
     @if (ComplexElement.Image != null)
     {

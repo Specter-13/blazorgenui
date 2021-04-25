@@ -4,50 +4,50 @@
 @inject HttpClient Http
 <h1 class="text-secondary font-weight-bold">Layouts</h1>
 
-<button class="btn btn-primary" 
-        type="button"
-        id="tooltip1">Info</button>
-<BSTooltip Target="tooltip1"
-           Placement="Placement.RightStart">
-    <p style="text-align: left;">
-        Use Layout feature to specify layout of generatet Ui elements. You are able to specify layout with parameter passed to RenderableContentControl component or with attribute.
-    </p>
-</BSTooltip>
+<p>
+    Use Layout feature to specify layout of generated UU elements. You are able to specify layout with parameter passed to RenderableContentControl component or with an attribute.
+</p>
+
 @if (person != null)
 {
     <h2 class="text-secondary">Grid with 2 columns</h2>
     <div class="p-5 m-4 bg-light rounded-3 shadow">
         <RenderableContentControl Context="@person"
-                                  Layout="LayoutTypes.Grid2">
+                                  Layout="LayoutTypes.Grid2"
+                                  IgnoredFields="AvatarUri">
 
         </RenderableContentControl>
     </div>
     <h2 class="text-secondary">Grid with 3 columns</h2>
     <div class="p-5 m-4 bg-light rounded-3 shadow">
         <RenderableContentControl Context="@person"
-                                  Layout="LayoutTypes.Grid3">
+                                  Layout="LayoutTypes.Grid3"
+                                  IgnoredFields="AvatarUri">
 
         </RenderableContentControl>
     </div>
     <h2 class="text-secondary">Grid with 4 columns</h2>
     <div class="p-5 m-4 bg-light rounded-3 shadow">
         <RenderableContentControl Context="@person"
-                                  Layout="LayoutTypes.Grid4">
+                                  Layout="LayoutTypes.Grid4"
+                                  IgnoredFields="AvatarUri">
 
         </RenderableContentControl>
     </div>
     <h2 class="text-secondary">Wrap layout</h2>
     <div class="p-5 m-4 bg-light rounded-3 shadow">
         <RenderableContentControl Context="@person"
-                                  Layout="LayoutTypes.Wrap">
+                                  Layout="LayoutTypes.Wrap"
+                                  IgnoredFields="AvatarUri">
 
         </RenderableContentControl>
     </div>
     <h2 class="text-secondary">Tab layout</h2>
     <div class="p-5 m-4 bg-light rounded-3 shadow">
         <RenderableContentControl Context="@person"
-                                  Layout="LayoutTypes.Tabs">
-
+                                  Layout="LayoutTypes.Tabs"
+                                  IgnoredFields="AvatarUri">
+                                  
         </RenderableContentControl>
     </div>
 }

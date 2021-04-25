@@ -1,0 +1,9 @@
+{
+  "Name": "John",
+  "Surname": "Smith",
+  "Gender": 0,
+  "Age": 32,
+  "City": "New York",
+  "Born": "1987-05-06",
+  "AvatarUri": "https://i.pinimg.com/originals/7c/c7/a6/7cc7a630624d20f7797cb4c8e93c09c1.png"
+}

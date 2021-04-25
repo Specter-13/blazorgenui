@@ -1,0 +1,25 @@
+﻿@page "/station/{name}"
+@inject HttpClient Http
+@using System.Linq;
+<h1 class="text-secondary">Detail Weather Station Page</h1>
+
+@if(forecast != null)
+{<div class="p-5 m-4 bg-light rounded-3 shadow">
+     <h2 class="text-secondary">@Name</h2>
+ <RenderableContentControl Context="forecast">
+
+</RenderableContentControl>
+</div>
+}
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    private WeatherForecast forecast;
+    protected override async Task OnInitializedAsync()
+    {
+        var forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        forecast = forecasts.First(x => x.Name == Name);
+    }
+}

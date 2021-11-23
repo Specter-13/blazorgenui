@@ -3,7 +3,7 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection.ValueElementTypes
 {
-    public class ValueElementT<T> : ValueElementBase, IValueElement 
+    public class ValueElementT<T> : ValueElementBase, IValueElement
     {
         private T _data;
         public string AttributeName { get; set; }
@@ -25,7 +25,7 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
             }
         }
 
-    
-     
+
+
     }
 }

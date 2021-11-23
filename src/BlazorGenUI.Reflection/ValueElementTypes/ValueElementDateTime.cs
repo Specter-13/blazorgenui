@@ -8,8 +8,8 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
 
     {
 
-        public ValueElementDateTime(string rawName, 
-            Type propertyType, 
+        public ValueElementDateTime(string rawName,
+            Type propertyType,
             DateTypes dateType,
             DateTime data,
             bool isOffset)
@@ -45,6 +45,6 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
             }
         }
 
-        
+
     }
 }

@@ -6,7 +6,7 @@ namespace BlazorGenUI.Reflection.Exceptions
     {
         public IncorrectOrderException()
         {
-            
+
         }
         public IncorrectOrderException(string message) : base(message)
         {

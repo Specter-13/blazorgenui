@@ -2,7 +2,7 @@
 
 namespace BlazorGenUI.Tests.testdtos
 {
-    public class TestMixedDto 
+    public class TestMixedDto
     {
         public DateTime Date { get; set; }
         public string Name { get; set; }

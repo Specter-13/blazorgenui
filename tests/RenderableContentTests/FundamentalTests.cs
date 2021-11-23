@@ -4,18 +4,18 @@ using Xunit;
 
 namespace BlazorGenUI.Tests
 {
-   public class FundamentalTests: IClassFixture<BlazorGenUITestsFixture>
-   {
+    public class FundamentalTests : IClassFixture<BlazorGenUITestsFixture>
+    {
 
-       //what testing _ testtype _ result
-       private string _attributeNameChild = "ChildContent";
+        //what testing _ testtype _ result
+        private string _attributeNameChild = "ChildContent";
         private BlazorGenUITestsFixture _fixture;
 
         public FundamentalTests(BlazorGenUITestsFixture fixture)
         {
             this._fixture = fixture;
         }
-     
+
         [Fact]
         public void ComponentService_GetComponentControl_IsNotNull()
         {
@@ -134,6 +134,6 @@ namespace BlazorGenUI.Tests
             Assert.NotNull(component);
         }
 
-      
+
     }
 }

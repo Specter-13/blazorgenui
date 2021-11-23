@@ -2,10 +2,10 @@
 
 namespace BlazorGenUI.Tests.testdtos
 {
-    public class TestPrimitiveDto 
+    public class TestPrimitiveDto
     {
         public string Name { get; set; }
-        public bool IsFestival {get; set;}
+        public bool IsFestival { get; set; }
         public DateTime Date { get; set; }
         public DateTimeOffset DateOffset { get; set; }
         public Single SingleNumber { get; set; }
@@ -15,6 +15,6 @@ namespace BlazorGenUI.Tests.testdtos
         public int IntNumber { get; set; }
         public EnumType MyEnum { get; set; }
 
-        
+
     }
 }

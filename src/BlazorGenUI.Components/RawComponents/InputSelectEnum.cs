@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Components.Rendering;
 
 namespace BlazorGenUI.Components.RawComponents
 {
-// Note that adding a constraint on TEnum (where T : Enum) doesn't work when used in the view, Razor raises an error at build time. Also, this would prevent using nullable types...
-public sealed class InputSelectEnum<TEnum> : InputBase<TEnum>
+    // Note that adding a constraint on TEnum (where T : Enum) doesn't work when used in the view, Razor raises an error at build time. Also, this would prevent using nullable types...
+    public sealed class InputSelectEnum<TEnum> : InputBase<TEnum>
     {
         // Generate html when the component is rendered.
         protected override void BuildRenderTree(RenderTreeBuilder builder)

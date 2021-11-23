@@ -2,19 +2,19 @@
 
 <table class="table">
     <thead>
-    <tr>
-        @RenderHead(Items.First())
-    </tr>
+        <tr>
+            @RenderHead(Items.First())
+        </tr>
     </thead>
     <tbody>
-    
-    @foreach (var item in Items)
-    {
-        <tr>
-            @RenderRow(item)
-        </tr>
-    }
-    
+
+        @foreach (var item in Items)
+        {
+            <tr>
+                @RenderRow(item)
+            </tr>
+        }
+
     </tbody>
 </table>
 

@@ -16,9 +16,8 @@
                     }
                     <TabPage Text="@tabName.ToString()">
 
-                        <RenderableContentControl
-                            Context="@complex.EncapsulatedDto"
-                            Presentation="@Presentation"/>
+                        <RenderableContentControl Context="@complex.EncapsulatedDto"
+                                          Presentation="@Presentation" />
                     </TabPage>
                 }
             }
@@ -27,7 +26,7 @@
 </div>
 
 
-@code{
+@code {
 
     [Parameter]
     public ArrayElement ArrayElement { get; set; }
@@ -40,8 +39,8 @@
 
     protected override void OnInitialized()
     {
-        
+
         Items = ArrayElement.GetItems();
-  
+
     }
 }

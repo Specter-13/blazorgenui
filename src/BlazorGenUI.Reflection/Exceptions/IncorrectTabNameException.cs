@@ -6,7 +6,7 @@ namespace BlazorGenUI.Reflection.Exceptions
     {
         public IncorrectTabNameException()
         {
-            
+
         }
         public IncorrectTabNameException(string message) : base(message)
         {

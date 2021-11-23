@@ -6,6 +6,6 @@ namespace BlazorGenUI.Components.Renderable
 {
     public class RenderableComponentBase : ComponentBase, IRenderableComponent
     {
-      
+
     }
 }

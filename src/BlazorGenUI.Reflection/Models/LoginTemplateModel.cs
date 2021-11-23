@@ -7,6 +7,6 @@
         public bool RememberMe { get; set; }
         public string Image { get; set; }
 
-        
+
     }
 }

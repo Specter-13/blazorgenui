@@ -5,7 +5,7 @@ namespace BlazorGenUI.Reflection.ValueElementTypes
 {
     public class ValueElementEnumT<T> : ValueElementBase, IValueElement
     {
-        
+
 
         private T _data;
         public string AttributeName { get; set; }

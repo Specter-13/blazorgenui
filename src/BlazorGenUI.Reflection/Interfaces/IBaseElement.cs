@@ -6,6 +6,6 @@
         string RawName { get; set; }
         bool IsIgnored { get; set; }
 
-        bool IsValueElement {get; set;}
+        bool IsValueElement { get; set; }
     }
 }

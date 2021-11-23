@@ -2,57 +2,57 @@
 
 @inherits RenderableComponentBase
 
-@if(ComplexElement != null)
+@if (ComplexElement != null)
 {
-    
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-3">
-                <img class="img-thumbnail rounded" 
-                     alt="Template image" 
-                     src="@ComplexElement.Image" />
+                <img class="img-thumbnail rounded"
+                 alt="Template image"
+                 src="@ComplexElement.Image" />
             </div>
             <div class="col-9">
                 <h2 class="m-2 ">@ComplexElement.Name</h2>
                 <table class="table-responsive-lg table-borderless ">
                     <tbody style="font-size: larger">
-               
-                    @if (@ComplexElement.ItemNextToImage1 != null)
-                    {
-                        <tr class="m-2">
-                            <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage1Label</th>
-                            <td >@ComplexElement.ItemNextToImage1</td>
-                        </tr>
-                    }
-               
 
-                    @if (@ComplexElement.ItemNextToImage2 != null)
-                    {
-                        <tr class="m-2">
-                            <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage2Label</th>
-                            <td> @ComplexElement.ItemNextToImage2</td>
-                        </tr>
-                    }
+                        @if (@ComplexElement.ItemNextToImage1 != null)
+                        {
+                            <tr class="m-2">
+                                <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage1Label</th>
+                                <td>@ComplexElement.ItemNextToImage1</td>
+                            </tr>
+                        }
 
-                    @if (@ComplexElement.ItemNextToImage3 != null)
-                    {
-                        <tr class="m-2">
-                            <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage3Label</th>
-                            <td > @ComplexElement.ItemNextToImage3</td>
-                        </tr>
-                    }
-                
-                    @if (@ComplexElement.ItemNextToImage4 != null)
-                    {
-                        <tr class="m-2">
-                            <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage4Label</th>
-                            <td > @ComplexElement.ItemNextToImage4</td>
-                        </tr>
-                    }
+
+                        @if (@ComplexElement.ItemNextToImage2 != null)
+                        {
+                            <tr class="m-2">
+                                <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage2Label</th>
+                                <td> @ComplexElement.ItemNextToImage2</td>
+                            </tr>
+                        }
+
+                        @if (@ComplexElement.ItemNextToImage3 != null)
+                        {
+                            <tr class="m-2">
+                                <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage3Label</th>
+                                <td> @ComplexElement.ItemNextToImage3</td>
+                            </tr>
+                        }
+
+                        @if (@ComplexElement.ItemNextToImage4 != null)
+                        {
+                            <tr class="m-2">
+                                <th scope="row" class="mr-3">@ComplexElement.ItemNextToImage4Label</th>
+                                <td> @ComplexElement.ItemNextToImage4</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
-           
+
         </div>
 
         <div class="row">
@@ -61,13 +61,13 @@
                 {
                     <p class="m-2"><b>@ComplexElement.ItemBelowImage1Label</b> @ComplexElement.ItemBelowImage1</p>
                 }
-                    
+
                 @if (@ComplexElement.ItemBelowImage2 != null)
                 {
                     <p class="m-2"><b>@ComplexElement.ItemBelowImage2Label</b> @ComplexElement.ItemBelowImage2</p>
-                    
+
                 }
-                
+
                 @if (@ComplexElement.ItemBelowImage3 != null)
                 {
                     <p class="m-2"><b>@ComplexElement.ItemBelowImage3Label</b> @ComplexElement.ItemBelowImage3</p>
@@ -85,7 +85,7 @@
 }
 @code {
     [Parameter]
-	public DetailTemplateModel ComplexElement { get; set; }
+    public DetailTemplateModel ComplexElement { get; set; }
 
 
 }

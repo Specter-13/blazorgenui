@@ -90,7 +90,7 @@ namespace BlazorGenUI.Tests
         {
             //Arrange
             var complex = new ComplexElement(_fixture.TestAttribute);
-            var expectedCount = complex.GetChildren().Count() - 1 ; //-1 because one element is ignored
+            var expectedCount = complex.GetChildren().Count() - 1; //-1 because one element is ignored
             var __builder = new RenderTreeBuilder();
 
             //Act

@@ -7,6 +7,6 @@ namespace BlazorGenUI.Components.ComponentTemplates.Control
     {
         [Parameter]
         public ValueElementT<bool> ValueElement { get; set; }
-        
+
     }
 }

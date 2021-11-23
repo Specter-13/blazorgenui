@@ -9,7 +9,7 @@ namespace BlazorGenUI.Tests
     public class ReflectionTests : IClassFixture<BlazorGenUITestsFixture>
     {
         private BlazorGenUITestsFixture _fixture;
-        
+
         public ReflectionTests(BlazorGenUITestsFixture fixture)
         {
             this._fixture = fixture;
@@ -31,7 +31,7 @@ namespace BlazorGenUI.Tests
         public void Reflection_GetKidsComplex_ReturnsCountEqual()
         {
             //Arrange
-            var expectedNumber =  _fixture.TestComplex.GetType().GetProperties().Length;
+            var expectedNumber = _fixture.TestComplex.GetType().GetProperties().Length;
             //Act
             var actualNumber = (new ComplexElement(_fixture.TestComplex)).GetChildren().Count();
             //Assert
@@ -84,7 +84,7 @@ namespace BlazorGenUI.Tests
             var complex = new ComplexElement(_fixture.TestPrimitive);
 
             //Act
-            var firstKid = complex.GetChildren().First(x=> x.RawName == "DateOffset");
+            var firstKid = complex.GetChildren().First(x => x.RawName == "DateOffset");
             ((ValueElementDateTime)firstKid).Data = expectedValue.DateTime;
 
             //Assert

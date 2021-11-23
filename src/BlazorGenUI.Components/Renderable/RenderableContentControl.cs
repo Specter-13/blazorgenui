@@ -4,16 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using BlazorGenUI.Reflection;
 using BlazorGenUI.Reflection.Attributes;
 using BlazorGenUI.Reflection.Enums;
 using BlazorGenUI.Reflection.Exceptions;
 using BlazorGenUI.Reflection.Interfaces;
-using BlazorGenUI.Reflection.Models;
 using BlazorGenUI.Reflection.Providers;
 using BlazorGenUI.Reflection.Services;
-using Fasterflect;
 using Microsoft.AspNetCore.Components;
 
 [assembly: InternalsVisibleTo("BlazorGenUI.Tests")]
@@ -25,11 +22,11 @@ namespace BlazorGenUI.Components.Renderable
         public object Context { get; set; }
         [Parameter]
         public PresentationType Presentation { get; set; }
-        [Parameter] 
+        [Parameter]
         public LayoutTypes Layout { get; set; } = LayoutTypes.Default;
         [Parameter]
         public string IgnoredFields { get; set; }
-        [Parameter] 
+        [Parameter]
         public Template Template { get; set; } = Template.None;
         [Parameter]
         public string PictureFields { get; set; }
@@ -38,18 +35,18 @@ namespace BlazorGenUI.Components.Renderable
         [Parameter]
         public IDictionary<string, string> Labels { get; set; }
         [Parameter]
-        public EventCallback<bool> OnLoginSubmit  { get; set; }
+        public EventCallback<bool> OnLoginSubmit { get; set; }
 
         [Inject]
-        public ViewTemplateProvider ViewTemplateProvider { get; set; } 
+        public ViewTemplateProvider ViewTemplateProvider { get; set; }
         [Inject]
         public LayoutProvider LayoutProvider { get; set; }
         [Inject]
         public ComponentService ComponentService { get; set; }
 
-        public IComplexElement Wrapper { get; set; } 
+        public IComplexElement Wrapper { get; set; }
         public Type LayoutComponentType { get; set; }
-        
+
 
         protected override void OnInitialized()
         {
@@ -63,7 +60,7 @@ namespace BlazorGenUI.Components.Renderable
             TrySetLayout();
             Wrapper = new ComplexElement(Context, IgnoredFields, PictureFields, Order, Labels);
             base.OnInitialized();
-           
+
         }
 
         internal void TrySetLayout()
@@ -73,8 +70,8 @@ namespace BlazorGenUI.Components.Renderable
                 var layoutInfo = LayoutProvider.GetLayoutInfo(Layout);
                 LayoutComponentType = ComponentService.GetLayoutComponentType(layoutInfo.fullTypeName);
             }
-            else 
-            { 
+            else
+            {
 
                 var layoutAttribute = GetAttribute<ContainerAttribute>(Context);
                 if (layoutAttribute != null)
@@ -102,7 +99,7 @@ namespace BlazorGenUI.Components.Renderable
             return ComponentService.GetGenericComponent(buildedComponentName, typeArg);
         }
 
-       
+
         private T GetAttribute<T>(object composeObject) where T : class
         {
             var typeAttribute = composeObject.GetType()

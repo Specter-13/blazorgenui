@@ -12,7 +12,7 @@ namespace BlazorGenUI.Tests.testdtos
         [Picture]
         public string PictureUri { get; set; }
         [RenderIgnore]
-        public bool IsFestival {get; set;}
+        public bool IsFestival { get; set; }
         [Date(DateTypes.Date)]
         public DateTime Date { get; set; }
         public DateTimeOffset DateOffset { get; set; }

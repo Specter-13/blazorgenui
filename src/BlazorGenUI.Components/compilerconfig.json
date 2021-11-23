@@ -1,14 +1,14 @@
 ﻿[
-  {
-    "outputFile": "wwwroot/bootstrap-primary.css",
-    "inputFile": "Styles/bootstrap-primary.scss"
-  },
-  {
-    "outputFile": "wwwroot/bootstrap-generic.css",
-    "inputFile": "Styles/bootstrap-generic.scss"
-  },
-  {
-    "outputFile": "wwwroot/bootstrap-secondary.css",
-    "inputFile": "Styles/bootstrap-secondary.scss"
-  }
+    {
+        "outputFile": "wwwroot/bootstrap-primary.css",
+        "inputFile": "Styles/bootstrap-primary.scss"
+    },
+    {
+        "outputFile": "wwwroot/bootstrap-generic.css",
+        "inputFile": "Styles/bootstrap-generic.scss"
+    },
+    {
+        "outputFile": "wwwroot/bootstrap-secondary.css",
+        "inputFile": "Styles/bootstrap-secondary.scss"
+    }
 ]

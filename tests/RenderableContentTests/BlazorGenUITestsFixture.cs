@@ -22,11 +22,11 @@ namespace BlazorGenUI.Tests
             RenderableContent.ComponentService.LoadComponents(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             SeedTestData();
         }
-       
+
         public RenderableContentControl RenderableContent { get; set; }
         public TestComplexDto TestComplex { get; set; }
         public TestMixedDto TestMixed { get; set; }
-        public TestPrimitiveDto TestPrimitive{ get; set; }
+        public TestPrimitiveDto TestPrimitive { get; set; }
         public TestArrayDto TestArray { get; set; }
         public TestAttributeDto TestAttribute { get; set; }
 
@@ -34,7 +34,7 @@ namespace BlazorGenUI.Tests
         {
             TestComplex = new TestComplexDto
             {
-              
+
                 Complex1 = new ComplexType
                 {
                     Name = "complex1",
@@ -103,7 +103,7 @@ namespace BlazorGenUI.Tests
                 {
                     TestPrimitive, TestPrimitive, TestPrimitive, TestPrimitive
                 }
-                    
+
             };
 
             TestAttribute = new TestAttributeDto

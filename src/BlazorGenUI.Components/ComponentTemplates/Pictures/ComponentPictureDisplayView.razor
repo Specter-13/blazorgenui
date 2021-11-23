@@ -2,17 +2,18 @@
 @using BlazorGenUI.Reflection.ValueElementTypes
 
 <style>
-   .container-image {
-    max-width: 200px;
-    height: auto;
-}
-.container-image img {
-    width: 100%;
-    height: auto;
-} 
+    .container-image {
+        max-width: 200px;
+        height: auto;
+    }
+
+        .container-image img {
+            width: 100%;
+            height: auto;
+        }
 </style>
 <div class="container-image">
-<img src="@ValueElement.Data" class="img-thumbnail"/>
+    <img src="@ValueElement.Data" class="img-thumbnail" />
 </div>
 
 @code {

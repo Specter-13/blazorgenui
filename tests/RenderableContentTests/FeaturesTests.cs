@@ -11,9 +11,9 @@ using Xunit;
 
 namespace BlazorGenUI.Tests
 {
-   public class FeaturesTests: IClassFixture<BlazorGenUITestsFixture>
-   {
-       private string _attributeNameChild = "ChildContent";
+    public class FeaturesTests : IClassFixture<BlazorGenUITestsFixture>
+    {
+        private string _attributeNameChild = "ChildContent";
         private BlazorGenUITestsFixture _fixture;
 
         public FeaturesTests(BlazorGenUITestsFixture fixture)
@@ -74,7 +74,7 @@ namespace BlazorGenUI.Tests
         public void Feature_OrderChanged_Success()
         {
             //Arrange
-            var order = new Dictionary<string,int>
+            var order = new Dictionary<string, int>
             {
                 {"Name",3}, {"FloatNumber",0}
             };
@@ -90,7 +90,7 @@ namespace BlazorGenUI.Tests
             Assert.Equal("FloatNumber", children.First().RawName);
             Assert.Equal("Name", children.ElementAt(3).RawName);
 
-     
+
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace BlazorGenUI.Tests
         {
             //Arrange
             var complex = new ComplexElement(_fixture.TestAttribute);
-           
+
             //Act
             var children = complex.GetChildren();
             var childName = children.First(x => x.RawName == "Name");
@@ -171,14 +171,14 @@ namespace BlazorGenUI.Tests
             var childIgnore = children.First(x => x.RawName == "IsFestival");
             var childDate = (ValueElementDateTime)children.First(x => x.RawName == "Date");
             var childEnum = (ValueElementEnumT<EnumType>)children.First(x => x.RawName == "MyEnum");
-            
+
             //Assert
             Assert.NotNull(childName.AttributeName);
             Assert.Equal("Nazov", childName.AttributeName);
             Assert.True(childPicture.IsPicture);
             Assert.True(childIgnore.IsIgnored);
             Assert.Equal(DateTypes.Date, childDate.DateType);
-            Assert.True( childEnum.IsRadio);
+            Assert.True(childEnum.IsRadio);
 
         }
     }

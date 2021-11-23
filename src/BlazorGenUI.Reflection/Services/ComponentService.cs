@@ -6,12 +6,12 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection.Services
 {
-    public class ComponentService 
+    public class ComponentService
     {
 
         private string _assemblyName = "BlazorGenUI.Components";
-        public IEnumerable<Type> Components { get; private set; } 
-        public IEnumerable<Type> LayoutsComponents { get; private set; } 
+        public IEnumerable<Type> Components { get; private set; }
+        public IEnumerable<Type> LayoutsComponents { get; private set; }
         public IRenderableComponent GetComponent(string name)
         {
             var foundedType = Components.FirstOrDefault(x => String.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
@@ -54,7 +54,7 @@ namespace BlazorGenUI.Reflection.Services
             var layoutTypes = GetTypesWithInterface<ILayoutComponent>(ass);
             foreach (var typ in layoutTypes)
             {
-                
+
                 layoutComponents.Add(typ);
             }
 
@@ -81,6 +81,6 @@ namespace BlazorGenUI.Reflection.Services
             }
         }
 
-      
+
     }
 }

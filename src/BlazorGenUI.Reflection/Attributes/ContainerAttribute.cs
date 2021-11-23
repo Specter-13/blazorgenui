@@ -12,7 +12,7 @@ namespace BlazorGenUI.Reflection.Attributes
         public ContainerAttribute(LayoutTypes layout)
         {
             this._layout = layout;
-        
+
         }
 
         public LayoutTypes GetLayout()

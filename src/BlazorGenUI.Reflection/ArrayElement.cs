@@ -3,7 +3,7 @@ using BlazorGenUI.Reflection.Interfaces;
 
 namespace BlazorGenUI.Reflection
 {
-    public class ArrayElement : IArrayElement 
+    public class ArrayElement : IArrayElement
     {
         internal IEnumerable<object> Array { get; set; }
         internal IList<IBaseElement> Items { get; set; } = new List<IBaseElement>();

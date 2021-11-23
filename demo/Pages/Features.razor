@@ -3,25 +3,25 @@
 @inject HttpClient Http
 <h1 class="text-secondary">Customization</h1>
 <p>You are able to customize generated UI with parameters.</p>
-@if(person != null)
-{ 
- <div class="p-5 m-4 bg-light rounded-3 shadow">
-     <h2 class="text-secondary">Order and Picture</h2>
+@if (person != null)
+{
+    <div class="p-5 m-4 bg-light rounded-3 shadow">
+        <h2 class="text-secondary">Order and Picture</h2>
 
         <RenderableContentControl Context="@person"
-                                  Order="order"
-                                  PictureFields="AvatarUri">
+                              Order="order"
+                              PictureFields="AvatarUri">
 
         </RenderableContentControl>
     </div>
 
     <div class="p-5 m-4 bg-light rounded-3 shadow">
-     <h2 class="text-secondary">Custom labels</h2>
+        <h2 class="text-secondary">Custom labels</h2>
 
         <RenderableContentControl Context="@person"
-                                  Order="order"
-                                  PictureFields="AvatarUri"
-                                  Labels="labels">
+                              Order="order"
+                              PictureFields="AvatarUri"
+                              Labels="labels">
 
         </RenderableContentControl>
     </div>
@@ -33,7 +33,7 @@
     private Dictionary<string, string> labels;
     protected override async Task OnInitializedAsync()
     {
-        
+
         person = await Http.GetFromJsonAsync<Person>("sample-data/person.json");
         order = new Dictionary<string, int>
         {

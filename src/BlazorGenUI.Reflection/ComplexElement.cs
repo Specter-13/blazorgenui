@@ -21,11 +21,11 @@ namespace BlazorGenUI.Reflection
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
         }
-        public ComplexElement(object context, 
-            string ignoredFields, 
-            string pictureFields, 
-            IDictionary<string,int> order,
-            IDictionary<string,string> labels)
+        public ComplexElement(object context,
+            string ignoredFields,
+            string pictureFields,
+            IDictionary<string, int> order,
+            IDictionary<string, string> labels)
         {
             EncapsulatedDto = context;
             RawName = context.GetType().Name;
@@ -40,11 +40,11 @@ namespace BlazorGenUI.Reflection
         public bool IsIgnored { get; set; }
         public bool IsValueElement { get; set; }
 
-        public IDictionary<string, int> Order { get; set;}
-        public IDictionary<string, string> Labels { get; set;}
+        public IDictionary<string, int> Order { get; set; }
+        public IDictionary<string, string> Labels { get; set; }
         public object EncapsulatedDto { get; set; }
-        public string IgnoredFields { get; set;}
-        public string PictureFields { get;set; }
+        public string IgnoredFields { get; set; }
+        public string PictureFields { get; set; }
 
         private List<object> AttributeList { get; set; }
         public IEnumerable<IBaseElement> GetChildren()
@@ -109,7 +109,7 @@ namespace BlazorGenUI.Reflection
                         Children.Remove(child);
                         Children.Insert(newIndex, child);
                     }
-                    catch 
+                    catch
                     {
                         throw new IncorrectOrderException("BlazorGenUI Error! Cannot reorder elements! Check for correct order value!");
                     }
@@ -123,7 +123,7 @@ namespace BlazorGenUI.Reflection
 
         protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs a)
         {
-            var castedSender = (IValueElement) sender;
+            var castedSender = (IValueElement)sender;
             var data = castedSender.GetPropertyValue("Data");
 
             if (castedSender.PropertyType == typeof(DateTime))
@@ -138,7 +138,7 @@ namespace BlazorGenUI.Reflection
 
         private void HandleDateTimeOffsetChange(IValueElement castedSender)
         {
-            var castedSenderDateTime = (ValueElementDateTime) castedSender;
+            var castedSenderDateTime = (ValueElementDateTime)castedSender;
             if (castedSenderDateTime.IsDateTimeOffset)
             {
                 var utcTime1 = DateTime.SpecifyKind(castedSenderDateTime.Data, DateTimeKind.Utc);
@@ -217,7 +217,7 @@ namespace BlazorGenUI.Reflection
 
         public ValueElementDateTime CreateValueElementDateTime(Type propertyType, string rawName, object value)
         {
-            DateTime data; 
+            DateTime data;
             bool isOffset = false;
             if (propertyType == typeof(DateTimeOffset))
             {
@@ -231,12 +231,12 @@ namespace BlazorGenUI.Reflection
                 data = (DateTime)value;
             }
 
-            
+
             DateTypes dateType;
             var dateAttribute = GetPropertyAttribute<DateAttribute>();
             if (dateAttribute != null)
             {
-                
+
                 dateType = dateAttribute.GetDateType();
             }
             else
@@ -258,7 +258,7 @@ namespace BlazorGenUI.Reflection
         public IValueElement CreateValueElementEnumT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementEnumT<>).MakeGenericType(propertyType);
-            var instance = (IValueElement) Activator.CreateInstance(genericType);
+            var instance = (IValueElement)Activator.CreateInstance(genericType);
 
             instance.RawName = rawName;
             instance.PropertyType = propertyType;
@@ -274,7 +274,7 @@ namespace BlazorGenUI.Reflection
         public IValueElement CreateValueElementT(Type propertyType, string rawName, object value)
         {
             Type genericType = typeof(ValueElementT<>).MakeGenericType(propertyType);
-            var instance = (IValueElement) Activator.CreateInstance(genericType);
+            var instance = (IValueElement)Activator.CreateInstance(genericType);
 
             instance.IsPicture = HasPicture(rawName);
             instance.RawName = rawName;
@@ -289,58 +289,58 @@ namespace BlazorGenUI.Reflection
 
         public T GetPropertyAttribute<T>() where T : class
         {
-            return AttributeList?.Find(p => p.GetType() == typeof(T)) as T;;
+            return AttributeList?.Find(p => p.GetType() == typeof(T)) as T; ;
         }
 
-         private bool HasPicture(string rawName)
-         {
-             bool isPicture;
-             if (PictureFields != null)
-             {
-                 var r = new Regex(rawName, RegexOptions.IgnoreCase);
-                 isPicture = r.IsMatch(PictureFields);
-             }
-             else
-             {
-                 isPicture = GetPropertyAttribute<PictureAttribute>() != null;
-             }
-             return isPicture;
-         }
-         private bool HasIgnore(string rawName)
-         {
-             bool isIgnored;
-             if (IgnoredFields != null)
-             {
-                 var r = new Regex(rawName, RegexOptions.IgnoreCase);
-                 isIgnored = r.IsMatch(IgnoredFields);
-             }
-             else
-             {
-                 isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
-             }
+        private bool HasPicture(string rawName)
+        {
+            bool isPicture;
+            if (PictureFields != null)
+            {
+                var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                isPicture = r.IsMatch(PictureFields);
+            }
+            else
+            {
+                isPicture = GetPropertyAttribute<PictureAttribute>() != null;
+            }
+            return isPicture;
+        }
+        private bool HasIgnore(string rawName)
+        {
+            bool isIgnored;
+            if (IgnoredFields != null)
+            {
+                var r = new Regex(rawName, RegexOptions.IgnoreCase);
+                isIgnored = r.IsMatch(IgnoredFields);
+            }
+            else
+            {
+                isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
+            }
 
-             return isIgnored;
-         }
+            return isIgnored;
+        }
 
-         private string GetCustomPropertyName(string rawName)
-         {
-             string value;
-             if (Labels != null)
-             {
-                 if (Labels.TryGetValue(rawName, out value))
-                 {
-                     return value;
-                 }
+        private string GetCustomPropertyName(string rawName)
+        {
+            string value;
+            if (Labels != null)
+            {
+                if (Labels.TryGetValue(rawName, out value))
+                {
+                    return value;
+                }
 
-             }
-             else
-             {
-                 var nameAttribute = GetPropertyAttribute<AttributeName>();
-                 if(nameAttribute != null) return nameAttribute.GetCustomName();
-             }
-             return null;
-         }
+            }
+            else
+            {
+                var nameAttribute = GetPropertyAttribute<AttributeName>();
+                if (nameAttribute != null) return nameAttribute.GetCustomName();
+            }
+            return null;
+        }
 
-       
+
     }
 }

@@ -8,6 +8,6 @@ namespace BlazorGenUI.Components.ComponentTemplates.Display
         [Parameter]
         public ValueElementT<T> ValueElement { get; set; }
 
-      
+
     }
 }

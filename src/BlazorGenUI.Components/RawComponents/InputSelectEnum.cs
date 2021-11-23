@@ -1,10 +1,8 @@
 ﻿//source: https://www.meziantou.net/creating-a-inputselect-component-for-enumerations-in-blazor.htm
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
-using System.Text;
 using Humanizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;

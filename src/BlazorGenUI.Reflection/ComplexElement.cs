@@ -308,13 +308,14 @@ namespace BlazorGenUI.Reflection
         }
         private bool HasIgnore(string rawName)
         {
-            bool isIgnored;
+            bool isIgnored = false;
             if (IgnoredFields != null)
             {
                 var r = new Regex(rawName, RegexOptions.IgnoreCase);
                 isIgnored = r.IsMatch(IgnoredFields);
             }
-            else
+
+            if (isIgnored == false)
             {
                 isIgnored = GetPropertyAttribute<RenderIgnoreAttribute>() != null;
             }

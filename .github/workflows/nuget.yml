@@ -6,7 +6,8 @@ on:
     - 'v*'
 
 env:
-  PROJECT_PATH: src/BlazorGenUI.Components/BlazorGenUI.Components.csproj
+  PROJECT_PATH_COMPONENTS: src/BlazorGenUI.Components/BlazorGenUI.Components.csproj
+  PROJECT_PATH_REFLECTION: src/BlazorGenUI.Reflection/BlazorGenUI.Reflection.csproj
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
@@ -23,18 +24,27 @@ jobs:
       with:
         dotnet-version: '5.0.x'
 
-    - name: 'Restore packages'
-      run: dotnet restore ${{ env.PROJECT_PATH }}
+    - name: 'Restore packages Reflection'
+      run: dotnet restore ${{ env.PROJECT_PATH_REFLECTION }}
 
-    - name: 'Build project'
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+    - name: 'Restore packages Components'
+      run: dotnet restore ${{ env.PROJECT_PATH_COMPONENTS }}
+
+    - name: 'Build project Reflection'
+      run: dotnet build ${{ env.PROJECT_PATH_REFLECTION }} --no-restore --configuration Release
+
+    - name: 'Build project Components'
+      run: dotnet build ${{ env.PROJECT_PATH_COMPONENTS }} --no-restore --configuration Release
 
     - name: 'Git version'
       id: version
       uses: battila7/get-version-action@v2
 
-    - name: 'Pack project'
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+    - name: 'Pack project Reflection'
+      run: dotnet pack ${{ env.PROJECT_PATH_REFLECTION }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
+    - name: 'Pack project Components'
+      run: dotnet pack ${{ env.PROJECT_PATH_COMPONENTS }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Push package'
       run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}

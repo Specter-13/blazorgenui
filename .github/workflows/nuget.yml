@@ -6,7 +6,7 @@ on:
     - 'v*'
 
 env:
-  PROJECT_PATH: src/BlazorGenUI.Components.csproj
+  PROJECT_PATH: src/BlazorGenUI.Components/BlazorGenUI.Components.csproj
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 

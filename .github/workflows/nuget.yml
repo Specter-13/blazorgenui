@@ -1,0 +1,51 @@
+name: 'Deploy to NuGet'
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+env:
+  PROJECT_PATH_COMPONENTS: src/BlazorGenUI.Components/BlazorGenUI.Components.csproj
+  PROJECT_PATH_REFLECTION: src/BlazorGenUI.Reflection/BlazorGenUI.Reflection.csproj
+  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
+  NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
+
+jobs:
+  deploy:
+    name: 'Deploy'
+    runs-on: 'windows-latest'
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+
+    - name: 'Install dotnet'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: 'Restore packages Reflection'
+      run: dotnet restore ${{ env.PROJECT_PATH_REFLECTION }}
+
+    - name: 'Restore packages Components'
+      run: dotnet restore ${{ env.PROJECT_PATH_COMPONENTS }}
+
+    - name: 'Build project Reflection'
+      run: dotnet build ${{ env.PROJECT_PATH_REFLECTION }} --no-restore --configuration Release
+
+    - name: 'Build project Components'
+      run: dotnet build ${{ env.PROJECT_PATH_COMPONENTS }} --no-restore --configuration Release
+
+    - name: 'Git version'
+      id: version
+      uses: battila7/get-version-action@v2
+
+    - name: 'Pack project Reflection'
+      run: dotnet pack ${{ env.PROJECT_PATH_REFLECTION }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
+    - name: 'Pack project Components'
+      run: dotnet pack ${{ env.PROJECT_PATH_COMPONENTS }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
+    - name: 'Push package'
+      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_AUTH_TOKEN }} -s ${{ env.NUGET_SOURCE_URL }}
+
